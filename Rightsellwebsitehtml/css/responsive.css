@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+@media (min-width: 320px) and (max-width:767px) {
+.header_text ul li{list-style:none; float:none;}
+
+.header_text ul li.sec1{ width:auto;}
+.header_text ul li.sec2{ width:auto;}
+.header_text ul li.sec3{ width:auto;}
+.menu_ico{ margin-top:50px; width:30px;}
+.header_lt_col{ width:70%;}
+.header_rt_col{ width:30%;}
+.inner_banner img{ float:none; margin:15px 0 0 0;}
+.inner_banner{ background:#ffbe0e; vertical-align:middle; box-shadow:0px 2px 2px 1px rgba(0,0,0,0.20); text-align:center}
+.red_btn{ background:#e41919; padding:5px 10px; border:0; border-radius:15px; font-size:14px; color:#fff; font-weight:300; margin-top:10px;}
+
+.yellow_btn{ background:#ffbe0e; padding:7px; border:0; font-size:15px; color:#272727; font-weight:300;}
+.orrange_btn{ background:#ff7f0e; padding:7px; border:0; font-size:15px; color:#fff; font-weight:300;}
+.pro_box{ background:#f2f2f2; padding:15px; margin-left:-15px;}
+.pro_detail{ padding-left:0;}
+	
+.hot_property_resi{
+	background-image:url('../images/Residential_bakground');
+	padding:0;
+	background-color:#e8e8e8;
+	
+	padding-bottom:10px;
+	background-repeat:no-repeat;
+	height:auto;
+   
+	}	
+}
