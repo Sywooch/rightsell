@@ -12,6 +12,7 @@ use yii\data\Pagination;
 <h2>0 Nearby properties</h2>
 <?php 
 
+
 echo ListView::widget([
         'dataProvider' => $dataProvider,
         'viewParams' => ['locationname' => $locationname],

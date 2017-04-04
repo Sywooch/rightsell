@@ -64,7 +64,10 @@ class ResidentialPropertyController extends Controller
         $searchModel = new ResidentialpropertySearch();
         $params = Yii::$app->request->queryParams;
         $searchModel->load($params);
-        //echo "<pre>"; print_r($params);exit; //`property_by` LIKE 'owner' AND
+        if(!isset($params['city']))
+            //$searchModel->city_id = $params['city'];
+            $params['city']="";
+        //echo "<pre>"; print_r($searchModel);exit; //`property_by` LIKE 'owner' AND
         $query = Residentialproperty::find();
 
         // $query->andFilterWhere(['property_by'=>$searchModel->property_by]);
@@ -78,6 +81,7 @@ class ResidentialPropertyController extends Controller
         // $query->andFilterWhere(['furnished'=>$searchModel->furnished]);
         // $query->andFilterWhere(['bhk'=>$searchModel->bhk]);
         //$query->andFilterWhere(['status'=>$model->min_price]);
+        $query->andFilterWhere(['city_id'=>$params['city']]);
         $query->andFilterWhere(['status'=>1]);
 
         //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -260,6 +264,12 @@ class ResidentialPropertyController extends Controller
             }
             if(!isset($params['furnished']))
                 $params['furnished']= [];
+            
+            if(!isset($params['bhk']))
+                $params['bhk']= [];
+
+            if(!isset($params['property_type']))
+                $params['property_type']= [];
 
             if(!isset($params['available_for']))
                 $params['available_for']= "";
@@ -267,31 +277,76 @@ class ResidentialPropertyController extends Controller
             if(!isset($params['property_by']))
                 $params['property_by']= "";
 
+            if(!isset($params['minrent']) && $params['minrent'] == "")
+                $params['minrent'] = null;
+            else
+                $params['minrent'] = $params['minrent'] * 1000;
+
+            if(!isset($params['maxrent']) && $params['maxrent'] == "")
+                $params['maxrent'] = null;
+            else
+                $params['maxrent'] = $params['maxrent'] * 1000;
+
+
+            if(!isset($params['minrate']))
+                $params['minrate'] =  null;
+            else
+                $params['minrate'] = $params['minrate'] * 100000;
+
+            
+            if(!isset($params['maxrate']))
+                $params['maxrate'] =  null;
+            else
+                $params['maxrate'] = $params['maxrate'] * 100000;
+
             //echo "<pre>";print_r($params);exit;
 
             $query = Residentialproperty::find();
             $query->andFilterWhere(['property_by'=>$params['property_by']]);
             $query->andFilterWhere(['in','location_id',$params['location_id']]);
             $query->andFilterWhere(['in','furnished',$params['furnished']]);
-            $query->orFilterWhere(['=','furnished',null]);
+            
+            $query->andFilterWhere(['in','bhk',$params['bhk']]);
+            $query->andFilterWhere(['in','property_type',$params['property_type']]);
+            
             $query->andFilterWhere(['city_id'=>$params['city_id']]);
             $query->andFilterWhere(['bathroom'=>$params['bathroom']]);
             $query->andFilterWhere(['facing'=>$params['facing']]);
             $query->andFilterWhere(['floor_no'=>$params['floor_no']]);
             $query->andFilterWhere(['available_for'=>$params['available_for']]);
+
+            if(isset($params['maxrate']) && $params['maxrate'] != "")
+            {
+                $query->andFilterWhere(['between', 'expected_rate_comp',$params['minrate'],$params['maxrate']]);
+                //$query->andFilterWhere(['>', 'expected_rate_comp',$params['minrate']]);
+                //$query->andFilterWhere(['<', 'expected_rate_comp',$params['maxrate']]);
+            }
+
+            if(isset($params['maxrent']) && $params['maxrent'] != "")
+            {   
+                $query->andFilterWhere(['between', 'expected_rent_comp',$params['minrent'],$params['maxrent']]);
+                //$query->andFilterWhere(['between', 'expected_rent_comp',$params['minrent']]);
+                //$query->andFilterWhere(['<', 'expected_rent_comp',$params['maxrent']]);
+            }
+            
+
+            $query->andFilterWhere(['status'=>1]);
+            $query->andFilterWhere(['publish_on_web'=>1]);
             //$query->andFilterWhere(['status'=>$searchModel->status]);
             //$query->andFilterWhere(['furnished'=>$searchModel->furnished]);
             //$query->andFilterWhere(['bhk'=>$searchModel->bhk]);
-            ////$query->andFilterWhere(['status'=>$model->min_price]);
-            ////$query->andFilterWhere(['status'=>$model->status]);
+            //$query->andFilterWhere(['status'=>$model->min_price]);
+            //$query->andFilterWhere(['status'=>$model->status]);
 
             // //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            //echo "<pre>";print_r($query);exit;
             $dataProvider = new ActiveDataProvider([
                 'query' => $query,
                 'pagination' => [
-                    'pageSize' => 2,
+                    'pageSize' => 20,
                 ],
             ]);
+
             echo $this->renderPartial('property_item', [
                 'dataProvider' => $dataProvider,
                 'locationname' => implode(",", $locationnames),

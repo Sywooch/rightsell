@@ -3,8 +3,9 @@
 namespace app\models;
 
 use Yii;
-use app\models\Area;
-use app\models\City;
+//use app\models\Area;
+//use app\models\City;
+//use app\models\Bhk;
 
 /**
  * This is the model class for table "tbl_residentialproperty".
@@ -226,5 +227,15 @@ class Residentialproperty extends \yii\db\ActiveRecord
     public function getArea()
     {
         return $this->hasOne(Area::className(), ['id' => 'area_id']);
+    }
+
+    public function getBhks()
+    {
+        return $this->hasOne(Bhk::className(), ['id' => 'bhk']);
+    }
+
+    public function getLocations()
+    {
+        return $this->hasOne(Location::className(), ['id' => 'location_id']);
     }
 }

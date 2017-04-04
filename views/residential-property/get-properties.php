@@ -3,6 +3,9 @@
 use yii\data\ActiveDataProvider;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
+use yii\widgets\LinkPager;
+use yii\data\Pagination;
+
 $host = "localhost";
 //$host = "103.208.73.2";
 
@@ -189,8 +192,9 @@ if(isset($_GET['ResidentialpropertySearch']['property_by']))
 <div class="col-md-3">
 <div class="pro_left_column"><div class="row">
 <div class="col-xs-7 filter_text">Filter your Search</div>
-<div class="col-xs-5"><button class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</button></div>
-</div></div>
+<div class="col-xs-5"><a href="<?= Url::to(["residential-property/index"]);?>" class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
+</div>
+</div>
 <div class="pro_left_column">
 <input type="radio" id="r1" class="rpfilter_availablefor" name="available_for" value="Sale"/>
 <label for="r1"><span></span>Buy</label>
@@ -217,75 +221,106 @@ if(isset($_GET['ResidentialpropertySearch']['property_by']))
 <label class="chkbob_lable" for="rpfurnished_sf"><span></span>Semi-Furnished</label></div><br>
 
 <div class="col-xs-12" style="text-align:left">
-<input type="checkbox" id="rpfurnished_uf" name="rpfurnished[]" class="filterResPropFurnished" value="UF"/>
+<input type="checkbox" id="rpfurnished_uf" name="rpfurnished[]" class="filterResPropFurnished" value="UN"/>
 <label class="chkbob_lable" for="rpfurnished_uf"><span></span>Non Furnished</label></div><br>
 </div>
 </div>
 
-<div class="pro_left_column">
+<div class="pro_left_column sale">
 <div class="row demo">
 <div class="col-xs-5 demo_col">
-<img src="images/rupee.jpg" alt=""><select>
-<option>Min</option>
-<option>5 Lac</option>
-<option>10 Lac</option>
-<option>20 Lac</option>
-<option>25 Lac</option>
-<option>40 Lac</option>
-<option>50 Lac</option>
-<option>80 Lac</option>
-<option>1 Cr</option>
+<img src="images/rupee.jpg" alt="">
+<select name="min_rate" id="min_rate">
+<option value="">Min</option>
+<option value="5">5 Lac</option>
+<option value="10">10 Lac</option>
+<option value="20">20 Lac</option>
+<option value="25">25 Lac</option>
+<option value="40">40 Lac</option>
+<option value="50">50 Lac</option>
+<option value="80">80 Lac</option>
+<option value="100">1 Cr</option>
 </select></div>
 <div class="col-xs-2 boldtxt">-</div>
-<div class="col-xs-5 demo_col"><img src="images/rupee.jpg" alt=""><select>
-<option>Max</option>
-<option>10 Lac</option>
-<option>20 Lac</option>
-<option>25 Lac</option>
-<option>40 Lac</option>
-<option>50 Lac</option>
-<option>80 Lac</option>
-<option>1 Cr</option>
-<option>1.5 Cr</option>
+<div class="col-xs-5 demo_col"><img src="images/rupee.jpg" alt="">
+<select name="max_rate" id="max_rate">
+<option value="">Max</option>
+<option value="10">10 Lac</option>
+<option value="20">20 Lac</option>
+<option value="25">25 Lac</option>
+<option value="40">40 Lac</option>
+<option value="50">50 Lac</option>
+<option value="80">80 Lac</option>
+<option value="100">1 Cr</option>
+<option value="150">1.5 Cr</option>
+</select></div></div>
+</div>
+
+<div class="pro_left_column rent">
+<div class="row demo">
+<div class="col-xs-5 demo_col">
+<img src="images/rupee.jpg" alt="">
+<select name="min_rent" id="min_rent">
+<option value="">Min</option>
+<option value="5">5 Thousands</option>
+<option value="10">10 Thousands</option>
+<option value="20">20 Thousands</option>
+<option value="25">25 Thousands</option>
+<option value="40">40 Thousands</option>
+<option value="50">50 Thousands</option>
+<option value="80">80 Thousands</option>
+<option value="100">1 Lac</option>
+</select></div>
+<div class="col-xs-2 boldtxt">-</div>
+<div class="col-xs-5 demo_col"><img src="images/rupee.jpg" alt="">
+<select name="max_rent" id="max_rent">
+<option value="">Max</option>
+<option value="10">10 Thousands</option>
+<option value="20">20 Thousands</option>
+<option value="25">25 Thousands</option>
+<option value="40">40 Thousands</option>
+<option value="50">50 Thousands</option>
+<option value="80">80 Thousands</option>
+<option value="100">1 Lac</option>
 </select></div></div>
 </div>
 
 <div class="pro_left_column">
 <div class="row">
 <div class="col-xs-6">
-<input type="checkbox" id="c2" name="cc"/>
+<input type="checkbox" id="c2" name="rpbhk[]" value="20"/>
 <label class="chkbob_lable" for="c2"><span></span>1 RK</label>
 </div>
 <div class="col-xs-6">
-<input type="checkbox" id="c3" name="cc"/>
+<input type="checkbox" id="c3" name="rpbhk[]" value="11"/>
 <label class="chkbob_lable" for="c3"><span></span>2.5 BHK</label>
 </div>
-<div class="col-xs-6"><input type="checkbox" id="c4" name="cc"/>
+<div class="col-xs-6"><input type="checkbox" id="c4" name="rpbhk[]" value="8"/>
 <label class="chkbob_lable" for="c4"><span></span>1 BHK</label></div>
-<div class="col-xs-6"><input type="checkbox" id="c5" name="cc"/>
+<div class="col-xs-6"><input type="checkbox" id="c5" name="rpbhk[]" value="3"/>
 <label class="chkbob_lable" for="c5"><span></span>3 BHK</label></div>
-<div class="col-xs-6"><input type="checkbox" id="c6" name="cc"/>
+<div class="col-xs-6"><input type="checkbox" id="c6" name="rpbhk[]" value="2"/>
 <label class="chkbob_lable" for="c6"><span></span>2 BHK</label></div>
-<div class="col-xs-6"><input type="checkbox" id="c7" name="cc"/>
+<div class="col-xs-6"><input type="checkbox" id="c7" name="rpbhk[]" value=""/>
 <label class="chkbob_lable" for="c7"><span></span>3.5 BHK</label></div>
 </div>
 <hr style="margin:10px 0 15px 0">
 <div class="row">
 <div class="col-xs-6">
-<input type="checkbox" id="c8" name="cc"/>
+<input type="checkbox" id="c8" name="rpproptype[]" value="Apartment" />
 <label class="chkbob_lable" for="c8"><span></span>Apartment</label>
 </div>
 <div class="col-xs-6">
-<input type="checkbox" id="c9" name="cc"/>
+<input type="checkbox" id="c9" name="rpproptype[]" value="Rowhouse"/>
 <label class="chkbob_lable" for="c9"><span></span>Independent</label>
 </div>
-<div class="col-xs-6"><input type="checkbox" id="c10" name="cc"/>
+<div class="col-xs-6"><input type="checkbox" id="c10" name="rpproptype[]" value="Bunglow"/>
 <label class="chkbob_lable" for="c10"><span></span>Bunglow</label></div>
-<div class="col-xs-6"><input type="checkbox" id="c11" name="cc"/>
+<div class="col-xs-6"><input type="checkbox" id="c11" name="rpproptype[]" value="Penthouse"/>
 <label class="chkbob_lable" for="c11"><span></span>Penthouse</label></div>
-<div class="col-xs-6"><input type="checkbox" id="c12" name="cc"/>
+<div class="col-xs-6"><input type="checkbox" id="c12" name="rpproptype[]" value="Villa"/>
 <label class="chkbob_lable" for="c12"><span></span>Villa</label></div>
-<div class="col-xs-6"><input type="checkbox" id="c13" name="cc"/>
+<div class="col-xs-6"><input type="checkbox" id="c13" name="rpproptype[]" value="Plot"/>
 <label class="chkbob_lable" for="c13"><span></span>Plot</label></div>
 </div>
 </div>
@@ -294,13 +329,21 @@ if(isset($_GET['ResidentialpropertySearch']['property_by']))
 <div class="col-md-7 projects_section" id="projects_section">
 <!-- <h1>39 Properties in Wakad, Bawdhan, from owner. &nbsp;&nbsp;</h1>
 <h2>0 Nearby properties</h2> -->
-<?php Pjax::begin([
+<?php 
+/*$pages = new Pagination(['totalCount' => $dataProvider->getTotalCount()]);
+echo LinkPager::widget([
+	'pagination' => $pages,
+	'linkOptions'=>['class'=>'custpagination']
+]);*/
+Pjax::begin([
 	'id'=>'newpropsection',
 'enablePushState' => false, // to disable push state
 'enableReplaceState' => false // to disable replace state
 ]);?>
 <?= $this->render("property_item", ['dataProvider' => $dataProvider,"locationname"=>"","propby"=>""]);?>
 <?php Pjax::end();?>
+
+
 <!--<div class="row pro_box">
 	<div class="col-sm-5 nopadding">
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">

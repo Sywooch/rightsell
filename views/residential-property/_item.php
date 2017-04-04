@@ -1,15 +1,27 @@
+<?php $host = "103.208.73.2";?>
 <div class="col-sm-5 nopadding">
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
+					<img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+				</div>
+				<?php 
+				//http://localhost/RealEstateCrm/files/residentialProperty/
+				$images = json_decode($model->gallery_images);
+				if(count($images) >0)
+				{
+					foreach ($images as $image) {
+						echo "<div class='item'>";
+						echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+						echo "</div>";
+					}
+				}?>
+				<!-- <div class="item">
 					<img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
 				</div>
 				<div class="item">
 					<img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
-				</div>
-				<div class="item">
-					<img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
-				</div>
+				</div> -->
 			</div>
 			<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -24,8 +36,8 @@
 
 	<div class="col-sm-7">
 		<div class="row pro_detail">
-			<h1><?=$model->bhk;?> BHK, Near Bridge <?=$locationname?>.</h1>
-			<button class="button yellow_btn"><?=$model->bhk?> BHK</button>
+			<h1><?= $model->bhks->name?> Near <?= $model->locations->location?>.</h1>
+			<button class="button yellow_btn"><?= $model->bhks->name?></button>
 			<?php if(strtolower($model->available_for)=="rent"):?>
 			<button class="button orrange_btn">Rent <?=number_format($model->expected_rent_comp)?></button>
 			<button class="button yellow_btn">Deposit <?=number_format($model->deposit_comp)?></button>
