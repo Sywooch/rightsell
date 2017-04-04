@@ -56,6 +56,9 @@ function split( val ) {
     }
 
 $(document).on("ready", function(){
+
+	var selectedlocs = [];
+
 	var cityid = $("#filterResProp_cityid").val();
 	// $("#resprop_locationname").on("keyup", function(){
 	// 	var locationname = $(this).val();
@@ -91,7 +94,10 @@ $(document).on("ready", function(){
 
 	$('#filterResProp_locationname').keydown(function(e){
 		if(this.value == "")
+		{
 			$("#hidlocationids").html("");
+			selectedlocs = [];
+		}
 		//console.log(e.keyCode);
 	    if (e.keyCode == 8) {
 
@@ -130,8 +136,16 @@ $(document).on("ready", function(){
           terms.push( ui.item.value );
           // add placeholder to get the comma-and-space at the end
           terms.push( "" );
-          this.value = terms.join( ", " );
-          $("#hidlocationids").append("<input type='hidden' name='rplocations[]' value='"+ui.item.id+"'/>");
+          if($.inArray(ui.item.id, selectedlocs) == -1)
+          {
+          	$("#hidlocationids").append("<input type='hidden' name='rplocations[]' value='"+ui.item.id+"'/>");
+          	this.value = terms.join( ", " );
+          	selectedlocs.push(ui.item.id);
+          }
+          else
+          {
+          alert(ui.item.value+" already selected");	
+          }
           //alert(ui.item.value+" selected");
           return false;
         }
@@ -140,10 +154,6 @@ $(document).on("ready", function(){
 		//$.pjax.submit($("#search-form"));
 		getRProperties();
     });
-
-    $(".custpagination").on("click", function(){
-    	alert("hi "+$(this).data("page"));
-    })
 
 	/*$("#proplocations > .selloc").on("click", function(){
 		console.log("hsad");
