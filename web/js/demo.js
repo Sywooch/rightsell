@@ -59,7 +59,7 @@ $(document).on("ready", function(){
 
 	var selectedlocs = [];
 
-	var cityid = $("#filterResProp_cityid").val();
+	var cityid = $("#residentialpropertysearch-city_id").val();
 	// $("#resprop_locationname").on("keyup", function(){
 	// 	var locationname = $(this).val();
 	// 	if(locationname.length > 2)
@@ -74,9 +74,11 @@ $(document).on("ready", function(){
 		console.log($(this).serialize());
 	});
 
-	$(".rpfilter_availablefor").on("change", function()
+	$("#residentialpropertysearch-available_for").on("change", function()
 	{
-		var availablefor = $("input[name='available_for']:checked").val();
+		//var availablefor = $("input[name='available_for']:checked").val();
+		var availablefor = $("input[name='ResidentialpropertySearch[available_for]']:checked").val();
+		//console.log(availablefor);
 		if(availablefor == "Sale")
 		{
 			$(".sale").show();
@@ -87,10 +89,10 @@ $(document).on("ready", function(){
 			$(".sale").hide();
 			$(".rent").show();
 		}
-		$("#min_rate").val("");
+		/*$("#min_rate").val("");
 		$("#max_rate").val("");
 		$("#min_rent").val("");
-		$("#max_rent").val("");
+		$("#max_rent").val("");*/
 		// $("input[name='min_rate']").val("");
 		// $("input[name='min_rent']").val("");
 		// $("input[name='max_rate']").val("");
@@ -132,6 +134,7 @@ $(document).on("ready", function(){
       // })
       .autocomplete({
         source: function( request, response ) {
+        	cityid = $("#residentialpropertysearch-city_id").val();
           //$.getJSON( "index.php?r=residential-property/get-city-locations", {term: request.term}, response );
           $.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
         },

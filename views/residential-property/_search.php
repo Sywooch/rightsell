@@ -106,7 +106,7 @@ use app\models\Bhk;
         ?>
 </div>
 
- <div class="pro_left_column">
+ <div class="pro_left_column sale">
     <div class="row demo">
         <div class="col-xs-5 demo_col">
             <img src="images/rupee.jpg" alt="">
@@ -130,6 +130,45 @@ use app\models\Bhk;
         <div class="col-xs-5 demo_col">
         <img src="images/rupee.jpg" alt="">
         <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rate_price',["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max']);?>
+
+        <?php /*
+        $form->field($model, 'max_rate_price')->dropDownList(["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max'])->label(false);*/?>
+        <!-- <select>
+            <option>Max</option>
+            <option>10 Lac</option>
+            <option>20 Lac</option>
+            <option>25 Lac</option>
+            <option>40 Lac</option>
+            <option>50 Lac</option>
+            <option>80 Lac</option>
+            <option>1 Cr</option>
+            <option>1.5 Cr</option>
+        </select> --></div></div>
+    </div>
+    <div class="pro_left_column rent">
+    <div class="row demo">
+        <div class="col-xs-5 demo_col">
+            <img src="images/rupee.jpg" alt="">
+
+<?php echo \yii\helpers\Html::activeDropDownList($model,'min_rent_price',["5000"=>"5 Thousand", "10000"=>"10 Thousand","20000"=>"20 Thousand","25000"=>"25 Thousand","40000"=>"40 Thousand","50000"=>"50 Thousand","80000"=>"80 Thousand","100000"=>"1 Lac"],['prompt'=>'Min']);?>
+
+            <?php
+        /*$form->field($model, 'min_rate_price')->dropDownList(["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min'])->label(false);*/?>
+            <!-- <select>
+            <option>Min</option>
+            <option>5 Lac</option>
+            <option>10 Lac</option>
+            <option>20 Lac</option>
+            <option>25 Lac</option>
+            <option>40 Lac</option>
+            <option>50 Lac</option>
+            <option>80 Lac</option>
+            <option>1 Cr</option>
+        </select> --></div>
+        <div class="col-xs-2 boldtxt">-</div>
+        <div class="col-xs-5 demo_col">
+        <img src="images/rupee.jpg" alt="">
+        <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rent_price',["10000"=>"10 Thousand","20000"=>"20 Thousand","25000"=>"25 Thousand","40000"=>"40 Thousand","50000"=>"50 Thousand","80000"=>"80 Thousand","100000"=>"1 Lac"],['prompt'=>'Max']);?>
 
         <?php /*
         $form->field($model, 'max_rate_price')->dropDownList(["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max'])->label(false);*/?>

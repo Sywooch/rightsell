@@ -89,6 +89,7 @@ class ResidentialPropertyController extends Controller
         return $this->render('get-properties', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'availablefr' => "Sale and Rent",
         ]);
     }
 
@@ -250,27 +251,21 @@ class ResidentialPropertyController extends Controller
         $dataProvider = $searchModel->search($_GET);
         
         $locationnames = [];
-        /*if(isset($params['location_id']))
+        if(isset($searchModel->location_id))
         {
-            $locas = Location::find()->where(['in','id', $params['location_id']])->all();
+            $locas = Location::find()->where(['in','id', $searchModel->location_id])->all();
             $locationnamestemp = ArrayHelper::toArray($locas,['app\models\Location' =>['location']]);
             foreach ($locationnamestemp as $location) {
                 $locationnames[] = $location['location'];
             }
         }
-        else
-        {
-            $params['location_id'] = [];
-        }*/
         
         return $this->renderPartial('property_item', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'locationname' => implode(",", $locationnames),
-            'propby' => '',
-        ]);/*return $this->renderPartial('get-properties', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);*/
+            'propby' => $searchModel->property_by,
+            'availablefr' => $searchModel->available_for,
+        ]);
     }
 }

@@ -174,6 +174,12 @@ class ResidentialpropertySearch extends Residentialproperty
             //->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
             //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
         }
+        if(!isset($this->min_rent_price))
+        {
+            $this->min_rent_price = 0;
+            $query->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
+            ->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
+        }
         return $dataProvider;
     }
 }

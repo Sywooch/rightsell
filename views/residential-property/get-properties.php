@@ -8,16 +8,6 @@ use yii\data\Pagination;
 
 $host = "localhost";
 //$host = "103.208.73.2";
-
-$getPropertyBy="Owner and Agent";
-if(isset($_GET['ResidentialpropertySearch']['property_by']))
-	$getPropertyBy = $_GET['ResidentialpropertySearch']['property_by'];
-// if(isset($_GET['ResidentialpropertySearch']['available_for']))
-// $getAvailableFor = $_GET['ResidentialpropertySearch']['available_for'];
-// if(isset($_GET['ResidentialpropertySearch']['furnished']))
-// $getFurnishedArr = $_GET['ResidentialpropertySearch']['furnished'];
-// if(isset($_GET['ResidentialpropertySearch']['bhk']))
-// $getBhkArr = $_GET['ResidentialpropertySearch']['bhk'];
 ?>
 
 
@@ -44,8 +34,6 @@ if(isset($_GET['ResidentialpropertySearch']['property_by']))
 <input type="text" class="form-control" id="filterResProp_locationname" placeholder="Add more Locations..">
 <!-- <ul id="proplocations">
 </ul> -->
-<input type="hidden" name="filterResProp_cityid" id="filterResProp_cityid" value="33">
-<input type="hidden" name="filterResProp_cityname" id="filterResProp_cityname" value="Pune">
 <div id="hidlocationids">
 </div>
 </div>
@@ -212,7 +200,7 @@ Pjax::begin([
 'enablePushState' => false, // to disable push state
 'enableReplaceState' => false // to disable replace state
 ]);?>
-<?= $this->render("property_item", ['dataProvider' => $dataProvider,"locationname"=>"","propby"=>""]);?>
+<?= $this->render("property_item", ['dataProvider' => $dataProvider,"locationname"=>"","propby"=>"",'availablefr' => $availablefr]);?>
 <?php Pjax::end();?>
 
 
