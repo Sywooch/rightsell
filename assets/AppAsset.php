@@ -39,7 +39,18 @@ class AppAsset extends AssetBundle
         'js/demo.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        //'yii\web\YiiAsset',
+        //'yii\bootstrap\BootstrapAsset',
+    ];
+
+    public $publishOptions = [
+        "only" => [
+            "css/*",
+            "js/*",
+        ],
+        'except' => [
+            "doc/",
+            "*.less",
+        ],
     ];
 }

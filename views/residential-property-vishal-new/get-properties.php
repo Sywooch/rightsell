@@ -19,7 +19,7 @@ if(isset($_GET['ResidentialpropertySearch']['property_by']))
 // if(isset($_GET['ResidentialpropertySearch']['bhk']))
 // $getBhkArr = $_GET['ResidentialpropertySearch']['bhk'];
 ?>
-
+<?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <div class="container-fluid inner_banner">
   <div class="row">
@@ -171,11 +171,11 @@ if(isset($_GET['ResidentialpropertySearch']['property_by']))
 <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/short_ico.jpg" class="short" alt="">Sort by Relevance <img src="images/dd_arrow.jpg" alt=""></a>
 <ul class="dropdown-menu" style="left:18px">
 <li class="first"><a href="#">Relavance</a></li>
-<li><a href="#" class="sortresprop" data-val="popular">Popularity</a></li>
-<li><a href="#" class="sortresprop" data-val="asc">Price (Low to high)</a></li>
-<li><a href="#" class="sortresprop" data-val="desc">Price (High to low)</a></li>
-<li><a href="#" class="sortresprop" data-val="rate">Seller Ratings </a></li>
-<li><a href="#" class="sortresprop" data-val="postdate">Date Posted</a></li>
+<li><a href="#">Popularity</a></li>
+<li><a href="#">Price (Low to high)</a></li>
+<li><a href="#">Price (High to low)</a></li>
+<li><a href="#">Seller Ratings </a></li>
+<li><a href="#">Date Posted</a></li>
 </ul>
 </li>
 </ul>
@@ -195,7 +195,135 @@ if(isset($_GET['ResidentialpropertySearch']['property_by']))
 <div class="col-xs-5"><a href="<?= Url::to(["residential-property/index"]);?>" class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
 </div>
 </div>
-<?php echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="pro_left_column">
+<input type="radio" id="r1" class="rpfilter_availablefor" name="available_for" value="Sale"/>
+<label for="r1"><span></span>Buy</label>
+<input type="radio" id="r2" class="rpfilter_availablefor" name="available_for" value="Rent"/>
+<label for="r2"><span></span>Rent</label>
+<input type="radio" id="r5" class="rpfilter_availablefor" name="available_for" value="Rent"/>
+<label for="r5"><span></span>Flatmate</label>
+</div>
+
+<div class="pro_left_column">
+<input type="radio" id="r3" name="property_by" class="rpfilter_propertyby" value="Owner"/>
+<label for="r3"><span></span>Owner</label>
+<input type="radio" id="r4" name="property_by" class="rpfilter_propertyby" value="Agent"/>
+<label for="r4"><span></span>Agent</label>
+</div>
+
+<div class="pro_left_column">
+<div class="row">
+<div class="col-xs-12" style="text-align:left">
+<input type="checkbox" id="rpfurnished_ff" name="rpfurnished[]" class="filterResPropFurnished" value="FF"/>
+<label class="chkbob_lable" for="rpfurnished_ff"><span></span>Furnished</label></div><br>
+<div class="col-xs-12" style="text-align:left">
+<input type="checkbox" id="rpfurnished_sf" name="rpfurnished[]" class="filterResPropFurnished" value="SF"/>
+<label class="chkbob_lable" for="rpfurnished_sf"><span></span>Semi-Furnished</label></div><br>
+
+<div class="col-xs-12" style="text-align:left">
+<input type="checkbox" id="rpfurnished_uf" name="rpfurnished[]" class="filterResPropFurnished" value="UN"/>
+<label class="chkbob_lable" for="rpfurnished_uf"><span></span>Non Furnished</label></div><br>
+</div>
+</div>
+
+<div class="pro_left_column sale">
+<div class="row demo">
+<div class="col-xs-5 demo_col">
+<img src="images/rupee.jpg" alt="">
+<select name="min_rate" id="min_rate">
+<option value="">Min</option>
+<option value="5">5 Lac</option>
+<option value="10">10 Lac</option>
+<option value="20">20 Lac</option>
+<option value="25">25 Lac</option>
+<option value="40">40 Lac</option>
+<option value="50">50 Lac</option>
+<option value="80">80 Lac</option>
+<option value="100">1 Cr</option>
+</select></div>
+<div class="col-xs-2 boldtxt">-</div>
+<div class="col-xs-5 demo_col"><img src="images/rupee.jpg" alt="">
+<select name="max_rate" id="max_rate">
+<option value="">Max</option>
+<option value="10">10 Lac</option>
+<option value="20">20 Lac</option>
+<option value="25">25 Lac</option>
+<option value="40">40 Lac</option>
+<option value="50">50 Lac</option>
+<option value="80">80 Lac</option>
+<option value="100">1 Cr</option>
+<option value="150">1.5 Cr</option>
+</select></div></div>
+</div>
+
+<div class="pro_left_column rent">
+<div class="row demo">
+<div class="col-xs-5 demo_col">
+<img src="images/rupee.jpg" alt="">
+<select name="min_rent" id="min_rent">
+<option value="">Min</option>
+<option value="5">5 Thousands</option>
+<option value="10">10 Thousands</option>
+<option value="20">20 Thousands</option>
+<option value="25">25 Thousands</option>
+<option value="40">40 Thousands</option>
+<option value="50">50 Thousands</option>
+<option value="80">80 Thousands</option>
+<option value="100">1 Lac</option>
+</select></div>
+<div class="col-xs-2 boldtxt">-</div>
+<div class="col-xs-5 demo_col"><img src="images/rupee.jpg" alt="">
+<select name="max_rent" id="max_rent">
+<option value="">Max</option>
+<option value="10">10 Thousands</option>
+<option value="20">20 Thousands</option>
+<option value="25">25 Thousands</option>
+<option value="40">40 Thousands</option>
+<option value="50">50 Thousands</option>
+<option value="80">80 Thousands</option>
+<option value="100">1 Lac</option>
+</select></div></div>
+</div>
+
+<div class="pro_left_column">
+<div class="row">
+<div class="col-xs-6">
+<input type="checkbox" id="c2" name="rpbhk[]" value="20"/>
+<label class="chkbob_lable" for="c2"><span></span>1 RK</label>
+</div>
+<div class="col-xs-6">
+<input type="checkbox" id="c3" name="rpbhk[]" value="11"/>
+<label class="chkbob_lable" for="c3"><span></span>2.5 BHK</label>
+</div>
+<div class="col-xs-6"><input type="checkbox" id="c4" name="rpbhk[]" value="8"/>
+<label class="chkbob_lable" for="c4"><span></span>1 BHK</label></div>
+<div class="col-xs-6"><input type="checkbox" id="c5" name="rpbhk[]" value="3"/>
+<label class="chkbob_lable" for="c5"><span></span>3 BHK</label></div>
+<div class="col-xs-6"><input type="checkbox" id="c6" name="rpbhk[]" value="2"/>
+<label class="chkbob_lable" for="c6"><span></span>2 BHK</label></div>
+<div class="col-xs-6"><input type="checkbox" id="c7" name="rpbhk[]" value=""/>
+<label class="chkbob_lable" for="c7"><span></span>3.5 BHK</label></div>
+</div>
+<hr style="margin:10px 0 15px 0">
+<div class="row">
+<div class="col-xs-6">
+<input type="checkbox" id="c8" name="rpproptype[]" value="Apartment" />
+<label class="chkbob_lable" for="c8"><span></span>Apartment</label>
+</div>
+<div class="col-xs-6">
+<input type="checkbox" id="c9" name="rpproptype[]" value="Rowhouse"/>
+<label class="chkbob_lable" for="c9"><span></span>Independent</label>
+</div>
+<div class="col-xs-6"><input type="checkbox" id="c10" name="rpproptype[]" value="Bunglow"/>
+<label class="chkbob_lable" for="c10"><span></span>Bunglow</label></div>
+<div class="col-xs-6"><input type="checkbox" id="c11" name="rpproptype[]" value="Penthouse"/>
+<label class="chkbob_lable" for="c11"><span></span>Penthouse</label></div>
+<div class="col-xs-6"><input type="checkbox" id="c12" name="rpproptype[]" value="Villa"/>
+<label class="chkbob_lable" for="c12"><span></span>Villa</label></div>
+<div class="col-xs-6"><input type="checkbox" id="c13" name="rpproptype[]" value="Plot"/>
+<label class="chkbob_lable" for="c13"><span></span>Plot</label></div>
+</div>
+</div>
 </div>
 
 <div class="col-md-7 projects_section" id="projects_section">

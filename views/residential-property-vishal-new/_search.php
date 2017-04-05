@@ -16,8 +16,7 @@ use app\models\Bhk;
 <div class="residentialproperty-search">
 
     <?php $form = ActiveForm::begin([
-        'options'=>['id'=>'searchfilterresidentialproperty'],
-        'action' => ['ajax-get-properties-update'],
+        'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
@@ -26,66 +25,74 @@ use app\models\Bhk;
     <?php // $form->field($model, 'property_id') 
 
     //echo $model->property_by;exit;?>
-
 <div class="pro_left_column">
-<?php echo \yii\helpers\Html::activeRadioList($model,'available_for',["Sale"=>"Buy","Rent" =>"Rent","Flatmate"=>"Flatmate"],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
-                    $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '"/>';
-                    $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label).'</label>';
-                    return $return;
-                }, ]);?>
-        <?php /*
-        $form->field($model, 'available_for')
+    <div class="clearfix" id="UserLogin-gender">
+        <label class="radio-head"></label>
+        <?=
+        $form->field($model, 'property_by')
             ->radioList(
-                ["Sale"=>"Buy","Rent" =>"Rent","Flatmate"=>"Flatmate"],
+                ["Owner"=>"Owner","Agent" =>"Agent","Flatmate"=>"Flatmate"],
                 [
                     'item' => function($index, $label, $name, $checked, $value) {
 
+                        //$return = '<label class="modal-radio">';
+                        //echo "string ".$checked;
                         $return = "";
-                        $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '">';
-                        $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label).'</label>';
+                        if($checked)
+                            $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3" checked>';
+                        else
+                            $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3" />';
+                        //$return .= '<span></span>';
+                        $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label);
+                        $return .= '</label>';
+                        //return Html::radio($name, $checked, ['value' => $value]);
 
                         return $return;
                     }
                 ]
             )
-        ->label(false);*/
+        ->label(false);
+        
         ?>
+    </div>
+    <div class="help-block"></div>
 </div>
 
 <div class="pro_left_column">
-<?php echo \yii\helpers\Html::activeRadioList($model,'property_by',["Owner"=>"Owner","Agent" =>"Agent"],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
-                    $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '"/>';
-                    $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label).'</label>';
-                    return $return;
-                }, ]);?>
-    <?php
-    /*$form->field($model, 'property_by')
-        ->radioList(
-            ["Owner"=>"Owner","Agent" =>"Agent"],
-            [
+    <div class="clearfix" id="UserLogin-gender">
+        <label class="radio-head"></label>
+        <?=
+        $form->field($model, 'available_for')
+            ->radioList(
+                ["sale"=>"Buy","rent" =>"Rent"],
+                [
+                    'item' => function($index, $label, $name, $checked, $value) {
 
-                'item' => function($index, $label, $name, $checked, $value) {
-                    $return = '<input type="radio" name="' . $name . '" value="' . $value . '"/>';
-                    $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label).'</label>';
-                    return $return;
-                }
-            ]
-        )
-    ->label(false);*/
-    ?>
+                        $return = "";
+                        if($checked)
+                        $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3" checked>';
+                        else
+                            $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
+                        //$return .= '<span></span>';
+                        $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label);
+                        $return .= '</label>';
+
+                        return $return;
+                    }
+                ]
+            )
+        ->label(false);
+        ?>
+    </div>
+    <div class="help-block"></div>
 </div>
-
-
 <div class="pro_left_column">
-<?php echo \yii\helpers\Html::activeCheckboxList($model,'furnished',['ff'=>'Furnished', 'sf' => 'semifurnished','un' => 'Unfurnished'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
-                    $return = '<input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
-                    $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label><br>';
-                    return $return;
-                }, ]);?>
-        <?php /*
+    <div class="clearfix" id="UserLogin-gender">
+        <label class="radio-head"></label>
+        <?=
         $form->field($model, 'furnished')
             ->checkboxList(
-                ['ff'=>'Furnished', 'sf' => 'semifurnished','un' => 'Unfurnished',],
+                ['ff'=>'Furnished', 'un' => 'Unfurnished', 'sf' => 'semifurnished'],
                 [
                     'item' => function($index, $label, $name, $checked, $value) {
                         //$return = '<label class="modal-radio">';
@@ -96,25 +103,24 @@ use app\models\Bhk;
                             $return = '<input id="chkbx_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '" tabindex="3">';
                         //$return .= '<span></span>';
                         $return .= '<label for="chkbx_'.$label.'"><span></span>' . ucwords($label);
-                        $return .= '</label><br>';
+                        $return .= '</label>';
 
                         return $return;
                     }
                 ]
             )
-        ->label(false);*/
+        ->label(false);
         ?>
+    </div>
+    <div class="help-block"></div>
 </div>
 
  <div class="pro_left_column">
     <div class="row demo">
         <div class="col-xs-5 demo_col">
             <img src="images/rupee.jpg" alt="">
-
-<?php echo \yii\helpers\Html::activeDropDownList($model,'min_rate_price',["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min']);?>
-
-            <?php
-        /*$form->field($model, 'min_rate_price')->dropDownList(["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min'])->label(false);*/?>
+            <?=
+        $form->field($model, 'min_price')->dropDownList(["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min'])->label(false);?>
             <!-- <select>
             <option>Min</option>
             <option>5 Lac</option>
@@ -129,10 +135,8 @@ use app\models\Bhk;
         <div class="col-xs-2 boldtxt">-</div>
         <div class="col-xs-5 demo_col">
         <img src="images/rupee.jpg" alt="">
-        <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rate_price',["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max']);?>
-
-        <?php /*
-        $form->field($model, 'max_rate_price')->dropDownList(["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max'])->label(false);*/?>
+        <?=
+        $form->field($model, 'max_price')->dropDownList(["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max'])->label(false);?>
         <!-- <select>
             <option>Max</option>
             <option>10 Lac</option>
@@ -151,17 +155,12 @@ use app\models\Bhk;
 <?php 
 $bhkModels = Bhk::findAll(['status'=>1]);?>
     
-    <?php echo \yii\helpers\Html::activeCheckboxList($model,'bhk',ArrayHelper::map($bhkModels,'id','name'),['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
-                    $return = '<div class="col-xs-6"><input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
-                    $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label></div>';
-                    return $return;
-                }, ]);?>
     <!-- <div class="col-xs-6">
         <input type="checkbox" id="c2" name="bhk">
         <label class="chkbob_lable" for="c2"><span></span><?php //$bhkModel->name;?></label>
     </div> -->
-    <?php
-        /*$form->field($model, 'bhk[]')
+    <?=
+        $form->field($model, 'bhk')
             ->checkboxList(
                 ArrayHelper::map($bhkModels, "id","name"),
                 [
@@ -179,21 +178,13 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
                     }
                 ]
             )
-        ->label(false);*/
+        ->label(false);
         ?>
 
 
 </div>
 </div>
-<div class="pro_left_column">
-<div class="row">
-<?php echo \yii\helpers\Html::activeCheckboxList($model,'property_type',['Apartment'=>'Apartment', 'Rowhouse' => 'Rowhouse','Penthouse' => 'Penthouse','Bunglow' => 'Bunglow','Villa' => 'Villa','Plot' => 'Plot'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
-                    $return = '<div class="col-xs-6"><input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
-                    $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label></div>';
-                    return $return;
-                }, ]);?>
-</div>
-</div>
+
    
             <!-- <div class="col-xs-6">
                 <input type="checkbox" id="c2" name="cc">
@@ -236,10 +227,9 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
 //$arealist = Area::findAll(['status' => 1,'is_in_use'=>0]);
 ?>
     <?php // $form->field($model, 'area_id')->dropDownList(ArrayHelper::map($arealist,'id', 'area')) ?>
-    <div id="vis">
-    <?php // $form->field($model, 'location_id[]')->hiddenInput()->label(false) ?>
-    </div>
-    <?php // $form->field($model, 'locationname')->hiddenInput(['id'=>'sidelocationname'])->label(false) ?>
+
+    <?= $form->field($model, 'location_id')->hiddenInput(['id'=>'sidelocationid'])->label(false) ?>
+    <?= $form->field($model, 'locationname')->hiddenInput(['id'=>'sidelocationname'])->label(false) ?>
     <?php // echo $form->field($model, 'property_type') ?>
 
     <?php // echo $form->field($model, 'builtup_area') ?>
@@ -258,7 +248,7 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
 
     <?php // echo $form->field($model, 'society_id') ?>
 
-    <?php echo $form->field($model, 'city_id')->hiddenInput(['value'=>33])->label(false); ?>
+    <?php // echo $form->field($model, 'city_id') ?>
 
     <?php // echo $form->field($model, 'area_id') ?>
 
@@ -270,9 +260,9 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
 
     <?php // echo $form->field($model, 'total_no_of_floors') ?>
 
-    <?php echo $form->field($model, 'floor_no')->hiddenInput(['id'=>'floor_nofilter'])->label(false) ?>
+    <?php // echo $form->field($model, 'floor_no') ?>
 
-    <?php echo $form->field($model, 'facing')->hiddenInput(['id'=>'facingfilter'])->label(false) ?>
+    <?php // echo $form->field($model, 'facing') ?>
 
     <?php // echo $form->field($model, 'furnished') ?>
 
@@ -328,7 +318,7 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
 
     <?php // echo $form->field($model, 'address_in_proposal') ?>
 
-    <?php echo $form->field($model, 'bathroom')->hiddenInput(['id'=>'bathroomfilter'])->label(false) ?>
+    <?php // echo $form->field($model, 'bathroom') ?>
 
     <?php // echo $form->field($model, 'balcony') ?>
 
@@ -387,7 +377,7 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
     <?php // echo $form->field($model, 'status') ?>
 
     <div class="form-group">
-        <?php //Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?php // Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
