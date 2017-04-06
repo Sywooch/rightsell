@@ -62,28 +62,28 @@ class ResidentialPropertyController extends Controller
     public function actionIndex()
     {
         $searchModel = new ResidentialpropertySearch();
-        $params = Yii::$app->request->queryParams;
-        $searchModel->load($params);
+        //$params = Yii::$app->request->queryParams;
+        //$searchModel->load($params);
         //echo "<pre>"; print_r($params);exit; //`property_by` LIKE 'owner' AND
-        $query = Residentialproperty::find();
+        //$query = Residentialproperty::find();
 
-        $query->andFilterWhere(['property_by'=>$searchModel->property_by]);
-        $query->andFilterWhere(['location_id'=>$searchModel->location_id]);
-        $query->andFilterWhere(['city_id'=>$searchModel->city_id]);
-        $query->andFilterWhere(['bathroom'=>$searchModel->bathroom]);
-        $query->andFilterWhere(['facing'=>$searchModel->facing]);
-        $query->andFilterWhere(['floor_no'=>$searchModel->floor_no]);
-        $query->andFilterWhere(['status'=>$searchModel->status]);
-        $query->andFilterWhere(['available_for'=>$searchModel->available_for]);
-        $query->andFilterWhere(['furnished'=>$searchModel->furnished]);
-        $query->andFilterWhere(['bhk'=>$searchModel->bhk]);
+        // $query->andFilterWhere(['property_by'=>$searchModel->property_by]);
+        // $query->andFilterWhere(['location_id'=>$searchModel->location_id]);
+        // $query->andFilterWhere(['city_id'=>$searchModel->city_id]);
+        // $query->andFilterWhere(['bathroom'=>$searchModel->bathroom]);
+        // $query->andFilterWhere(['facing'=>$searchModel->facing]);
+        // $query->andFilterWhere(['floor_no'=>$searchModel->floor_no]);
+        // $query->andFilterWhere(['status'=>$searchModel->status]);
+        // $query->andFilterWhere(['available_for'=>$searchModel->available_for]);
+        // $query->andFilterWhere(['furnished'=>$searchModel->furnished]);
+        // $query->andFilterWhere(['bhk'=>$searchModel->bhk]);
         //$query->andFilterWhere(['status'=>$model->min_price]);
         //$query->andFilterWhere(['status'=>$model->status]);
 
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => $query,
+        // ]);
         //echo "<pre>".$dataProvider->getTotalCount(); print_r($dataProvider->getModels());exit;
         //echo "<pre>"; print_r(Yii::$app->request->queryParams);exit;
         return $this->render('get-properties', [

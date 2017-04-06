@@ -60,7 +60,7 @@ class ResidentialpropertySearch extends Residentialproperty
         ]);
 
         $this->load($params);
-        //echo "<pre>"; print_r($params);exit;
+        //echo "<pre>"; print_r($this);exit;
         //if(isset($this->locations))
             //$this->location_id = explode(",", $this->locations);
 

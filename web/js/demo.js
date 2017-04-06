@@ -74,6 +74,12 @@ $(document).on("ready", function(){
 		console.log($(this).serialize());
 	});
 
+	$("#searchfiltercommercialproperty").on("submit", function(e){
+		e.preventDefault();
+		console.log($(this).serialize());
+		sendCP();
+	});
+
 	$("#residentialpropertysearch-available_for").on("change", function()
 	{
 		//var availablefor = $("input[name='available_for']:checked").val();
@@ -184,6 +190,19 @@ $(document).on("ready", function(){
 		$("#facingfilter").val(facing);
 		$("#bathroomfilter").val(bathroom);
 		send();
+		//sendCP();
+    });
+    $("form #searchfiltercommercialproperty > input, select").on("change", function() {
+		//$.pjax.submit($("#search-form"));
+		//getRProperties();
+		var bathroom = $("#filterResProp_bathroom").val();
+		var facing = $("#filterResProp_facing").val();
+		var floor = $("#filterResProp_floor").val();
+		$("#floor_nofilter").val(floor);
+		$("#facingfilter").val(facing);
+		$("#bathroomfilter").val(bathroom);
+		
+		sendCP();
     });
 
 	/*$("#proplocations > .selloc").on("click", function(){
@@ -318,6 +337,32 @@ function send(){
 	//console.log(locationidsarr);
 
 	var data = $("#searchfilterresidentialproperty").serialize();
+
+	$.ajax(
+		{
+			method:'get',
+			//url:"index.php?r=residential-property/ajax-get-properties-update",
+			url:"index.php?"+data
+			//data:{data},
+		}).done(function(data){
+			//console.log(data);
+		}).success(function(data){
+			//console.log(data);
+			$("#projects_section").html(data);
+		}).fail(function(data){
+			//console.log(data);			
+		});
+}
+
+function sendCP(){
+	//var data = {bathroom:bathroom,facing:facing,floor_no:floor,city_id:cityid,location_id:locationidsarr,amenities:checkedamenities,furnished:furnishedarr,available_for:availablefor,property_by:propertyby,bhk:bhkarr,property_type:proptypearr,minrate:minrate,maxrate:maxrate,minrent:minrent,maxrent:maxrent};
+	var locationidsarr = [];
+	$.each($("input[name='rplocations[]']"), function(){
+		locationidsarr.push($(this).val());
+	});
+	//console.log(locationidsarr);
+
+	var data = $("#searchfiltercommercialproperty").serialize();
 
 	$.ajax(
 		{
