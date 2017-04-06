@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Commercialproperty;
-use app\models\CommercialpropertySearch;
+use app\models\Agriculturalproperty;
+use app\models\AgriculturalpropertySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CommercialPropertyController implements the CRUD actions for Commercialproperty model.
+ * AgriculturalPropertyController implements the CRUD actions for Agriculturalproperty model.
  */
-class CommercialPropertyController extends Controller
+class AgriculturalPropertyController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,24 +30,24 @@ class CommercialPropertyController extends Controller
     }
 
     /**
-     * Lists all Commercialproperty models.
+     * Lists all Agriculturalproperty models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CommercialpropertySearch();
+        $searchModel = new AgriculturalpropertySearch();
         $searchModel->city_id = $_GET['city'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//echo "<pre>"; print_r($dataProvider);exit;
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'availablefr'=>'Sale and Rent',
+            'availablefr' => "Sale and Rent",
         ]);
     }
 
     /**
-     * Displays a single Commercialproperty model.
+     * Displays a single Agriculturalproperty model.
      * @param integer $id
      * @return mixed
      */
@@ -59,13 +59,13 @@ class CommercialPropertyController extends Controller
     }
 
     /**
-     * Creates a new Commercialproperty model.
+     * Creates a new Agriculturalproperty model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Commercialproperty();
+        $model = new Agriculturalproperty();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -77,7 +77,7 @@ class CommercialPropertyController extends Controller
     }
 
     /**
-     * Updates an existing Commercialproperty model.
+     * Updates an existing Agriculturalproperty model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +96,7 @@ class CommercialPropertyController extends Controller
     }
 
     /**
-     * Deletes an existing Commercialproperty model.
+     * Deletes an existing Agriculturalproperty model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,15 +109,15 @@ class CommercialPropertyController extends Controller
     }
 
     /**
-     * Finds the Commercialproperty model based on its primary key value.
+     * Finds the Agriculturalproperty model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Commercialproperty the loaded model
+     * @return Agriculturalproperty the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Commercialproperty::findOne($id)) !== null) {
+        if (($model = Agriculturalproperty::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -126,7 +126,7 @@ class CommercialPropertyController extends Controller
 
     public function actionAjaxGetPropertiesUpdate()
     {
-        $searchModel = new CommercialpropertySearch();
+        $searchModel = new AgriculturalpropertySearch();
         $dataProvider = $searchModel->search($_GET);
         $locationnames = [];
         if(isset($searchModel->location_id))

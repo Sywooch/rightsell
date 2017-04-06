@@ -165,21 +165,21 @@ class ResidentialpropertySearch extends Residentialproperty
             ->andFilterWhere(['=', 'publish_on_web', 1])
             ->andFilterWhere(['=', 'city_id', $this->city_id]);
 
-        if(!isset($this->min_rate_price))
-        {
-            $this->min_rate_price = 0;
+        //if(!isset($this->min_rate_price))
+        //{
+            //$this->min_rate_price = 0;
             $query->andFilterWhere(['>', 'expected_rate_comp', $this->min_rate_price])
             ->andFilterWhere(['<', 'expected_rate_comp', $this->max_rate_price]);
 
             //->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
             //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
-        }
+        /*}
         if(!isset($this->min_rent_price))
         {
-            $this->min_rent_price = 0;
+            $this->min_rent_price = 0;*/
             $query->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
             ->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
-        }
+        //}
         return $dataProvider;
     }
 }

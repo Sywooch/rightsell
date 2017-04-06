@@ -56,12 +56,15 @@ class CommercialpropertySearch extends Commercialproperty
         ]);
 
         $this->load($params);
+        //echo "<pre>"; print_r($this);exit;
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
+        //else
+            //echo "<pre>"; print_r($this->getErrors());exit;
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -159,8 +162,27 @@ class CommercialpropertySearch extends Commercialproperty
             ->andFilterWhere(['like', 'gallery_images', $this->gallery_images])
             ->andFilterWhere(['like', 'water_availability', $this->water_availability])
             ->andFilterWhere(['like', 'photo', $this->photo])
-            ->andFilterWhere(['like', 'reason', $this->reason]);
+            ->andFilterWhere(['like', 'reason', $this->reason])
+            ->andFilterWhere(['=', 'city_id', $this->city_id])
+            ->andFilterWhere(['=', 'status', 1])
+            ->andFilterWhere(['=', 'publish_on_web', 1]);
 
+
+        //if(!isset($this->min_rate_price))
+        //{
+            //$this->min_rate_price = 0;
+            $query->andFilterWhere(['>', 'rate_details_comp', $this->min_rate_price])
+            ->andFilterWhere(['<', 'rate_details_comp', $this->max_rate_price]);
+
+            //->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
+            //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
+        //}
+        //if(!isset($this->min_rent_price))
+        //{
+           //$this->min_rent_price = 0;
+            $query->andFilterWhere(['>', 'rent_details_comp', $this->min_rent_price])
+            ->andFilterWhere(['<', 'rent_details_comp', $this->max_rent_price]);
+        //}
         return $dataProvider;
     }
 }

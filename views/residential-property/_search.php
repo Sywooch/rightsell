@@ -16,7 +16,7 @@ use app\models\Bhk;
 <div class="residentialproperty-search">
 
     <?php $form = ActiveForm::begin([
-        'options'=>['id'=>'searchfilterresidentialproperty'],
+        'options'=>['id'=>'searchfilterresidentialproperty','name'=>'frmResidentialProperty','class'=>'frmResidentialProperty'],
         'action' => ['ajax-get-properties-update'],
         'method' => 'get',
     ]); ?>
@@ -297,7 +297,8 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
 
     <?php // echo $form->field($model, 'society_id') ?>
 
-    <?php echo $form->field($model, 'city_id')->hiddenInput(['value'=>33])->label(false); ?>
+    <?php //echo $form->field($model, 'city_id')->hiddenInput(['value'=>33])->label(false); ?>
+    <?php echo $form->field($model, 'city_id')->hiddenInput(['value'=>33, 'id' => 'property_city_id'])->label(false); ?>
 
     <?php // echo $form->field($model, 'area_id') ?>
 

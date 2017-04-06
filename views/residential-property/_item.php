@@ -51,7 +51,7 @@
 			<div class="row">
 				<div class="col-xs-6"><p><img src="images/family.png" alt=""><?=$model->preferred_tenants?ucfirst($model->preferred_tenants):"Any"?></p></div>
 				<div class="col-xs-6">
-				<p><img src="images/car.png" alt="">Parking #<?=$model->no_of_parking?$model->no_of_parking:"0"?></p>
+				<p><img src="images/car.png" alt="">Parking - <?=$model->no_of_parking?$model->no_of_parking:"0"?></p>
 				</div>
 			</div>	
 			<div class="row">

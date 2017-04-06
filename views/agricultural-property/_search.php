@@ -16,8 +16,8 @@ use app\models\Bhk;
 <div class="residentialproperty-search">
 
     <?php $form = ActiveForm::begin([
-        'options'=>['id'=>'searchfiltercommercialproperty'],
-        'action' => ['commercial-property/ajax-get-properties-update'],
+        'options'=>['id'=>'searchfilteragriculturalproperty','name'=>'frmAgriculturalProperty','class'=>'frmAgriculturalProperty'],
+        'action' => ['ajax-get-properties-update'],
         'method' => 'get',
     ]); ?>
 
@@ -28,28 +28,11 @@ use app\models\Bhk;
     //echo $model->property_by;exit;?>
 
 <div class="pro_left_column">
-<?php echo \yii\helpers\Html::activeRadioList($model,'available_for',["Sale"=>"Buy","Lease" =>"Rent"],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
+<?php echo \yii\helpers\Html::activeRadioList($model,'available_for',["Sale"=>"Buy","Rent" =>"Rent"],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
                     $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '"/>';
                     $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label).'</label>';
                     return $return;
                 }, ]);?>
-        <?php /*
-        $form->field($model, 'available_for')
-            ->radioList(
-                ["Sale"=>"Buy","Rent" =>"Rent","Flatmate"=>"Flatmate"],
-                [
-                    'item' => function($index, $label, $name, $checked, $value) {
-
-                        $return = "";
-                        $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '">';
-                        $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label).'</label>';
-
-                        return $return;
-                    }
-                ]
-            )
-        ->label(false);*/
-        ?>
 </div>
 
 <div class="pro_left_column">
@@ -75,155 +58,75 @@ use app\models\Bhk;
     ?>
 </div>
 
-
-<!-- <div class="pro_left_column"> -->
-<?php /*echo \yii\helpers\Html::activeCheckboxList($model,'furnished',['ff'=>'Furnished', 'sf' => 'semifurnished','un' => 'Unfurnished'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
-                    $return = '<input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
-                    $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label><br>';
-                    return $return;
-                }, ]);*/?>
-        <?php /*
-        $form->field($model, 'furnished')
-            ->checkboxList(
-                ['ff'=>'Furnished', 'sf' => 'semifurnished','un' => 'Unfurnished',],
-                [
-                    'item' => function($index, $label, $name, $checked, $value) {
-                        //$return = '<label class="modal-radio">';
-                        //echo "string ".$checked;
-                        if($checked)
-                            $return = '<input id="chkbx_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '" tabindex="3" checked>';
-                        else
-                            $return = '<input id="chkbx_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '" tabindex="3">';
-                        //$return .= '<span></span>';
-                        $return .= '<label for="chkbx_'.$label.'"><span></span>' . ucwords($label);
-                        $return .= '</label><br>';
-
-                        return $return;
-                    }
-                ]
-            )
-        ->label(false);*/
-        ?>
-<!-- </div> -->
-
  <div class="pro_left_column sale">
     <div class="row demo">
+    <div class="col-xs-12" style="padding:5px 0"><!--<input type="radio" id="r112" name="rr11" />-->
+        <label for="r112"><span></span>Budget </label></div>
         <div class="col-xs-5 demo_col">
             <img src="images/rupee.jpg" alt="">
 
 <?php echo \yii\helpers\Html::activeDropDownList($model,'min_rate_price',["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min']);?>
-
-            <?php
-        /*$form->field($model, 'min_rate_price')->dropDownList(["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min'])->label(false);*/?>
-            <!-- <select>
-            <option>Min</option>
-            <option>5 Lac</option>
-            <option>10 Lac</option>
-            <option>20 Lac</option>
-            <option>25 Lac</option>
-            <option>40 Lac</option>
-            <option>50 Lac</option>
-            <option>80 Lac</option>
-            <option>1 Cr</option>
-        </select> --></div>
+    </div>
         <div class="col-xs-2 boldtxt">-</div>
         <div class="col-xs-5 demo_col">
         <img src="images/rupee.jpg" alt="">
         <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rate_price',["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max']);?>
 
-        <?php /*
-        $form->field($model, 'max_rate_price')->dropDownList(["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max'])->label(false);*/?>
-        <!-- <select>
-            <option>Max</option>
-            <option>10 Lac</option>
-            <option>20 Lac</option>
-            <option>25 Lac</option>
-            <option>40 Lac</option>
-            <option>50 Lac</option>
-            <option>80 Lac</option>
-            <option>1 Cr</option>
-            <option>1.5 Cr</option>
-        </select> --></div></div>
+       </div></div>
     </div>
+
     <div class="pro_left_column rent">
     <div class="row demo">
+    <div class="col-xs-12" style="padding:5px 0"><!--<input type="radio" id="r112" name="rr11" />-->
+        <label for="r112"><span></span>Budget </label></div>
         <div class="col-xs-5 demo_col">
             <img src="images/rupee.jpg" alt="">
 
 <?php echo \yii\helpers\Html::activeDropDownList($model,'min_rent_price',["5000"=>"5 Thousand", "10000"=>"10 Thousand","20000"=>"20 Thousand","25000"=>"25 Thousand","40000"=>"40 Thousand","50000"=>"50 Thousand","80000"=>"80 Thousand","100000"=>"1 Lac"],['prompt'=>'Min']);?>
 
-            <?php
-        /*$form->field($model, 'min_rate_price')->dropDownList(["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min'])->label(false);*/?>
-            <!-- <select>
-            <option>Min</option>
-            <option>5 Lac</option>
-            <option>10 Lac</option>
-            <option>20 Lac</option>
-            <option>25 Lac</option>
-            <option>40 Lac</option>
-            <option>50 Lac</option>
-            <option>80 Lac</option>
-            <option>1 Cr</option>
-        </select> --></div>
+            </div>
         <div class="col-xs-2 boldtxt">-</div>
         <div class="col-xs-5 demo_col">
         <img src="images/rupee.jpg" alt="">
         <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rent_price',["10000"=>"10 Thousand","20000"=>"20 Thousand","25000"=>"25 Thousand","40000"=>"40 Thousand","50000"=>"50 Thousand","80000"=>"80 Thousand","100000"=>"1 Lac"],['prompt'=>'Max']);?>
 
-        <?php /*
-        $form->field($model, 'max_rate_price')->dropDownList(["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max'])->label(false);*/?>
-        <!-- <select>
-            <option>Max</option>
-            <option>10 Lac</option>
-            <option>20 Lac</option>
-            <option>25 Lac</option>
-            <option>40 Lac</option>
-            <option>50 Lac</option>
-            <option>80 Lac</option>
-            <option>1 Cr</option>
-            <option>1.5 Cr</option>
-        </select> --></div></div>
+        </div></div>
+    </div>
+
+
+ <div class="pro_left_column">
+    <div class="row demo">
+    <div class="col-xs-7" style="padding: 0px">
+        <label for="r112"><span></span>Search By Area </label>
+    </div>
+
+        <div class="col-xs-5 demo_col">
+<?php echo \yii\helpers\Html::activeDropDownList($model,'property_unit',["Sq.ft"=>"Sq.ft", "Acre"=>"Acre","Hector"=>"Hector"],['prompt'=>'Min']);?>
+    </div>
+<br><br>
+
+        <div class="col-xs-5 demo_col">
+            <img src="images/rupee.jpg" alt="">
+
+<?php echo \yii\helpers\Html::activeDropDownList($model,'min_area',["1000"=>"1000", "2000"=>"2000","5000"=>"5000","10000"=>"10,000","20000"=>"20,000","30000"=>"30,000"],['prompt'=>'Min']);?>
+    </div>
+        <div class="col-xs-2 boldtxt">-</div>
+        <div class="col-xs-5 demo_col">
+        <img src="images/rupee.jpg" alt="">
+        <?php echo \yii\helpers\Html::activeDropDownList($model,'max_area',["1000"=>"1000", "2000"=>"2000","5000"=>"5000","10000"=>"10,000","20000"=>"20,000","30000"=>"30,000"],['prompt'=>'Max']);?>
+
+       </div></div>
     </div>
 
 <div class="pro_left_column">
-    <div class="row">
-
-    
-    <?php echo \yii\helpers\Html::activeCheckboxList($model,'type',['Shop'=>'Shop','Showroom'=>'Showroom','Office'=>'Office','Warehouse'=>'Warehouse','Industrial Shed'=>'Industrial Shed','Godown'=>'Godown','Hotel'=>'Hotel'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
-                    $return = '<div class="col-xs-6"><input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
-                    $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label></div>';
+<div class="row">
+<?php echo \yii\helpers\Html::activeCheckboxList($model,'property_type',['Agricultural land'=>'Agricultural land','Industrial land'=>'Industrial land','NA plots'=>'NA plots','Farm house plot'=>'Farm house plot'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
+                    $return = '<div class="col-xs-12"><input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
+                    $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label></div><br/>';
                     return $return;
                 }, ]);?>
-    <!-- <div class="col-xs-6">
-        <input type="checkbox" id="c2" name="bhk">
-        <label class="chkbob_lable" for="c2"><span></span><?php //$bhkModel->name;?></label>
-    </div> -->
-    <?php
-        /*$form->field($model, 'bhk[]')
-            ->checkboxList(
-                ArrayHelper::map($bhkModels, "id","name"),
-                [
-                    'item' => function($index, $label, $name, $checked, $value) {
-
-                        if($checked)
-                            $return = '<div class="col-xs-6"><input id="chkbx_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '" tabindex="3" checked>';
-                        else
-                            $return = '<div class="col-xs-6"><input id="chkbx_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '" tabindex="3">';
-                        //$return .= '<span></span>';
-                        $return .= '<label class="chkbob_lable" for="chkbx_'.$label.'"><span></span>' . ucwords($label);
-                        $return .= '</label></div>';
-
-                        return $return;
-                    }
-                ]
-            )
-        ->label(false);*/
-        ?>
-
-
 </div>
 </div>
-
    
             <!-- <div class="col-xs-6">
                 <input type="checkbox" id="c2" name="cc">
@@ -288,7 +191,6 @@ use app\models\Bhk;
 
     <?php // echo $form->field($model, 'society_id') ?>
 
-    <?php // echo $form->field($model, 'city_id')->hiddenInput(['value'=>33])->label(false); ?>
     <?php echo $form->field($model, 'city_id')->hiddenInput(['value'=>33, 'id' => 'property_city_id'])->label(false); ?>
 
     <?php // echo $form->field($model, 'area_id') ?>
@@ -300,10 +202,6 @@ use app\models\Bhk;
     <?php // echo $form->field($model, 'flat_no') ?>
 
     <?php // echo $form->field($model, 'total_no_of_floors') ?>
-
-    <?php //echo $form->field($model, 'floor_no')->hiddenInput(['id'=>'floor_nofilter'])->label(false) ?>
-
-    <?php //echo $form->field($model, 'facing')->hiddenInput(['id'=>'facingfilter'])->label(false) ?>
 
     <?php // echo $form->field($model, 'furnished') ?>
 
@@ -358,8 +256,6 @@ use app\models\Bhk;
     <?php // echo $form->field($model, 'other_property_details') ?>
 
     <?php // echo $form->field($model, 'address_in_proposal') ?>
-
-    <?php //echo $form->field($model, 'bathroom')->hiddenInput(['id'=>'bathroomfilter'])->label(false) ?>
 
     <?php // echo $form->field($model, 'balcony') ?>
 

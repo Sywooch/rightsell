@@ -3,16 +3,16 @@
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
-					<img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/commercialProperty/profiles/<?= $model->id.'_profiles_'.$model->photo?>" alt="">
+					<img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
 				</div>
 				<?php 
-				//http://localhost/RealEstateCrm/files/residentialProperty/
+				//http://localhost/RealEstateCrm/files/agriculturalProperty/
 				$images = json_decode($model->gallery_images);
 				if(count($images) >0)
 				{
 					foreach ($images as $image) {
 						echo "<div class='item'>";
-						echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+						echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
 						echo "</div>";
 					}
 				}?>
@@ -36,33 +36,29 @@
 
 	<div class="col-sm-7">
 		<div class="row pro_detail">
-			<h1><?= $model->type?> Near <?= $model->locations?$model->locations->location:""?>.</h1>
-			<button class="button yellow_btn"><?= $model->type?></button>
-			<?php if(strtolower($model->available_for)=="lease"):?>
-			<button class="button orrange_btn">Rent <?=number_format($model->rent_details_comp)?></button>
-			<button class="button yellow_btn">Deposit <?=number_format($model->deposite_details_comp)?></button>
+			<h1><?= $model->property_type?> Near <?= $model->locations->location?>.</h1>
+			<button class="button yellow_btn"><?= $model->property_type?></button>
+			<?php if(strtolower($model->available_for)=="rent"):?>
+			<button class="button orrange_btn">Rent <?=number_format($model->expected_rent_comp)?></button>
+			<button class="button yellow_btn">Deposit <?=number_format($model->deposit_comp)?></button>
 			<?php endif;?>
 
 			<?php if(strtolower($model->available_for)=="sale"):?>
-			<button class="button orrange_btn">Rate <?=number_format($model->rate_details_comp)?></button>
+			<button class="button orrange_btn">Rate <?=number_format($model->expected_rate_comp)?></button>
 			<?php endif;?>
 
-			<!-- <button class="button yellow_btn">Deposit <?=number_format($model->deposite_details_comp)?></button> -->
+			
 			<div class="row">
-				<div class="col-xs-6"><p><img src="images/shop.jpg" alt=""><?=$model->type?ucfirst($model->type):"Any"?></p></div>
+				<div class="col-xs-6"><p><img src="images/family.png" alt=""><?=$model->ideal_for?ucfirst($model->ideal_for):"Anyone"?></p></div>
 				<div class="col-xs-6">
-				<p><img src="images/car.png" alt="">Parking - Four wheeler:<?=$model->four_wheeler_parking?$model->four_wheeler_parking:"0"?> Two wheeler: <?=$model->two_wheeler_parking?$model->two_wheeler_parking:"0"?> Lift: <?=$model->lift_facility?$model->lift_facility:"0"?></p>
+				<p><img src="images/water.jpg" alt=""><?=$model->water_supply=="Yes"?"Water Available":"No water"?></p>
 				</div>
 			</div>	
 			<div class="row">
-				<div class="col-xs-6"><p><img src="images/area.png" alt="">Area - <?=$model->area.' Sq.ft.'?></p></div>
-				<?php if(strtolower($model->furnished) == "sf"): ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Semi-furnished</p></div>
-				<?php elseif(strtolower($model->furnished)=="ff"): ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Fully furnished</p></div>
-				<?php else: ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Un-furnished</p></div>
-				<?php endif;?>
+				<div class="col-xs-6"><p><img src="images/area.png" alt="">Area - <?=$model->property_area.' '.$model->property_unit?></p></div>
+				
+				<div class="col-xs-6"><p><img src="images/loc.jpg" alt="">30 Km from city</p></div>
+				
 				<?php
 				$now = time(); // or your date as well
 				$your_date = strtotime($model->added_on);
