@@ -60,9 +60,13 @@ class ResidentialpropertySearch extends Residentialproperty
         ]);
 
         $this->load($params);
-        //echo "<pre>"; print_r($this);exit;
-        //if(isset($this->locations))
-            //$this->location_id = explode(",", $this->locations);
+        //echo "<pre>"; print_r($this->bathroom);exit;
+        if($this->available_for == 'Flatmate')
+        {
+            $this->available_for = "Rent";
+            $this->property_by = "Flatmate";
+        }
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -100,6 +104,16 @@ class ResidentialpropertySearch extends Residentialproperty
             //'deposit_comp' => $this->deposit_comp,
             
         ]);
+
+        if(((int)$this->bathroom) === 4)
+        {
+            $query->andFilterWhere(['>=', 'bathroom', ((int)$this->bathroom)]);
+        }
+        else
+        {
+            //var_dump($this->bathroom);exit;
+            $query->andFilterWhere(['=', 'bathroom', $this->bathroom]);
+        }
 
         $query->andFilterWhere(['like', 'property_id', $this->property_id])
             ->andFilterWhere(['like', 'property_by', $this->property_by])
@@ -160,7 +174,7 @@ class ResidentialpropertySearch extends Residentialproperty
             //->andFilterWhere(['like', 'reason', $this->reason])
             //->andFilterWhere(['like', 'remark', $this->remark])
             //->andFilterWhere(['like', 'buyer_details', $this->buyer_details])
-            ->andFilterWhere(['=', 'bathroom', $this->bathroom])
+            //->andFilterWhere(['=', 'bathroom', $this->bathroom])
             ->andFilterWhere(['=', 'status', 1])
             ->andFilterWhere(['=', 'publish_on_web', 1])
             ->andFilterWhere(['=', 'city_id', $this->city_id]);
@@ -168,7 +182,7 @@ class ResidentialpropertySearch extends Residentialproperty
         //if(!isset($this->min_rate_price))
         //{
             //$this->min_rate_price = 0;
-            $query->andFilterWhere(['>', 'expected_rate_comp', $this->min_rate_price])
+        $query->andFilterWhere(['>=', 'expected_rate_comp', $this->min_rate_price])
             ->andFilterWhere(['<', 'expected_rate_comp', $this->max_rate_price]);
 
             //->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
@@ -177,9 +191,12 @@ class ResidentialpropertySearch extends Residentialproperty
         if(!isset($this->min_rent_price))
         {
             $this->min_rent_price = 0;*/
-            $query->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
+        $query->andFilterWhere(['>=', 'expected_rent_comp', $this->min_rent_price])
             ->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
         //}
+
+        
+
         return $dataProvider;
     }
 }

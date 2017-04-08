@@ -27,6 +27,8 @@ class AppAsset extends AssetBundle
         'css/responsive-tabs.css',
         'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
         'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600',
+        'css/bootstrap-multiselect.css',
+        'css/style.css',
     ];
     public $js = [
         //'js/jquery-1.10.2.min.js',
@@ -37,6 +39,7 @@ class AppAsset extends AssetBundle
         'js/propertysearch.js',
         'js/jquery-ui.js',
         'js/demo.js',
+        'js/bootstrap-multiselect.js',
     ];
     public $depends = [
         //'yii\web\YiiAsset',

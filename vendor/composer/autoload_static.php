@@ -30,6 +30,10 @@ class ComposerStaticInitf72cbedde77d77ee8702410697af9158
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'd' => 
+        array (
+            'dosamigos\\multiselect\\' => 22,
+        ),
         'c' => 
         array (
             'cebe\\markdown\\' => 14,
@@ -49,6 +53,7 @@ class ComposerStaticInitf72cbedde77d77ee8702410697af9158
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\BrowserKit\\' => 29,
+            'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 49,
         ),
         'P' => 
         array (
@@ -114,6 +119,10 @@ class ComposerStaticInitf72cbedde77d77ee8702410697af9158
             1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
         ),
+        'dosamigos\\multiselect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/2amigos/yii2-multi-select-widget',
+        ),
         'cebe\\markdown\\' => 
         array (
             0 => __DIR__ . '/..' . '/cebe/markdown',
@@ -157,6 +166,10 @@ class ComposerStaticInitf72cbedde77d77ee8702410697af9158
         'Symfony\\Component\\BrowserKit\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/browser-kit',
+        ),
+        'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stecman/symfony-console-completion/src',
         ),
         'Psr\\Log\\' => 
         array (

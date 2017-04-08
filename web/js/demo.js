@@ -57,6 +57,7 @@ function split( val ) {
 
 $(document).on("ready", function(){
 
+ 	$('#filterResProp_floor').multiselect();
 	var selectedlocs = [];
 
 	var cityid = $("#residentialpropertysearch-city_id").val();
@@ -220,13 +221,15 @@ $(document).on("ready", function(){
           return false;
         }
       });
-	$("#searchfilterresidentialproperty :input, #searchfilterresidentialproperty > select").on("change", function() {
+	$("#searchfilterresidentialproperty :input, #searchfilterresidentialproperty > select, #toprespropfilter :input, #toprespropfilter > select").on("change", function() {
 		var bathroom = $("#filterResProp_bathroom").val();
 		var facing = $("#filterResProp_facing").val();
 		var floor = $("#filterResProp_floor").val();
+		var preferedtenants = $("#filterResProp_preferred_tenants").val();
 		$("#floor_nofilter").val(floor);
 		$("#facingfilter").val(facing);
 		$("#bathroomfilter").val(bathroom);
+		$("#preferredtenantsfilter").val(preferedtenants);
 		send();
     });
     /*$("#searchfilterresidentialproperty > select").on("change", function() {

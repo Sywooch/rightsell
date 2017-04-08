@@ -77,7 +77,7 @@ use app\models\Bhk;
 
 
 <div class="pro_left_column">
-<?php echo \yii\helpers\Html::activeCheckboxList($model,'furnished',['ff'=>'Furnished', 'sf' => 'semifurnished','un' => 'Unfurnished'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
+<?php echo \yii\helpers\Html::activeCheckboxList($model,'furnished',['ff'=>'Furnished', 'sf' => 'Semi Furnished','un' => 'Non Furnished'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
                     $return = '<input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
                     $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label><br>';
                     return $return;
@@ -226,7 +226,7 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
 </div>
 <div class="pro_left_column">
 <div class="row">
-<?php echo \yii\helpers\Html::activeCheckboxList($model,'property_type',['Apartment'=>'Apartment', 'Rowhouse' => 'Rowhouse','Penthouse' => 'Penthouse','Bunglow' => 'Bunglow','Villa' => 'Villa','Plot' => 'Plot'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
+<?php echo \yii\helpers\Html::activeCheckboxList($model,'property_type',['Apartment'=>'Apartment', 'Rowhouse' => 'Rowhouse','Penthouse' => 'Penthouse','Bunglow' => 'Bunglow','Villa' => 'Villa'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
                     $return = '<div class="col-xs-6"><input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
                     $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label></div>';
                     return $return;
@@ -388,7 +388,7 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
 
     <?php // echo $form->field($model, 'unit') ?>
 
-    <?php // echo $form->field($model, 'preferred_tenants') ?>
+    <?php echo $form->field($model, 'preferred_tenants')->hiddenInput(['id'=>"preferredtenantsfilter"])->label(false); ?>
 
     <?php // echo $form->field($model, 'available_rooms') ?>
 

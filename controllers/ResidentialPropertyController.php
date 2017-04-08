@@ -64,14 +64,18 @@ class ResidentialPropertyController extends Controller
         $searchModel = new ResidentialpropertySearch();
         $searchModel->city_id = $_GET['city'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('get-properties', [
+        //echo "<pre>"; print_r($searchModel);exit;
+        return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'availablefr' => "Sale and Rent",
+            'city' => $searchModel->cityName->city,
+            'locationname' => "",
+            //'location' => $searchModel->locations->name,
         ]);
     }
 
-    public function actionIndexNew()
+    /*public function actionIndexNew()
     {
         $params = Yii::$app->request->queryParams;
         $model = new ResidentialpropertySearch();
@@ -94,7 +98,7 @@ class ResidentialPropertyController extends Controller
             'searchModel' => $model,
             'dataProvider' => $dataProvider,
         ]);
-    }
+    }*/
 
     /**
      * Displays a single Residentialproperty model.
