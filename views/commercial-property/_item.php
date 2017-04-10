@@ -39,15 +39,13 @@
 			<h1><?= $model->type?> Near <?= $model->locations?$model->locations->location:""?>.</h1>
 			<button class="button yellow_btn"><?= $model->type?></button>
 			<?php if(strtolower($model->available_for)=="lease"):?>
-			<button class="button orrange_btn">Rent <?=number_format($model->rent_details_comp)?></button>
-			<button class="button yellow_btn">Deposit <?=number_format($model->deposite_details_comp)?></button>
+			<button class="button orrange_btn">Rent <?=$model->rent_details." ".$model->rentunit?></button>
+			<button class="button yellow_btn">Deposit <?=$model->deposite_details." ".$model->depositunit?></button>
 			<?php endif;?>
 
 			<?php if(strtolower($model->available_for)=="sale"):?>
-			<button class="button orrange_btn">Rate <?=number_format($model->rate_details_comp)?></button>
+			<button class="button orrange_btn">Rate <?=$model->rate_details." ".$model->rate_details_unit?></button>
 			<?php endif;?>
-
-			<!-- <button class="button yellow_btn">Deposit <?=number_format($model->deposite_details_comp)?></button> -->
 			<div class="row">
 				<div class="col-xs-6"><p><img src="images/shop.jpg" alt=""><?=$model->type?ucfirst($model->type):"Any"?></p></div>
 				<div class="col-xs-6">

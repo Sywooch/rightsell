@@ -163,7 +163,7 @@ class CommercialpropertySearch extends Commercialproperty
             ->andFilterWhere(['like', 'water_availability', $this->water_availability])
             ->andFilterWhere(['like', 'photo', $this->photo])
             ->andFilterWhere(['like', 'reason', $this->reason])
-            ->andFilterWhere(['=', 'city_id', $this->city_id])
+            //->andFilterWhere(['=', 'city_id', $this->city_id])
             ->andFilterWhere(['=', 'status', 1])
             ->andFilterWhere(['=', 'publish_on_web', 1]);
 
@@ -171,7 +171,7 @@ class CommercialpropertySearch extends Commercialproperty
         //if(!isset($this->min_rate_price))
         //{
             //$this->min_rate_price = 0;
-            $query->andFilterWhere(['>', 'rate_details_comp', $this->min_rate_price])
+            $query->andFilterWhere(['>=', 'rate_details_comp', $this->min_rate_price])
             ->andFilterWhere(['<', 'rate_details_comp', $this->max_rate_price]);
 
             //->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
@@ -180,7 +180,7 @@ class CommercialpropertySearch extends Commercialproperty
         //if(!isset($this->min_rent_price))
         //{
            //$this->min_rent_price = 0;
-            $query->andFilterWhere(['>', 'rent_details_comp', $this->min_rent_price])
+            $query->andFilterWhere(['>=', 'rent_details_comp', $this->min_rent_price])
             ->andFilterWhere(['<', 'rent_details_comp', $this->max_rent_price]);
         //}
         return $dataProvider;

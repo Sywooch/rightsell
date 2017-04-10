@@ -118,14 +118,14 @@ class AgriculturalpropertySearch extends Agriculturalproperty
             ->andFilterWhere(['like', 'reason', $this->reason])
             ->andFilterWhere(['like', 'remark', $this->remark])
             ->andFilterWhere(['like', 'buyer_details', $this->buyer_details])
+            //->andFilterWhere(['=', 'city_id', $this->city_id])
             ->andFilterWhere(['=', 'status', 1])
-            ->andFilterWhere(['=', 'publish_on_web', 1])
-            ->andFilterWhere(['=', 'city_id', $this->city_id]);
+            ->andFilterWhere(['=', 'publish_on_web', 1]);
 
-             $query->andFilterWhere(['>', 'expected_rate_comp', $this->min_rate_price])
+             $query->andFilterWhere(['>=', 'expected_rate_comp', $this->min_rate_price])
             ->andFilterWhere(['<', 'expected_rate_comp', $this->max_rate_price]);
 
-            $query->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
+            $query->andFilterWhere(['>=', 'expected_rent_comp', $this->min_rent_price])
             ->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
 
         return $dataProvider;

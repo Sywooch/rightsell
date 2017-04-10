@@ -180,7 +180,7 @@ $host = "localhost";
 <div class="col-md-3">
 <div class="pro_left_column"><div class="row">
 <div class="col-xs-7 filter_text">Filter your Search</div>
-<div class="col-xs-5"><a href="<?= Url::to(["residential-property/index"]);?>" class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
+<div class="col-xs-5"><a href="<?= Url::to(["agricultural-property/index","city"=>$_GET["city"]]);?>" class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
 </div>
 </div>
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>

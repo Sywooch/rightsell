@@ -175,9 +175,9 @@ class ResidentialpropertySearch extends Residentialproperty
             //->andFilterWhere(['like', 'remark', $this->remark])
             //->andFilterWhere(['like', 'buyer_details', $this->buyer_details])
             //->andFilterWhere(['=', 'bathroom', $this->bathroom])
+            //->andFilterWhere(['=', 'city_id', $this->city_id])
             ->andFilterWhere(['=', 'status', 1])
-            ->andFilterWhere(['=', 'publish_on_web', 1])
-            ->andFilterWhere(['=', 'city_id', $this->city_id]);
+            ->andFilterWhere(['=', 'publish_on_web', 1]);
 
         //if(!isset($this->min_rate_price))
         //{

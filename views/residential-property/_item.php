@@ -41,14 +41,26 @@
 			<?php if(strtolower($model->available_for)=="rent"):?>
 			<!-- <button class="button orrange_btn">Rent <?php //number_format($model->expected_rent_comp)?></button>
 			<button class="button yellow_btn">Deposit <?php //number_format($model->deposit_comp)?></button> -->
-			<button class="button orrange_btn">Rent <?=$model->expected_rent." ".$model->rent_currency?></button>
-			<button class="button yellow_btn">Deposit <?=$model->deposit." ".$model->deposit_currency?></button>
+			<?php 
 
+			$current =$model->rent_currency;
+			if($model->rent_currency =="Thousands")
+				$current = "Th";
+			$currdep =$model->deposit_currency;
+			if($model->deposit_currency =="Thousands")
+				$currdep = "Th";
+			?>
+			<button class="button orrange_btn">Rent <?=$model->expected_rent." ".$current?></button>
+			<button class="button yellow_btn">Deposit <?=$model->deposit." ".$currdep?></button>
 			<?php endif;?>
 
 			<?php if(strtolower($model->available_for)=="sale"):?>
 			<!-- <button class="button orrange_btn">Rate <?php //number_format($model->expected_rate_comp)?></button> -->
-			<button class="button orrange_btn">Rate <?= $model->expected_rate." ".$model->rate_currency?></button>
+			<?php $curr =$model->rate_currency;
+			if($model->rate_currency =="Thousands")
+				$curr = "Th";
+			?>
+			<button class="button orrange_btn">Rate <?= $model->expected_rate." ".$curr ?></button>
 			<?php endif;?>
 
 			<div class="row">
@@ -56,7 +68,7 @@
 				<div class="col-xs-6">
 				<p><img src="images/car.png" alt="">Parking - <?=$model->no_of_parking?$model->no_of_parking:"No"?></p>
 				</div>
-			</div>	
+			</div>
 			<div class="row">
 				<div class="col-xs-6"><p><img src="images/area.png" alt="">Area - <?=$model->builtup_area.' '.$model->builtup_unit?></p></div>
 				<?php if(strtolower($model->furnished) == "sf"): ?>
