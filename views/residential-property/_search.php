@@ -279,8 +279,11 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
     <?php // $form->field($model, 'location_id[]')->hiddenInput()->label(false) ?>
     </div>
     <?php // $form->field($model, 'locationname')->hiddenInput(['id'=>'sidelocationname'])->label(false) ?>
+    <?php echo $form->field($model, 'nearby')->hiddenInput(['id'=>'resprop_nearby','value'=>1])->label(false); ?>
     <?php // echo $form->field($model, 'property_type') ?>
 
+    <?php echo $form->field($model, 'min_carpet_area')->hiddenInput(['id'=>'resprop_minsqval'])->label(false); ?>
+    <?php echo $form->field($model, 'max_carpet_area')->hiddenInput(['id'=>'resprop_maxsqval'])->label(false); ?>
     <?php // echo $form->field($model, 'builtup_area') ?>
 
     <?php // echo $form->field($model, 'builtup_unit') ?>
@@ -425,6 +428,7 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
     <?php // echo $form->field($model, 'publish_on_web') ?>
 
     <?php // echo $form->field($model, 'status') ?>
+    <input type="hidden" name="sortby" id="sortby" value="">
 
     <div class="form-group">
         <?php //Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

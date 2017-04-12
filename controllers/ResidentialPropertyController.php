@@ -226,10 +226,11 @@ class ResidentialPropertyController extends Controller
     {
         $searchModel = new ResidentialpropertySearch();
         //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        //echo "<pre>"; print_r($_GET);exit;
         // $v = urldecode($_GET);
         // $parts = parse_url($v);
         // parse_str($parts['path'], $query);
+        //echo "<pre>"; print_r($_GET);exit;
+        //$searchModel->nearby = $_GET['nearby'];
         $dataProvider = $searchModel->search($_GET);
         
         $locationnames = [];

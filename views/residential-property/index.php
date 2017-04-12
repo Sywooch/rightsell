@@ -45,8 +45,8 @@ $host = "103.208.73.2";
 </div>
 <div class="col-xs-9 padding_left border_right">
 <div class="checkbox">
-<input type="checkbox" id="c1" name="cc" checked="checked" />
-<label class="chkbob_lable" for="c1" style="padding-left:0"><span></span>Nearby properties</label>
+<input type="checkbox" id="filterResProp_nearby" name="nearbyresprop" value="1" />
+<label class="chkbob_lable" for="filterResProp_nearby" style="padding-left:0"><span></span>Nearby properties</label>
 </div>
 </div>
 
@@ -114,10 +114,10 @@ $host = "103.208.73.2";
 <select id="filterResProp_floor" name="filterResProp_floor" multiple="multiple">
 <option value="-1">Basement</option>
 <option value="0">Ground</option>
-<option value="1-4">1-4</option>
-<option value="5-8">5-8</option>
-<option value="9-12">9-12</option>
-<option value="13-16">13-16</option>
+<option value="1,2,3,4">1-4</option>
+<option value="5,6,7,8">5-8</option>
+<option value="9,10,11,12">9-12</option>
+<option value="13,14,15,16">13-16</option>
 <option value="16+">16+</option>
 </select>
 <hr>
@@ -167,8 +167,8 @@ $host = "103.208.73.2";
 <ul class="dropdown-menu" style="left:18px">
 <li class="first"><a href="#">Relavance</a></li>
 <li><a href="#" class="sortresprop" data-val="popular">Popularity</a></li>
-<li><a href="#" class="sortresprop" data-val="asc">Price (Low to high)</a></li>
-<li><a href="#" class="sortresprop" data-val="desc">Price (High to low)</a></li>
+<li><a href="#" class="sortresprop" data-val="&sort=builtup_area">Price (Low to high)</a></li>
+<li><a href="#" class="sortresprop" data-val="&sort=-builtup_area">Price (High to low)</a></li>
 <li><a href="#" class="sortresprop" data-val="rate">Seller Ratings </a></li>
 <li><a href="#" class="sortresprop" data-val="postdate">Date Posted</a></li>
 </ul>
@@ -266,4 +266,23 @@ Pjax::begin([
     </div>
 </div>-->
 </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>

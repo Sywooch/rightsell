@@ -20,6 +20,9 @@ class ResidentialpropertySearch extends Residentialproperty
 
     public $min_carpet_area;
     public $max_carpet_area;
+
+    public $nearby;
+    public $locidstemp;
     //public $locationname;
     /**
      * @inheritdoc
@@ -28,7 +31,7 @@ class ResidentialpropertySearch extends Residentialproperty
     {
         return [
             [['id', 'society_id', 'city_id', 'area_id', 'lift_facility', 'bathroom', 'balcony', 'added_by', 'updated_by', 'reminder_days', 'publish_on_web', 'status', 'expected_rate_comp', 'expected_rent_comp', 'deposit_comp'], 'integer'],
-            [['property_id', 'property_by', 'available_for', 'property_type', 'builtup_area', 'builtup_unit', 'carpet_area', 'carpet_unit', 'other', 'other_bhk', 'building_name', 'age_of_building', 'flat_no', 'total_no_of_floors', 'floor_no', 'facing', 'furnished', 'amenities', 'expected_rate', 'rate_currency', 'rent_currency', 'deposit_currency', 'expected_rent', 'deposit', 'available_from', 'agreement_period', 'is_parking_available', 'parking_structure', 'no_of_parking', 'covered_no', 'open_no', 'company_name', 'contact_person_name', 'mobile_no', 'email_id', 'other_details', 'key_arrangements', 'profile_photo', 'photos_link', 'video_link', 'other_property_details', 'address_in_proposal', 'price_negotiable', 'spl_attraction', 'property_profile_photo', 'gallery_images', 'property_video_link', 'maintenance_cost', 'unit', 'preferred_tenants', 'available_rooms', 'tenant_profiling', 'tenant_profiling_desc', 'added_on', 'updated_on', 'close_through', 'reason', 'agreement_date', 'locking_period_date', 'end_date', 'remark', 'buyer_details', 'buy_date','min_rate_price','max_rate_price','min_rent_price','max_rent_price','min_carpet_area','max_carpet_area','bhk','location_id'], 'safe'],
+            [['property_id', 'property_by', 'available_for', 'property_type', 'builtup_area', 'builtup_unit', 'carpet_area', 'carpet_unit', 'other', 'other_bhk', 'building_name', 'age_of_building', 'flat_no', 'total_no_of_floors', 'floor_no', 'facing', 'furnished', 'amenities', 'expected_rate', 'rate_currency', 'rent_currency', 'deposit_currency', 'expected_rent', 'deposit', 'available_from', 'agreement_period', 'is_parking_available', 'parking_structure', 'no_of_parking', 'covered_no', 'open_no', 'company_name', 'contact_person_name', 'mobile_no', 'email_id', 'other_details', 'key_arrangements', 'profile_photo', 'photos_link', 'video_link', 'other_property_details', 'address_in_proposal', 'price_negotiable', 'spl_attraction', 'property_profile_photo', 'gallery_images', 'property_video_link', 'maintenance_cost', 'unit', 'preferred_tenants', 'available_rooms', 'tenant_profiling', 'tenant_profiling_desc', 'added_on', 'updated_on', 'close_through', 'reason', 'agreement_date', 'locking_period_date', 'end_date', 'remark', 'buyer_details', 'buy_date','min_rate_price','max_rate_price','min_rent_price','max_rent_price','min_carpet_area','max_carpet_area','bhk','location_id','nearby'], 'safe'],
             [['maintenance_price'], 'number'],
         ];
     }
@@ -60,13 +63,15 @@ class ResidentialpropertySearch extends Residentialproperty
         ]);
 
         $this->load($params);
-        //echo "<pre>"; print_r($this->bathroom);exit;
+        $locidstemp=$this->location_id;
+        //echo "<pre>"; print_r($this);exit;
         if($this->available_for == 'Flatmate')
         {
             $this->available_for = "Rent";
             $this->property_by = "Flatmate";
         }
 
+        
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -115,6 +120,21 @@ class ResidentialpropertySearch extends Residentialproperty
             $query->andFilterWhere(['=', 'bathroom', $this->bathroom]);
         }
 
+        if($this->nearby === "true")
+        {
+            $Nearbylocationsmodels = Nearbylocations::find()->where(["in",'location_id',$this->location_id])->all();
+            $nearbylocs = [];
+            if($Nearbylocationsmodels)
+            {
+                foreach ($Nearbylocationsmodels as $nearbyloc) {
+                    $locidstemp[] = $nearbyloc->nearbylocation_id;
+                }
+            }
+            /*echo "<pre>"; 
+            print_r($locidstemp); 
+            exit;*/
+        }
+
         $query->andFilterWhere(['like', 'property_id', $this->property_id])
             ->andFilterWhere(['like', 'property_by', $this->property_by])
             ->andFilterWhere(['like', 'available_for', $this->available_for])
@@ -129,9 +149,10 @@ class ResidentialpropertySearch extends Residentialproperty
             ->andFilterWhere(['like', 'age_of_building', $this->age_of_building])
             ->andFilterWhere(['like', 'flat_no', $this->flat_no])
             ->andFilterWhere(['like', 'total_no_of_floors', $this->total_no_of_floors])
-            ->andFilterWhere(['=', 'floor_no', $this->floor_no])
+            //->andFilterWhere(['=', 'floor_no', $this->floor_no])
+            //->andFilterWhere(['in', 'floor_no', $floortemp])
             ->andFilterWhere(['=', 'facing', $this->facing])
-            ->andFilterWhere(['in', 'location_id', $this->location_id])
+            ->andFilterWhere(['in', 'location_id', $this->locidstemp])
             ->andFilterWhere(['in', 'furnished', $this->furnished])
             ->andFilterWhere(['in', 'bhk', $this->bhk])
             
@@ -195,7 +216,23 @@ class ResidentialpropertySearch extends Residentialproperty
             ->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
         //}
 
-        
+            $query->andFilterWhere(['between', 'builtup_area', $this->min_carpet_area,$this->max_carpet_area]);
+
+        $floortemp=[];
+        if(isset($this->floor_no))
+        {
+            $floortemp = split(",", $this->floor_no);
+            //echo "<pre>";
+
+            //print_r($floortemp);
+            if(array_search("16+", $floortemp))
+            {
+                $query->andFilterWhere(['>', 'floor_no', 16]);
+            }
+            $query->andFilterWhere(['in', 'floor_no', $floortemp]);
+            //exit;
+        }
+        //echo "<pre>"; var_dump($query); exit;
 
         return $dataProvider;
     }

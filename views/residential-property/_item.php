@@ -92,7 +92,7 @@
 				<!-- <div class="col-xs-12"><strong>Status:</strong> This property 2 years old</div> -->
 			</div>
 			<div class="row">
-				<div class="col-xs-6"><button class="button red_btn">Contact Owner</button></div>
+				<div class="col-xs-6"><button class="button red_btn showcontactinfo" data-toggle="modal" data-target="#myModal">Contact Owner</button></div>
 				<div class="col-xs-6"><table>
 					<tr>
 						<td><a href="#"><img src="images/ico1.png" alt="" border="0"></a></td>
