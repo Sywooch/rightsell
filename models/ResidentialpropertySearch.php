@@ -119,7 +119,7 @@ class ResidentialpropertySearch extends Residentialproperty
             //var_dump($this->bathroom);exit;
             $query->andFilterWhere(['=', 'bathroom', $this->bathroom]);
         }
-
+        //echo $this->nearby; exit;
         if($this->nearby === "true")
         {
             $Nearbylocationsmodels = Nearbylocations::find()->where(["in",'location_id',$this->location_id])->all();
@@ -200,39 +200,40 @@ class ResidentialpropertySearch extends Residentialproperty
             ->andFilterWhere(['=', 'status', 1])
             ->andFilterWhere(['=', 'publish_on_web', 1]);
 
-        //if(!isset($this->min_rate_price))
-        //{
-            //$this->min_rate_price = 0;
-        $query->andFilterWhere(['>=', 'expected_rate_comp', $this->min_rate_price])
-            ->andFilterWhere(['<', 'expected_rate_comp', $this->max_rate_price]);
+        //$query->andFilterWhere(['>=', 'expected_rate_comp', $this->min_rate_price])
+           // ->andFilterWhere(['<', 'expected_rate_comp', $this->max_rate_price]);
 
-            //->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
+
+        //$query->andFilterWhere(['>=', 'expected_rent_comp', $this->min_rent_price])
             //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
-        /*}
-        if(!isset($this->min_rent_price))
-        {
-            $this->min_rent_price = 0;*/
-        $query->andFilterWhere(['>=', 'expected_rent_comp', $this->min_rent_price])
-            ->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
-        //}
 
-            $query->andFilterWhere(['between', 'builtup_area', $this->min_carpet_area,$this->max_carpet_area]);
+            $query->andFilterWhere(['between', 'expected_rate_comp', $this->min_rate_price, $this->max_rate_price]);
+
+        $query->andFilterWhere(['between', 'expected_rent_comp', $this->min_rent_price, $this->max_rent_price]);
+        $query->andFilterWhere(['between', 'builtup_area', $this->min_carpet_area,$this->max_carpet_area]);
 
         $floortemp=[];
-        if(isset($this->floor_no))
+        if(isset($this->floor_no) && $this->floor_no != "")
         {
-            $floortemp = split(",", $this->floor_no);
+            $floortemp = explode(",", $this->floor_no);
             //echo "<pre>";
 
+            //echo array_search("16+", $floortemp);
             //print_r($floortemp);
+            
             if(array_search("16+", $floortemp))
             {
+                array_pop($floortemp);
+                $query->andFilterWhere(['in', 'floor_no', $floortemp]);
                 $query->andFilterWhere(['>', 'floor_no', 16]);
             }
-            $query->andFilterWhere(['in', 'floor_no', $floortemp]);
+            else
+            {
+                $query->andFilterWhere(['in', 'floor_no', $floortemp]);
+            }
             //exit;
         }
-        //echo "<pre>"; var_dump($query); exit;
+        //echo "<pre>"; print_r($query); exit;
 
         return $dataProvider;
     }

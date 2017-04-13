@@ -40,6 +40,7 @@ class AppAsset extends AssetBundle
         'js/jquery-ui.js',
         'js/demo.js',
         'js/bootstrap-multiselect.js',
+        'js/thescripts.js',
     ];
     public $depends = [
         //'yii\web\YiiAsset',

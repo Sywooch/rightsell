@@ -17,8 +17,7 @@ use app\models\Bhk;
 
     <?php $form = ActiveForm::begin([
         'options'=>['id'=>'searchfilterresidentialproperty','name'=>'frmResidentialProperty','class'=>'frmResidentialProperty'],
-        'action' => ['ajax-get-properties-update'],
-        'method' => 'get',
+        'action' => ['residential-property/ajax-get-properties-update'],
     ]); ?>
 
     <?php // $form->field($model, 'id') ?>
@@ -77,7 +76,7 @@ use app\models\Bhk;
 
 
 <div class="pro_left_column">
-<?php echo \yii\helpers\Html::activeCheckboxList($model,'furnished',['ff'=>'Furnished', 'sf' => 'Semi Furnished','un' => 'Non Furnished'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
+<?php echo \yii\helpers\Html::activeCheckboxList($model,'furnished',['ff'=>'Furnished', 'sf' => 'Semi-Furnished','un' => 'Non Furnished'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
                     $return = '<input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
                     $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label><br>';
                     return $return;
@@ -188,7 +187,7 @@ use app\models\Bhk;
 <div class="pro_left_column">
     <div class="row">
 <?php 
-$bhkModels = Bhk::findAll(['status'=>1]);?>
+$bhkModels = Bhk::find()->where(['status'=>1])->orderBy(["name" => "asc"])->all();?>
     
     <?php echo \yii\helpers\Html::activeCheckboxList($model,'bhk',ArrayHelper::map($bhkModels,'id','name'),['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
                     $return = '<div class="col-xs-6"><input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
@@ -279,7 +278,7 @@ $bhkModels = Bhk::findAll(['status'=>1]);?>
     <?php // $form->field($model, 'location_id[]')->hiddenInput()->label(false) ?>
     </div>
     <?php // $form->field($model, 'locationname')->hiddenInput(['id'=>'sidelocationname'])->label(false) ?>
-    <?php echo $form->field($model, 'nearby')->hiddenInput(['id'=>'resprop_nearby','value'=>1])->label(false); ?>
+    <?php echo $form->field($model, 'nearby')->hiddenInput(['id'=>'resprop_nearby'])->label(false); ?>
     <?php // echo $form->field($model, 'property_type') ?>
 
     <?php echo $form->field($model, 'min_carpet_area')->hiddenInput(['id'=>'resprop_minsqval'])->label(false); ?>

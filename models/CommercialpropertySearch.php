@@ -18,6 +18,13 @@ class CommercialpropertySearch extends Commercialproperty
 
     public $min_rent_price;
     public $max_rent_price;
+
+    public $min_carpet_area;
+    public $max_carpet_area;
+
+    public $nearby;
+    public $locidstemp;
+
     /**
      * @inheritdoc
      */
@@ -25,7 +32,7 @@ class CommercialpropertySearch extends Commercialproperty
     {
         return [
             [['id', 'location_id', 'city_id', 'area', 'publish_on_web', 'added_by', 'updated_by', 'status', 'rate_details_comp', 'rent_details_comp', 'deposite_details_comp'], 'integer'],
-            [['available_for', 'property_id', 'type', 'sublocation', 'landmark', 'building_name', 'splitted_area', 'total_no_of_floors', 'floor_no', 'office_no', 'rent_details', 'rentunit', 'deposite_details', 'depositunit', 'rate_details', 'rate_details_unit', 'maintenance_tax', 'maintenance_tax_unit', 'service_tax_applicable', 'service_tax_value', 'other_charges', 'other_charges_unit', 'service_tax_unit', 'description', 'furnished', 'reception', 'min_workstations', 'max_workstations', 'cubicle', 'cabin', 'half_cabin', 'boardroom', 'conference_room', 'meeting_room', 'discussion_room', 'admin_room', 'account_room', 'interview_room', 'storage_room', 'ups_room', 'server_room', 'hub_room', 'epabx_room', 'ahu_room', 'electrical_room', 'store_room', 'pantry', 'cafeteria', 'toilets', 'power_backup', 'lift_facility', 'four_wheeler_parking', 'two_wheeler_parking', 'outer_power_backup', 'frontedge', 'frontedge_height', 'mezzanine', 'mezzanine_height', 'warehouse_height', 'power_load', 'open_area', 'office_shed_area', 'owners_name', 'mobile_no', 'landline_no', 'email_id', 'other_details', 'website_link', 'proposal_title', 'commercial_offer', 'note', 'lenden_address', 'picasa_url', 'facing', 'ideal_for', 'available_from', 'gallery_images', 'water_availability', 'photo', 'added_on', 'updated_on', 'reason'], 'safe'],
+            [['available_for', 'property_id', 'type', 'sublocation', 'landmark', 'building_name', 'splitted_area', 'total_no_of_floors', 'floor_no', 'office_no', 'rent_details', 'rentunit', 'deposite_details', 'depositunit', 'rate_details', 'rate_details_unit', 'maintenance_tax', 'maintenance_tax_unit', 'service_tax_applicable', 'service_tax_value', 'other_charges', 'other_charges_unit', 'service_tax_unit', 'description', 'furnished', 'reception', 'min_workstations', 'max_workstations', 'cubicle', 'cabin', 'half_cabin', 'boardroom', 'conference_room', 'meeting_room', 'discussion_room', 'admin_room', 'account_room', 'interview_room', 'storage_room', 'ups_room', 'server_room', 'hub_room', 'epabx_room', 'ahu_room', 'electrical_room', 'store_room', 'pantry', 'cafeteria', 'toilets', 'power_backup', 'lift_facility', 'four_wheeler_parking', 'two_wheeler_parking', 'outer_power_backup', 'frontedge', 'frontedge_height', 'mezzanine', 'mezzanine_height', 'warehouse_height', 'power_load', 'open_area', 'office_shed_area', 'owners_name', 'mobile_no', 'landline_no', 'email_id', 'other_details', 'website_link', 'proposal_title', 'commercial_offer', 'note', 'lenden_address', 'picasa_url', 'facing', 'ideal_for', 'available_from', 'gallery_images', 'water_availability', 'photo', 'added_on', 'updated_on', 'reason','min_carpet_area','max_carpet_area','bhk','location_id','nearby','min_rent_price','max_rent_price'], 'safe'],
         ];
     }
 
@@ -168,20 +175,17 @@ class CommercialpropertySearch extends Commercialproperty
             ->andFilterWhere(['=', 'publish_on_web', 1]);
 
 
-        //if(!isset($this->min_rate_price))
-        //{
-            //$this->min_rate_price = 0;
-            $query->andFilterWhere(['>=', 'rate_details_comp', $this->min_rate_price])
-            ->andFilterWhere(['<', 'rate_details_comp', $this->max_rate_price]);
+           // $query->andFilterWhere(['>=', 'rate_details_comp', $this->min_rate_price])
+            //->andFilterWhere(['<', 'rate_details_comp', $this->max_rate_price]);
 
-            //->andFilterWhere(['>', 'expected_rent_comp', $this->min_rent_price])
-            //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
-        //}
-        //if(!isset($this->min_rent_price))
-        //{
-           //$this->min_rent_price = 0;
-            $query->andFilterWhere(['>=', 'rent_details_comp', $this->min_rent_price])
-            ->andFilterWhere(['<', 'rent_details_comp', $this->max_rent_price]);
+            //$query->andFilterWhere(['>=', 'rent_details_comp', $this->min_rent_price])
+            //->andFilterWhere(['<', 'rent_details_comp', $this->max_rent_price]);
+
+            $query->andFilterWhere(['between', 'rate_details_comp', $this->min_rate_price, $this->max_rate_price]);
+
+            $query->andFilterWhere(['between', 'rent_details_comp', $this->min_rent_price, $this->max_rent_price]);
+
+            $query->andFilterWhere(['between', 'area', $this->min_carpet_area,$this->max_carpet_area]);
         //}
         return $dataProvider;
     }

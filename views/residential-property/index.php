@@ -167,8 +167,8 @@ $host = "103.208.73.2";
 <ul class="dropdown-menu" style="left:18px">
 <li class="first"><a href="#">Relavance</a></li>
 <li><a href="#" class="sortresprop" data-val="popular">Popularity</a></li>
-<li><a href="#" class="sortresprop" data-val="&sort=builtup_area">Price (Low to high)</a></li>
-<li><a href="#" class="sortresprop" data-val="&sort=-builtup_area">Price (High to low)</a></li>
+<li><a href="#" class="sortresprop" data-val="asc">Price (Low to high)</a></li>
+<li><a href="#" class="sortresprop" data-val="desc">Price (High to low)</a></li>
 <li><a href="#" class="sortresprop" data-val="rate">Seller Ratings </a></li>
 <li><a href="#" class="sortresprop" data-val="postdate">Date Posted</a></li>
 </ul>
