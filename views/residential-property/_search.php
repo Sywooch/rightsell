@@ -275,7 +275,7 @@ $bhkModels = Bhk::find()->where(['status'=>1])->orderBy(["name" => "asc"])->all(
 ?>
     <?php // $form->field($model, 'area_id')->dropDownList(ArrayHelper::map($arealist,'id', 'area')) ?>
     <div id="vis">
-    <?php // $form->field($model, 'location_id[]')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'location_id[]')->hiddenInput()->label(false) ?>
     </div>
     <?php // $form->field($model, 'locationname')->hiddenInput(['id'=>'sidelocationname'])->label(false) ?>
     <?php echo $form->field($model, 'nearby')->hiddenInput(['id'=>'resprop_nearby'])->label(false); ?>
@@ -300,7 +300,7 @@ $bhkModels = Bhk::find()->where(['status'=>1])->orderBy(["name" => "asc"])->all(
     <?php // echo $form->field($model, 'society_id') ?>
 
     <?php //echo $form->field($model, 'city_id')->hiddenInput(['value'=>33])->label(false); ?>
-    <?php echo $form->field($model, 'city_id')->hiddenInput(['value'=>33, 'id' => 'property_city_id'])->label(false); ?>
+    <?php echo $form->field($model, 'city_id')->hiddenInput(['id' => 'property_city_id'])->label(false); ?>
 
     <?php // echo $form->field($model, 'area_id') ?>
 
@@ -320,7 +320,7 @@ $bhkModels = Bhk::find()->where(['status'=>1])->orderBy(["name" => "asc"])->all(
 
     <?php // echo $form->field($model, 'lift_facility') ?>
 
-    <?php // echo $form->field($model, 'amenities') ?>
+    <?php echo $form->field($model, 'amenities')->hiddenInput(['id'=>'resiprop_amenities'])->label(false); ?>
 
     <?php // echo $form->field($model, 'expected_rate') ?>
 
@@ -380,7 +380,7 @@ $bhkModels = Bhk::find()->where(['status'=>1])->orderBy(["name" => "asc"])->all(
 
     <?php // echo $form->field($model, 'property_profile_photo') ?>
 
-    <?php // echo $form->field($model, 'gallery_images') ?>
+    <?php echo $form->field($model, 'gallery_images')->hiddenInput(['id'=>'haveimagefilter'])->label(false); ?>
 
     <?php // echo $form->field($model, 'property_video_link') ?>
 
@@ -416,7 +416,7 @@ $bhkModels = Bhk::find()->where(['status'=>1])->orderBy(["name" => "asc"])->all(
 
     <?php // echo $form->field($model, 'end_date') ?>
 
-    <?php // echo $form->field($model, 'remark') ?>
+    <?php echo $form->field($model, 'remark')->hiddenInput(['id'=>"remarkfilter"])->label(false); ?>
 
     <?php // echo $form->field($model, 'reminder_days') ?>
 

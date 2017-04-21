@@ -34,6 +34,7 @@ AppAsset::register($this);
     <link rel="stylesheet" href="css/scroll.css">
     <link href="css/responsive.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/responsive-tabs.css">
+
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -192,12 +193,19 @@ DropDown.prototype = {
 }
 $(function() {
 
-    var dd = new DropDown( $('.dd') );
+    var dd_resi_city = new DropDown( $('.dd_resi_city') );
+    var dd_resi_bhk = new DropDown( $('.dd_resi_bhk') );
+    var dd_resi_budget = new DropDown( $('.dd_resi_budget') );
+
+    var dd_comm_city = new DropDown( $('.dd_comm_city') );
+
+    var dd_agri_city = new DropDown( $('.dd_agri_city') );
     $(document).click(function() {
         // all dropdowns
         $('.wrapper-dropdown-3').removeClass('active');
+        // $("#residentialproperty-city_id").val("1");
     });
-    var dd = new DropDown( $('.dd2') );
+    /*var dd = new DropDown( $('.dd2') );
     $(document).click(function() {
         // all dropdowns
         $('.wrapper-dropdown-3').removeClass('active');
@@ -206,9 +214,10 @@ $(function() {
     $(document).click(function() {
         // all dropdowns
         $('.wrapper-dropdown-3').removeClass('active');
-    });
+    });*/
 });
 </script>
+<script>jQuery.noConflict();</script>
 <?php $this->endBody() ?>
 </body>
 </html>

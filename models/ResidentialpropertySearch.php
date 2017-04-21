@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Residentialproperty;
+use app\models\Nearbylocations;
 
 /**
  * ResidentialpropertySearch represents the model behind the search form about `app\models\Residentialproperty`.
@@ -23,16 +24,16 @@ class ResidentialpropertySearch extends Residentialproperty
 
     public $nearby;
     public $locidstemp;
-    //public $locationname;
+    public $locationname;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'society_id', 'city_id', 'area_id', 'lift_facility', 'bathroom', 'balcony', 'added_by', 'updated_by', 'reminder_days', 'publish_on_web', 'status', 'expected_rate_comp', 'expected_rent_comp', 'deposit_comp'], 'integer'],
-            [['property_id', 'property_by', 'available_for', 'property_type', 'builtup_area', 'builtup_unit', 'carpet_area', 'carpet_unit', 'other', 'other_bhk', 'building_name', 'age_of_building', 'flat_no', 'total_no_of_floors', 'floor_no', 'facing', 'furnished', 'amenities', 'expected_rate', 'rate_currency', 'rent_currency', 'deposit_currency', 'expected_rent', 'deposit', 'available_from', 'agreement_period', 'is_parking_available', 'parking_structure', 'no_of_parking', 'covered_no', 'open_no', 'company_name', 'contact_person_name', 'mobile_no', 'email_id', 'other_details', 'key_arrangements', 'profile_photo', 'photos_link', 'video_link', 'other_property_details', 'address_in_proposal', 'price_negotiable', 'spl_attraction', 'property_profile_photo', 'gallery_images', 'property_video_link', 'maintenance_cost', 'unit', 'preferred_tenants', 'available_rooms', 'tenant_profiling', 'tenant_profiling_desc', 'added_on', 'updated_on', 'close_through', 'reason', 'agreement_date', 'locking_period_date', 'end_date', 'remark', 'buyer_details', 'buy_date','min_rate_price','max_rate_price','min_rent_price','max_rent_price','min_carpet_area','max_carpet_area','bhk','location_id','nearby'], 'safe'],
-            [['maintenance_price'], 'number'],
+        [['id', 'society_id', 'city_id', 'area_id', 'lift_facility', 'bathroom', 'balcony', 'added_by', 'updated_by', 'reminder_days', 'publish_on_web', 'status', 'expected_rate_comp', 'expected_rent_comp', 'deposit_comp'], 'integer'],
+        [['property_id', 'property_by', 'available_for', 'property_type', 'builtup_area', 'builtup_unit', 'carpet_area', 'carpet_unit', 'other', 'other_bhk', 'building_name', 'age_of_building', 'flat_no', 'total_no_of_floors', 'floor_no', 'facing', 'furnished', 'amenities', 'expected_rate', 'rate_currency', 'rent_currency', 'deposit_currency', 'expected_rent', 'deposit', 'available_from', 'agreement_period', 'is_parking_available', 'parking_structure', 'no_of_parking', 'covered_no', 'open_no', 'company_name', 'contact_person_name', 'mobile_no', 'email_id', 'other_details', 'key_arrangements', 'profile_photo', 'photos_link', 'video_link', 'other_property_details', 'address_in_proposal', 'price_negotiable', 'spl_attraction', 'property_profile_photo', 'gallery_images', 'property_video_link', 'maintenance_cost', 'unit', 'preferred_tenants', 'available_rooms', 'tenant_profiling', 'tenant_profiling_desc', 'added_on', 'updated_on', 'close_through', 'reason', 'agreement_date', 'locking_period_date', 'end_date', 'remark', 'buyer_details', 'buy_date','min_rate_price','max_rate_price','min_rent_price','max_rent_price','min_carpet_area','max_carpet_area','bhk','location_id','nearby','locationname'], 'safe'],
+        [['maintenance_price'], 'number'],
         ];
     }
 
@@ -54,13 +55,14 @@ class ResidentialpropertySearch extends Residentialproperty
      */
     public function search($params)
     {
-        $query = Residentialproperty::find();
+        $query = Residentialproperty::find();//->joinWith('amenityies',true,'right join');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+            'pagination' => false,
+            ]);
 
         $this->load($params);
         $locidstemp=$this->location_id;
@@ -83,7 +85,8 @@ class ResidentialpropertySearch extends Residentialproperty
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'location_id' => $this->location_id,
+            //'location_id' => $this->location_id,
+            //'gallery_images' => $this->gallery_images,
             'bhk' => $this->bhk,
             'society_id' => $this->society_id,
             'city_id' => $this->city_id,
@@ -108,7 +111,7 @@ class ResidentialpropertySearch extends Residentialproperty
             //'expected_rent_comp' => $this->expected_rent_comp,
             //'deposit_comp' => $this->deposit_comp,
             
-        ]);
+            ]);
 
         if(((int)$this->bathroom) === 4)
         {
@@ -136,37 +139,37 @@ class ResidentialpropertySearch extends Residentialproperty
         }
 
         $query->andFilterWhere(['like', 'property_id', $this->property_id])
-            ->andFilterWhere(['like', 'property_by', $this->property_by])
-            ->andFilterWhere(['like', 'available_for', $this->available_for])
-            ->andFilterWhere(['in', 'property_type', $this->property_type])
-            ->andFilterWhere(['like', 'builtup_area', $this->builtup_area])
-            ->andFilterWhere(['like', 'builtup_unit', $this->builtup_unit])
-            ->andFilterWhere(['like', 'carpet_area', $this->carpet_area])
-            ->andFilterWhere(['like', 'carpet_unit', $this->carpet_unit])
-            ->andFilterWhere(['like', 'other', $this->other])
-            ->andFilterWhere(['like', 'other_bhk', $this->other_bhk])
-            ->andFilterWhere(['like', 'building_name', $this->building_name])
-            ->andFilterWhere(['like', 'age_of_building', $this->age_of_building])
-            ->andFilterWhere(['like', 'flat_no', $this->flat_no])
-            ->andFilterWhere(['like', 'total_no_of_floors', $this->total_no_of_floors])
+        ->andFilterWhere(['like', 'property_by', $this->property_by])
+        ->andFilterWhere(['like', 'available_for', $this->available_for])
+        ->andFilterWhere(['in', 'property_type', $this->property_type])
+        ->andFilterWhere(['like', 'builtup_area', $this->builtup_area])
+        ->andFilterWhere(['like', 'builtup_unit', $this->builtup_unit])
+        ->andFilterWhere(['like', 'carpet_area', $this->carpet_area])
+        ->andFilterWhere(['like', 'carpet_unit', $this->carpet_unit])
+        ->andFilterWhere(['like', 'other', $this->other])
+        ->andFilterWhere(['like', 'other_bhk', $this->other_bhk])
+        ->andFilterWhere(['like', 'building_name', $this->building_name])
+        ->andFilterWhere(['like', 'age_of_building', $this->age_of_building])
+        ->andFilterWhere(['like', 'flat_no', $this->flat_no])
+        ->andFilterWhere(['like', 'total_no_of_floors', $this->total_no_of_floors])
             //->andFilterWhere(['=', 'floor_no', $this->floor_no])
             //->andFilterWhere(['in', 'floor_no', $floortemp])
-            ->andFilterWhere(['=', 'facing', $this->facing])
-            ->andFilterWhere(['in', 'location_id', $this->locidstemp])
-            ->andFilterWhere(['in', 'furnished', $this->furnished])
-            ->andFilterWhere(['in', 'bhk', $this->bhk])
-            
-            ->andFilterWhere(['like', 'amenities', $this->amenities])
-            ->andFilterWhere(['like', 'expected_rate', $this->expected_rate])
-            ->andFilterWhere(['like', 'rate_currency', $this->rate_currency])
-            ->andFilterWhere(['like', 'rent_currency', $this->rent_currency])
-            ->andFilterWhere(['like', 'deposit_currency', $this->deposit_currency])
-            ->andFilterWhere(['like', 'expected_rent', $this->expected_rent])
-            ->andFilterWhere(['like', 'deposit', $this->deposit])
-            ->andFilterWhere(['like', 'agreement_period', $this->agreement_period])
-            ->andFilterWhere(['like', 'is_parking_available', $this->is_parking_available])
-            ->andFilterWhere(['like', 'parking_structure', $this->parking_structure])
-            ->andFilterWhere(['like', 'no_of_parking', $this->no_of_parking])
+        ->andFilterWhere(['=', 'facing', $this->facing])
+        ->andFilterWhere(['in', 'location_id', $locidstemp])
+        ->andFilterWhere(['in', 'furnished', $this->furnished])
+        ->andFilterWhere(['in', 'bhk', $this->bhk])
+
+        //->andFilterWhere(['like', 'amenities', $this->amenities])
+        ->andFilterWhere(['like', 'expected_rate', $this->expected_rate])
+        ->andFilterWhere(['like', 'rate_currency', $this->rate_currency])
+        ->andFilterWhere(['like', 'rent_currency', $this->rent_currency])
+        ->andFilterWhere(['like', 'deposit_currency', $this->deposit_currency])
+        ->andFilterWhere(['like', 'expected_rent', $this->expected_rent])
+        ->andFilterWhere(['like', 'deposit', $this->deposit])
+        ->andFilterWhere(['like', 'agreement_period', $this->agreement_period])
+        ->andFilterWhere(['like', 'is_parking_available', $this->is_parking_available])
+        ->andFilterWhere(['like', 'parking_structure', $this->parking_structure])
+        ->andFilterWhere(['like', 'no_of_parking', $this->no_of_parking])
             //->andFilterWhere(['like', 'covered_no', $this->covered_no])
             //->andFilterWhere(['like', 'open_no', $this->open_no])
             //->andFilterWhere(['like', 'company_name', $this->company_name])
@@ -187,18 +190,20 @@ class ResidentialpropertySearch extends Residentialproperty
             //->andFilterWhere(['like', 'property_video_link', $this->property_video_link])
             //->andFilterWhere(['like', 'maintenance_cost', $this->maintenance_cost])
             //->andFilterWhere(['like', 'unit', $this->unit])
-            ->andFilterWhere(['like', 'preferred_tenants', $this->preferred_tenants])
-            ->andFilterWhere(['like', 'available_rooms', $this->available_rooms])
+        ->andFilterWhere(['like', 'preferred_tenants', $this->preferred_tenants])
+        ->andFilterWhere(['like', 'available_rooms', $this->available_rooms])
             //->andFilterWhere(['like', 'tenant_profiling', $this->tenant_profiling])
             //->andFilterWhere(['like', 'tenant_profiling_desc', $this->tenant_profiling_desc])
             //->andFilterWhere(['like', 'close_through', $this->close_through])
             //->andFilterWhere(['like', 'reason', $this->reason])
-            //->andFilterWhere(['like', 'remark', $this->remark])
+            ->andFilterWhere(['like', 'remark', $this->remark])
             //->andFilterWhere(['like', 'buyer_details', $this->buyer_details])
             //->andFilterWhere(['=', 'bathroom', $this->bathroom])
             //->andFilterWhere(['=', 'city_id', $this->city_id])
-            ->andFilterWhere(['=', 'status', 1])
-            ->andFilterWhere(['=', 'publish_on_web', 1]);
+        ->andFilterWhere(['=', 'status', 1])
+        ->andFilterWhere(['=', 'publish_on_web', 1])
+        ->andFilterWhere(['=', 'tbl_residentialproperty_amenities.property_id', $this->id]);
+        
 
         //$query->andFilterWhere(['>=', 'expected_rate_comp', $this->min_rate_price])
            // ->andFilterWhere(['<', 'expected_rate_comp', $this->max_rate_price]);
@@ -207,7 +212,14 @@ class ResidentialpropertySearch extends Residentialproperty
         //$query->andFilterWhere(['>=', 'expected_rent_comp', $this->min_rent_price])
             //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
 
-            $query->andFilterWhere(['between', 'expected_rate_comp', $this->min_rate_price, $this->max_rate_price]);
+        if($this->gallery_images === "true")
+        {
+            //echo "1"; exit;
+            $query->andFilterWhere(['not', 'gallery_images', ""]);
+            $query->andFilterWhere(['not', 'gallery_images', null]);
+        }
+
+        $query->andFilterWhere(['between', 'expected_rate_comp', $this->min_rate_price, $this->max_rate_price]);
 
         $query->andFilterWhere(['between', 'expected_rent_comp', $this->min_rent_price, $this->max_rent_price]);
         $query->andFilterWhere(['between', 'builtup_area', $this->min_carpet_area,$this->max_carpet_area]);
@@ -216,11 +228,6 @@ class ResidentialpropertySearch extends Residentialproperty
         if(isset($this->floor_no) && $this->floor_no != "")
         {
             $floortemp = explode(",", $this->floor_no);
-            //echo "<pre>";
-
-            //echo array_search("16+", $floortemp);
-            //print_r($floortemp);
-            
             if(array_search("16+", $floortemp))
             {
                 array_pop($floortemp);
@@ -233,7 +240,67 @@ class ResidentialpropertySearch extends Residentialproperty
             }
             //exit;
         }
-        //echo "<pre>"; print_r($query); exit;
+
+        // echo "<pre>"; print_r($query); exit;
+
+        return $dataProvider;
+    }
+
+
+    public function searchHome()
+    {
+        $query = Residentialproperty::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+
+        //$this->load($params);
+
+        if($this->available_for == 'Flatmate')
+        {
+            $this->available_for = "Rent";
+            $this->property_by = "Flatmate";
+        }
+
+        
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+
+            $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            //'id' => $this->id,
+            //'location_id' => $this->location_id,
+            //'city_id' => $this->city_id,
+            //'publish_on_web' => $this->publish_on_web,
+            //'status' => $this->status,
+            ]);
+
+
+        $query->andFilterWhere(['=', 'available_for', $this->available_for])
+            ->andFilterWhere(['in', 'property_type', $this->property_type])
+            ->andFilterWhere(['=', 'location_id', $this->location_id])
+            ->andFilterWhere(['=', 'city_id', $this->city_id])
+            ->andFilterWhere(['=', 'property_by', $this->property_by])
+            //->andFilterWhere(['in', 'bhk', $this->bhk])
+        ->andFilterWhere(['=', 'status', 1])
+        ->andFilterWhere(['=', 'publish_on_web', 1]);
+        //->andFilterWhere(['=', 'tbl_residentialproperty_amenities.property_id', $this->id]);
+        
+
+        $query->andFilterWhere(['between', 'expected_rate_comp', $this->min_rate_price, $this->max_rate_price]);
+
+        $query->andFilterWhere(['between', 'expected_rent_comp', $this->min_rent_price, $this->max_rent_price]);
+
+        // echo "<pre>"; print_r($query); exit;
 
         return $dataProvider;
     }

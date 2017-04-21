@@ -13,10 +13,10 @@ use app\models\Bhk;
 //echo "<pre>"; print_r($model);exit;
 ?>
 
-<div class="residentialproperty-search">
+<div class="commercialproperty-search">
 
     <?php $form = ActiveForm::begin([
-        'options'=>['id'=>'searchfiltercommercialproperty'],
+        'options'=>['id'=>'searchfiltercommercialproperty','name'=>'frmCommertialProperty','class'=>'frmCommertialProperty'],
         'action' => ['commercial-property/ajax-get-properties-update'],
         'method' => 'get',
     ]); ?>
@@ -289,7 +289,13 @@ use app\models\Bhk;
     <?php // echo $form->field($model, 'society_id') ?>
 
     <?php // echo $form->field($model, 'city_id')->hiddenInput(['value'=>33])->label(false); ?>
-    <?php echo $form->field($model, 'city_id')->hiddenInput(['value'=>33, 'id' => 'property_city_id'])->label(false); ?>
+    <input type="hidden" name="sortby" id="sortby" value="">
+    <?php echo $form->field($model, 'city_id')->hiddenInput(['id' => 'comm_property_city_id'])->label(false); ?>
+
+    <?php echo $form->field($model, 'nearby')->hiddenInput(['id'=>'comprop_nearby'])->label(false); ?>
+
+    <?php echo $form->field($model, 'min_carpet_area')->hiddenInput(['id'=>'commprop_minsqval'])->label(false); ?>
+    <?php echo $form->field($model, 'max_carpet_area')->hiddenInput(['id'=>'commprop_maxsqval'])->label(false); ?>
 
     <?php // echo $form->field($model, 'area_id') ?>
 
@@ -309,7 +315,7 @@ use app\models\Bhk;
 
     <?php // echo $form->field($model, 'lift_facility') ?>
 
-    <?php // echo $form->field($model, 'amenities') ?>
+    <?php // echo $form->field($model, 'amenities')->hiddenInput(['id'=>'commprop_amenities'])->label(false); ?>
 
     <?php // echo $form->field($model, 'expected_rate') ?>
 
@@ -369,7 +375,7 @@ use app\models\Bhk;
 
     <?php // echo $form->field($model, 'property_profile_photo') ?>
 
-    <?php // echo $form->field($model, 'gallery_images') ?>
+    <?php echo $form->field($model, 'gallery_images')->hiddenInput(['id'=>'haveimagefilter'])->label(false); ?>
 
     <?php // echo $form->field($model, 'property_video_link') ?>
 

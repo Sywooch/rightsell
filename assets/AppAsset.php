@@ -22,29 +22,29 @@ class AppAsset extends AssetBundle
     ];
     public $css = [
         //'css/site.css',
+        'css/style.css',
         'css/scroll.css',
         'css/responsive.css',
         'css/responsive-tabs.css',
         'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
         'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600',
         'css/bootstrap-multiselect.css',
-        'css/style.css',
     ];
     public $js = [
         //'js/jquery-1.10.2.min.js',
-        //'js/bootstrap.js',
+        //'js/bootstrap-multiselect.js',
+        'js/jquery-ui.js',
+        'js/bootstrap.js',
         'js/responsiveTabs.js',
         'js/jquery.mousewheel.js',
         'js/jquery.jscrollpane.min.js',
         'js/propertysearch.js',
-        'js/jquery-ui.js',
         'js/demo.js',
-        'js/bootstrap-multiselect.js',
         'js/thescripts.js',
     ];
     public $depends = [
-        //'yii\web\YiiAsset',
-        //'yii\bootstrap\BootstrapAsset',
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
     ];
 
     public $publishOptions = [

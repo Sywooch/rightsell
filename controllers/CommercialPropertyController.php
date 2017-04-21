@@ -5,9 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\Commercialproperty;
 use app\models\CommercialpropertySearch;
+use app\models\Location;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * CommercialPropertyController implements the CRUD actions for Commercialproperty model.
@@ -39,6 +41,39 @@ class CommercialPropertyController extends Controller
         $searchModel->city_id = $_GET['city'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 //echo "<pre>"; print_r($dataProvider);exit;
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'availablefr'=>'Sale and Rent',
+        ]);
+    }
+
+    public function actionIndexhome()
+    {
+        $searchModel = new CommercialpropertySearch();
+        $searchModel->load(Yii::$app->request->queryParams);
+        if($searchModel->min_rate_price != "")
+        {
+            if($searchModel->min_rate_price < 20)
+            {
+                $searchModel->min_rate_price = 10 * 100000;
+                $searchModel->max_rate_price = 20 * 100000;
+            }
+            else if($searchModel->min_rate_price < 30)
+            {
+                $searchModel->min_rate_price = 20 * 100000;
+                $searchModel->max_rate_price = 30 * 100000;
+            }
+            else if($searchModel->min_rate_price < 40)
+            {
+                $searchModel->min_rate_price = 30 * 100000;
+                $searchModel->max_rate_price = 40 * 100000;
+            }
+        }
+        // echo "<pre>"; print_r($searchModel);exit;
+
+        $dataProvider = $searchModel->searchHome();
+        // echo "<pre>"; print_r($dataProvider->getModels());exit;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

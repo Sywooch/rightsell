@@ -5,10 +5,12 @@ namespace app\controllers;
 use Yii;
 use app\models\Agriculturalproperty;
 use app\models\AgriculturalpropertySearch;
+use app\models\Location;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\ArrayHelper;
+use yii\data\ArrayDataProvider;
 /**
  * AgriculturalPropertyController implements the CRUD actions for Agriculturalproperty model.
  */
@@ -38,6 +40,39 @@ class AgriculturalPropertyController extends Controller
         $searchModel = new AgriculturalpropertySearch();
         $searchModel->city_id = $_GET['city'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'availablefr' => "Sale and Rent",
+        ]);
+    }
+
+    public function actionIndexhome()
+    {
+        $searchModel = new AgriculturalpropertySearch();
+        $searchModel->load(Yii::$app->request->queryParams);
+
+        if($searchModel->min_rate_price != "")
+        {
+            if($searchModel->min_rate_price < 20)
+            {
+                $searchModel->min_rate_price = 10 * 100000;
+                $searchModel->max_rate_price = 20 * 100000;
+            }
+            else if($searchModel->min_rate_price < 30)
+            {
+                $searchModel->min_rate_price = 20 * 100000;
+                $searchModel->max_rate_price = 30 * 100000;
+            }
+            else if($searchModel->min_rate_price < 40)
+            {
+                $searchModel->min_rate_price = 30 * 100000;
+                $searchModel->max_rate_price = 40 * 100000;
+            }
+        }
+        
+        $dataProvider = $searchModel->searchHome();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -126,6 +161,7 @@ class AgriculturalPropertyController extends Controller
 
     public function actionAjaxGetPropertiesUpdate()
     {
+        //echo "<pre>"; print_r($_GET);exit;
         $searchModel = new AgriculturalpropertySearch();
         $dataProvider = $searchModel->search($_GET);
         $locationnames = [];
@@ -137,13 +173,52 @@ class AgriculturalPropertyController extends Controller
                 $locationnames[] = $location['location'];
             }
         }
+
+        if(isset($searchModel->amenities) && $searchModel->amenities != "" )
+        {
+            $newarr = [];
+            $amenitiesarr = explode(",", $searchModel->amenities);
+            //echo "<pre>"; print_r($amenitiesarr);
+            foreach ($dataProvider->getModels() as $modl) {
+                $propamenityids = \app\models\AgriculturalpropertyAmenities::find()->where(['property_id' => $modl->id])->all();
+                $ids=[];
+                if($propamenityids)
+                {
+                    //print_r($propamenityids);
+                    foreach ($propamenityids as $val) {
+                        //echo $val->amenity_id." =><br/>";
+                        if(in_array($val->amenity_id, $amenitiesarr, true) == true);
+                        {
+                            //echo "in array".in_array($val->amenity_id, $amenitiesarr);
+                            $newarr[]=$modl;
+                            break;
+                        }
+                    }
+                }
+            }
+            //exit;
+            $provider = new ArrayDataProvider([
+                'allModels' => $newarr,
+                'pagination' => false,
+            ]);
+            return $this->renderPartial('property_item', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $provider,
+                'locationname' => implode(",", $locationnames),
+                'propby' => $searchModel->property_by,
+                'availablefr' => $searchModel->available_for,
+            ]);
+        }
+        else
+        {
         
-        return $this->renderPartial('property_item', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'locationname' => implode(",", $locationnames),
-            'propby' => "",
-            'availablefr' => $searchModel->available_for,
-        ]);
+            return $this->renderPartial('property_item', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'locationname' => implode(",", $locationnames),
+                'propby' => "",
+                'availablefr' => $searchModel->available_for,
+            ]);
+        }
     }
 }

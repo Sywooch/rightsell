@@ -243,4 +243,9 @@ class Residentialproperty extends \yii\db\ActiveRecord
     {
         return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
+
+    public function getAmenityies()
+    {
+        return $this->hasMany(ResidentialpropertyAmenities::className(), ['property_id' => 'id']);
+    }
 }
