@@ -55,11 +55,11 @@
 			<div class="row">
 				<div class="col-xs-6"><p><img src="images/area.png" alt="">Area - <?=$model->area.' Sq.ft.'?></p></div>
 				<?php if(strtolower($model->furnished) == "sf"): ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Semi-furnished</p></div>
+				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Semi-Furnished</p></div>
 				<?php elseif(strtolower($model->furnished)=="ff"): ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Fully furnished</p></div>
+				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Fully Furnished</p></div>
 				<?php else: ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Un-furnished</p></div>
+				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Non Furnished</p></div>
 				<?php endif;?>
 				<?php
 				$now = time(); // or your date as well
