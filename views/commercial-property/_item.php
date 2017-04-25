@@ -47,7 +47,21 @@
 			<button class="button orrange_btn">Rate <?=number_format($model->rate_details_comp)?></button>
 			<?php endif;?>
 			<div class="row">
-				<div class="col-xs-6"><p><img src="images/shop.jpg" alt=""><?=$model->type?ucfirst($model->type):"Any"?></p></div>
+				<?php
+				$minws = $model->min_workstations;
+				$maxws = $model->max_workstations;
+				$ws = $minws." - ".$maxws;
+				if($minws == 0)
+					$ws = $maxws;
+				if($ws == "")
+				{
+					$ws = 0;
+				}
+				?>
+				<div class="col-xs-6"><p><img src="images/shop.jpg" alt="">
+				<?php //$model->type?ucfirst($model->type):"Any"?>
+				<?= "Workstation - ".$ws?>
+				</p></div>
 				<div class="col-xs-6">
 				<p><img src="images/car.png" alt="">Parking - Four wheeler:<?=$model->four_wheeler_parking?$model->four_wheeler_parking:"0"?> Two wheeler: <?=$model->two_wheeler_parking?$model->two_wheeler_parking:"0"?> Lift: <?=$model->lift_facility?$model->lift_facility:"0"?></p>
 				</div>
