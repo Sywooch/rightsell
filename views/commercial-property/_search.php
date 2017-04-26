@@ -315,7 +315,7 @@ use app\models\Bhk;
 
     <?php // echo $form->field($model, 'lift_facility') ?>
 
-    <?php // echo $form->field($model, 'amenities')->hiddenInput(['id'=>'commprop_amenities'])->label(false); ?>
+    <?php echo $form->field($model, 'amenities')->hiddenInput(['id'=>'commprop_amenities'])->label(false); ?>
 
     <?php // echo $form->field($model, 'expected_rate') ?>
 
@@ -376,6 +376,8 @@ use app\models\Bhk;
     <?php // echo $form->field($model, 'property_profile_photo') ?>
 
     <?php echo $form->field($model, 'gallery_images')->hiddenInput(['id'=>'haveimagefilter'])->label(false); ?>
+    <?php echo $form->field($model, 'commprop_minws')->hiddenInput(['id'=>'commprop_minws'])->label(false); ?>
+    <?php echo $form->field($model, 'commprop_maxws')->hiddenInput(['id'=>'commprop_maxws'])->label(false); ?>
 
     <?php // echo $form->field($model, 'property_video_link') ?>
 

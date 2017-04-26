@@ -38,9 +38,9 @@ class CommercialPropertyController extends Controller
     public function actionIndex()
     {
         $searchModel = new CommercialpropertySearch();
+        // echo "<pre>"; print_r($_GET);exit;
         $searchModel->city_id = $_GET['city'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//echo "<pre>"; print_r($dataProvider);exit;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -163,6 +163,7 @@ class CommercialPropertyController extends Controller
     {
         $searchModel = new CommercialpropertySearch();
         $dataProvider = $searchModel->search($_GET);
+        // echo "<pre>"; print_r($_GET);exit;
         $locationnames = [];
         if(isset($searchModel->location_id))
         {

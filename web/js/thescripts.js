@@ -365,6 +365,16 @@ $("#filterResProp_maxsqfeet").on("keyup", function(){
 	$("#resprop_maxsqval").val(maxsqval);
 });
 
+$("#filterCommProp_minws").on("keyup", function(){
+	var minsqval = $(this).val();
+	$("#commprop_minws").val(minsqval);
+});
+
+$("#filterCommProp_maxws").on("keyup", function(){
+	var maxsqval = $(this).val();
+	$("#commprop_maxws").val(maxsqval);
+});
+
 	$("#searchfilterresidentialproperty :input, #searchfilterresidentialproperty > select, #toprespropfilter :input, #toprespropfilter > select").on("change", function() {
 		var bathroom = $("#filterResProp_bathroom").val();
 		var facing = $("#filterResProp_facing").val();

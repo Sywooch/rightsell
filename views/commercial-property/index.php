@@ -67,39 +67,50 @@ $host = "localhost";
 <div class="col-sm-4 amenities_col">
 <h1>Amenities</h1>
 <p>
-<input type="checkbox" id="pop_1" name="filterResProp_amenity[]" value="gym" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_1"><span></span><img src="images/gym.png" alt="">Gym</label>
+<input type="checkbox" id="pop_1" name="filterCommProp_amenity[]" value="Cafeteria" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="pop_1"><span></span><img src="images/gym.png" alt="">Cafeteria</label>
 </p>
 
 <p>
-<input type="checkbox" id="pop_3" name="filterResProp_amenity[]" value="powerbkp" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_3"><span></span><img src="images/power.png" alt="">Power backup</label>
+<input type="checkbox" id="pop_3" name="filterCommProp_amenity[]" value="Wifi" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="pop_3"><span></span><img src="images/power.png" alt="">Wifi</label>
 </p>
 
 <p>
-<input type="checkbox" id="pop_4" name="filterResProp_amenity[]" value="swimming" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_4"><span></span><img src="images/swiming.png" alt="">Swimming pool</label>
+<input type="checkbox" id="pop_4" name="filterCommProp_amenity[]" value="Conference" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="pop_4"><span></span><img src="images/swiming.png" alt="">Conference Facility</label>
 </p>
 
 <p>
-<input type="checkbox" id="pop_5" name="filterResProp_amenity[]" value="club" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_5"><span></span><img src="images/home_popup.png" alt="">Club House</label>
+<input type="checkbox" id="pop_5" name="filterCommProp_amenity[]" value="Vastu" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="pop_5"><span></span><img src="images/home_popup.png" alt="">Vastu Compliant</label>
 </p>
 <p>
-<input type="checkbox" id="pop_2" name="filterResProp_amenity[]" value="doorcam" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_2"><span></span><img src="images/door_cam.png" alt="">Door camera</label>
+<input type="checkbox" id="pop_2" name="filterCommProp_amenity[]" value="Reception" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="pop_2"><span></span><img src="images/door_cam.png" alt="">Reception</label>
 </p>
+
+<p>
+<input type="checkbox" id="pop_2" name="filterCommProp_amenity[]" value="Washroom" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="pop_2"><span></span><img src="images/door_cam.png" alt="">Washroom</label>
+</p>
+
+<p>
+<input type="checkbox" id="pop_2" name="filterCommProp_amenity[]" value="Fire Facility" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="pop_2"><span></span><img src="images/door_cam.png" alt="">Fire Facility</label>
+</p>
+
 </div>
 <div class="col-sm-3 filter_col">
 <h1>Filter by</h1>
-<select id="filterResProp_bathroom" name="filterResProp_bathroom">
+<!-- <select id="filterResProp_bathroom" name="filterResProp_bathroom">
 <option value="">Bathroom</option>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
-</select>
+</select> -->
 <hr>
-<select id="filterResProp_facing" name="filterResProp_facing">
+<select id="filterCommProp_facing" name="filterCommProp_facing">
 <option value="">Facing</option>
 <option value="East">East</option>
 <option value="West">West</option>
@@ -107,21 +118,21 @@ $host = "localhost";
 <option value="South">South</option>
 </select>
 <hr>
-<select id="filterResProp_floor" name="filterResProp_floor">
+<select id="filterCommProp_floor" name="filterCommProp_floor">
 <option value="">Floor</option>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
 </select>
 <hr>
-<select id="filterResProp_family" name="filterResProp_family">
+<!-- <select id="filterResProp_family" name="filterResProp_family">
 <option value="">Family</option>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
-</select>
+</select> -->
 <hr>
-<select id="filterResProp_status" name="filterResProp_status">
+<select id="filterCommProp_status" name="filterCommProp_status">
 <option value="">Status</option>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -133,10 +144,10 @@ $host = "localhost";
 <h1>Other</h1>
 <table>
 <tr>
-<td>Sq. ft. </td>
-<td><input id="filterResProp_minsqfeet" name="filterResProp_minsqfeet" type="text"></td>
+<td>Workstations </td>
+<td><input id="filterCommProp_minws" name="filterCommProp_minws" type="text"></td>
 <td>to</td>
-<td><input id="filterResProp_maxsqfeet" name="filterResProp_maxsqfeet" type="text"></td>
+<td><input id="filterCommProp_maxws" name="filterCommProp_maxws" type="text"></td>
 </tr>
 </table>
 <hr>
