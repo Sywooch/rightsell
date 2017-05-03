@@ -39,7 +39,8 @@ class CommercialPropertyController extends Controller
     {
         $searchModel = new CommercialpropertySearch();
         // echo "<pre>"; print_r($_GET);exit;
-        $searchModel->city_id = $_GET['city'];
+        if(isset($_GET['city']) && $_GET['city'] != "")
+            $searchModel->city_id = $_GET['city'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', [
             'searchModel' => $searchModel,

@@ -122,7 +122,7 @@ class CommercialpropertySearch extends Commercialproperty
             ->andFilterWhere(['like', 'building_name', $this->building_name])
             ->andFilterWhere(['like', 'splitted_area', $this->splitted_area])
             ->andFilterWhere(['like', 'total_no_of_floors', $this->total_no_of_floors])
-            ->andFilterWhere(['like', 'floor_no', $this->floor_no])
+            //->andFilterWhere(['like', 'floor_no', $this->floor_no])
             ->andFilterWhere(['like', 'office_no', $this->office_no])
             ->andFilterWhere(['like', 'rent_details', $this->rent_details])
             ->andFilterWhere(['like', 'rentunit', $this->rentunit])
@@ -216,11 +216,12 @@ class CommercialpropertySearch extends Commercialproperty
 
             $query->andFilterWhere(['between', 'rent_details_comp', $this->min_rent_price, $this->max_rent_price]);
 
-            $query->andFilterWhere(['between', 'area', $this->min_carpet_area,$this->max_carpet_area]);
+            //$query->andFilterWhere(['between', 'area', $this->min_carpet_area,$this->max_carpet_area]);
+            $query->andFilterWhere(['between', 'area', $this->commprop_minws,$this->commprop_maxws]);
 
-            $query->andFilterWhere(['>=', 'min_workstations', $this->commprop_minws]);
+            //$query->andFilterWhere(['>=', 'min_workstations', $this->commprop_minws]);
             
-            $query->andFilterWhere(['<', 'max_workstations', $this->commprop_maxws]);
+            //$query->andFilterWhere(['<', 'max_workstations', $this->commprop_maxws]);
 
             /*if(isset($this->amenities) && $this->amenities != "")
             {
@@ -252,6 +253,23 @@ class CommercialpropertySearch extends Commercialproperty
 
                 // $query->andFilterWhere(['in', 'amenities', $ids]);
 
+            }
+
+            $floortemp=[];
+            if(isset($this->floor_no) && $this->floor_no != "")
+            {
+                $floortemp = explode(",", $this->floor_no);
+                if(array_search("16+", $floortemp))
+                {
+                    array_pop($floortemp);
+                    $query->andFilterWhere(['in', 'floor_no', $floortemp]);
+                    $query->andFilterWhere(['>', 'floor_no', 16]);
+                }
+                else
+                {
+                    $query->andFilterWhere(['in', 'floor_no', $floortemp]);
+                }
+                //exit;
             }
 
             // echo "<pre>"; print_r($query); exit;

@@ -38,7 +38,8 @@ class AgriculturalPropertyController extends Controller
     public function actionIndex()
     {
         $searchModel = new AgriculturalpropertySearch();
-        $searchModel->city_id = $_GET['city'];
+        if(isset($_GET['city']) && $_GET['city'] != "")
+            $searchModel->city_id = $_GET['city'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

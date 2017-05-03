@@ -9,8 +9,13 @@ use app\models\Location;
 use app\models\Bhk;
 use yii\widgets\ActiveForm;
 
+use \app\models\Residentialproperty;
+use \app\models\Commercialproperty;
+use \app\models\Agriculturalproperty;
+
 $this->title = 'Rightsell';
 ?>
+<?php $host = "103.208.73.2";?>
 <section class="bg_white">
   <div class="container">
     <div class="row text-center">
@@ -39,13 +44,68 @@ $this->title = 'Rightsell';
       </div>
       <?php //$form = ActiveForm::begin(['action'=>['residential-property/index'],'method' => 'get']); 
 
-$residentialPropertiesforRent = \app\models\Residentialproperty::find()->where(["available_for"=>"Rent",'status'=>1,'publish_on_web'=>1])->orderBy("added_on desc")->limit(2)->all();
+$resPropRentLocCount = Residentialproperty::find()
+->select(['*, COUNT(location_id) AS cnt'])
+->where(["available_for"=>"Rent",'status'=>1,'publish_on_web'=>1])
+->groupBy(['location_id'])
+->orderBy("cnt desc")
+->all();
 
-  $residentialPropertiesforSale = \app\models\Residentialproperty::find()->where(["available_for"=>"Sale",'status'=>1,'publish_on_web'=>1])->orderBy("added_on desc")->limit(2)->all();
+$resPropSaleLocCount = Residentialproperty::find()
+->select(['*, COUNT(location_id) AS cnt'])
+->where(["available_for"=>"Sale",'status'=>1,'publish_on_web'=>1])
+->groupBy(['location_id'])
+->orderBy("cnt desc")
+->all();
 
-  $commercialProperties = \app\models\Commercialproperty::find()->where(['status'=>1,'publish_on_web'=>1])->orderBy("added_on desc")->limit(2)->all();
+$commPropLocCount = Commercialproperty::find()
+->select(['*, COUNT(location_id) AS cnt'])
+->where(['status'=>1,'publish_on_web'=>1])
+->groupBy(['location_id'])
+->orderBy("cnt desc")
+->all();
 
-  $agriculturalProperties = \app\models\Agriculturalproperty::find()->where(['status'=>1,'publish_on_web'=>1])->orderBy("added_on desc")->limit(2)->all();
+
+$agriPropLocCount = Agriculturalproperty::find()
+->select(['*, COUNT(location_id) AS cnt'])
+->where(['status'=>1,'publish_on_web'=>1])
+->groupBy(['location_id'])
+->orderBy("cnt desc")
+->all();
+
+
+
+$residentialPropertiesforRentArr = [];
+$residentialPropertiesforSaleArr = [];
+$commercialPropertiesArr = [];
+$agriculturalPropertiesArr = [];
+foreach ($resPropRentLocCount as $respropCnt) {
+  
+  $residentialPropertiesforRentArr[$respropCnt->location_id] = Residentialproperty::find()->where(["available_for"=>"Rent",'status'=>1,'publish_on_web'=>1,'location_id'=> $respropCnt->location_id])->orderBy("added_on desc")->limit(20)->all();
+}
+
+foreach ($resPropSaleLocCount as $respropCnt) {
+  
+  $residentialPropertiesforSaleArr[$respropCnt->location_id] = $residentialPropertiesforSale = Residentialproperty::find()->where(["available_for"=>"Sale",'status'=>1,'publish_on_web'=>1,'location_id'=> $respropCnt->location_id])->orderBy("added_on desc")->limit(20)->all();
+}
+
+foreach ($commPropLocCount as $respropCnt) {
+  
+  $commercialPropertiesArr[$respropCnt->location_id] = $residentialPropertiesforSale = Commercialproperty::find()->where(['status'=>1,'publish_on_web'=>1,'location_id'=> $respropCnt->location_id])->orderBy("added_on desc")->limit(20)->all();
+}
+
+foreach ($agriPropLocCount as $respropCnt) {
+  
+  $agriculturalPropertiesArr[$respropCnt->location_id] = $residentialPropertiesforSale = Agriculturalproperty::find()->where(['status'=>1,'publish_on_web'=>1,'location_id'=> $respropCnt->location_id])->orderBy("added_on desc")->limit(20)->all();
+}
+//echo "<pre>"; print_r($residentialPropertiesforSaleArr);exit;
+//$residentialPropertiesforRent = \app\models\Residentialproperty::find()->where(["available_for"=>"Rent",'status'=>1,'publish_on_web'=>1])->orderBy("added_on desc")->limit(2)->all();
+
+//$residentialPropertiesforSale = \app\models\Residentialproperty::find()->where(["available_for"=>"Sale",'status'=>1,'publish_on_web'=>1])->orderBy("added_on desc")->limit(20)->all();
+
+//$commercialProperties = \app\models\Commercialproperty::find()->where(['status'=>1,'publish_on_web'=>1])->orderBy("added_on desc")->limit(20)->all();
+
+//$agriculturalProperties = \app\models\Agriculturalproperty::find()->where(['status'=>1,'publish_on_web'=>1])->orderBy("added_on desc")->limit(20)->all();
 
 
 $citydata = City::find()
@@ -66,10 +126,10 @@ $locationdata = Location::find()
         <?php 
 
         $model = new \app\models\ResidentialpropertySearch();
-        $form = ActiveForm::begin(['action'=>['residential-property/indexhome'],'method'=>"get"]);
+        $form = ActiveForm::begin(['action'=>['residential-property/index'],'method'=>"get","id"=>"homerespropform"]);
         
         //echo $form->field($model, 'available_for')->hiddenInput()->label(false);
-        echo $form->field($model, 'location_id')->hiddenInput()->label(false);
+        //echo $form->field($model, 'location_id[]')->hiddenInput()->label(false);
         //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
         //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
         ?> 
@@ -85,7 +145,7 @@ $locationdata = Location::find()
               <div class="dd_row">
                 <ul class="">
                 <li>
-                <?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+                <?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi", 'required'=>true])->label(false);?>
                   <!-- <div class="dropdown">
                   <div id="" class="dd wrapper-dropdown-3 dd_resi_city" tabindex="1">
                     <span>Select City</span>
@@ -105,7 +165,7 @@ $locationdata = Location::find()
           </div>
           </div> --></li>
           <li>
-<?= $form->field($model, 'bhk')->dropdownList(ArrayHelper::map(Bhk::find()->all(),"id","name"),['prompt'=>"Select Bhk",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+<?= $form->field($model, 'bhk')->dropdownList(ArrayHelper::map(Bhk::find()->where(['status'=>1])->orderBy("name asc")->all(),"id","name"),['class'=>"dd wrapper-dropdown-3 dd_resi",'multiple'=>true,'id'=>"homeresbhkfilter"])->label(false);?>
           <!-- <div class="dropdown">
                     <div id="dd" class="wrapper-dropdown-4 dd_resi3" tabindex="1">
             <span>Select BHK</span>
@@ -119,7 +179,7 @@ $locationdata = Location::find()
           </div>
                   </div> --></li>
           <li>
-          <?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+          <?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['class'=>"dd wrapper-dropdown-3 dd_resi",'id'=>"homeresmin_rate_pricefilter"])->label(false);?>
           <!-- <div class="dropdown">
           <div id="" class="dd4 wrapper-dropdown-3 dd_resi4" tabindex="1">
           <span>Select Budget</span>
@@ -169,7 +229,19 @@ $locationdata = Location::find()
                       <div class="row">
                         <div class="col-md-3 nomargin nopadding">
                           <ul class="nav nav-tabs area_tabs">
-                            <li class="active"><a href="#Undri" data-toggle="tab">Undri</a></li>
+                          <?php 
+                          $i=0;
+                          foreach ($resPropRentLocCount as $rpc) {
+                            $cls = "";
+                            if($i== 0)
+                            {
+                              $cls = "active";
+                              $i++;
+                            }
+                              ?>
+                            <li class="<?=$cls?>"><a href="#rprent_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab"><?=trim($rpc->locations->location)?></a></li>
+                          <?php } ?>
+                            <!-- <li class="active"><a href="#Undri" data-toggle="tab">Undri</a></li>
                             <li><a href="#Loni" data-toggle="tab">Loni</a></li>
                             <li><a href="#Wagholi" data-toggle="tab">Wagholi</a></li>
                             <li><a href="#Kharadi" data-toggle="tab">Kharadi</a></li>
@@ -181,19 +253,19 @@ $locationdata = Location::find()
                             <li><a href="#Hadapsar" data-toggle="tab">Hadapsar</a></li>
                             <li><a href="#Karve_Nagar" data-toggle="tab">Karve Nagar</a></li>
                             <li><a href="#Kothrud" data-toggle="tab">Kothrud</a></li>
-              <li><a href="#Khadaki" data-toggle="tab">Khadaki</a></li>
+                            <li><a href="#Khadaki" data-toggle="tab">Khadaki</a></li>
                             <li><a href="#Hadapsar" data-toggle="tab">Hadapsar</a></li>
-                            <li><a href="#Karve_Nagar" data-toggle="tab">Karve Nagar</a></li>
+                            <li><a href="#Karve_Nagar" data-toggle="tab">Karve Nagar</a></li> -->
                           </ul>
                         </div>
                         <div class="col-md-9 nopadding">
                           <div class="tab-content">
-                            <div class="tab-pane active" id="Undri">
+                          <?php 
+                              foreach ($resPropRentLocCount as $respropCnt) {?>
+                            <div class="tab-pane active" id="rprent_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
                               <div class="scroll-pane">
-
                               <?php 
-                              //echo "<pre>"; print_r($residentialProperties);exit;
-                              foreach ($residentialPropertiesforRent as $resprop) {?>
+                              foreach ($residentialPropertiesforRentArr[$respropCnt->location_id] as $resprop) {?>
                 <div class="row home_pro_box">
       <div class="col-sm-5 nopadding">
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -218,7 +290,7 @@ $locationdata = Location::find()
       <div class="col-sm-7">
         <div class="row home_pro_detail">
         <h1><?= $resprop->bhks->name.", Near ".$resprop->locations->location?></h1>
-        <button class="button yellow_btn"><?= $resprop->bhks->name?></button>
+        <button class="button yellow_btn"><?=$resprop->bhks->name?></button>
         <button class="button orrange_btn">Rent <?= number_format($resprop->expected_rent_comp)?></button>
         <button class="button yellow_btn">Deposit <?= number_format($resprop->deposit_comp)?></button>
         <div class="row">
@@ -266,6 +338,7 @@ $locationdata = Location::find()
                               
                 </div>
                             </div>
+<?php }?>
                             <div class="tab-pane" id="Loni">
                   
                   
@@ -309,7 +382,19 @@ $locationdata = Location::find()
                       <div class="row">
                         <div class="col-md-3 nomargin nopadding">
                           <ul class="nav nav-tabs area_tabs">
-                            <li class="active"><a href="#Undri_2" data-toggle="tab">Undri</a></li>
+                          <?php 
+                          $i=0;
+                          foreach ($resPropSaleLocCount as $rpc) {
+                            $cls = "";
+                            if($i== 0)
+                            {
+                              $cls = "active";
+                              $i++;
+                            }
+                              ?>
+                            <li class="<?=$cls?>"><a href="#rpsale_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab"><?=trim($rpc->locations->location)?></a></li>
+                          <?php } ?>
+                            <!-- <li class="active"><a href="#Undri_2" data-toggle="tab">Undri</a></li>
                             <li><a href="#Loni_2" data-toggle="tab">Loni</a></li>
                             <li><a href="#Wagholi_2" data-toggle="tab">Wagholi</a></li>
                             <li><a href="#Kharadi_2" data-toggle="tab">Kharadi</a></li>
@@ -320,26 +405,37 @@ $locationdata = Location::find()
                             <li><a href="#Khadaki_2" data-toggle="tab">Khadaki</a></li>
                             <li><a href="#Hadapsar_2" data-toggle="tab">Hadapsar</a></li>
                             <li><a href="#Karve_Nagar_2" data-toggle="tab">Karve Nagar</a></li>
-                            <li><a href="#Kothrud_2" data-toggle="tab">Kothrud</a></li>
+                            <li><a href="#Kothrud_2" data-toggle="tab">Kothrud</a></li> -->
                           </ul>
                         </div>
                         <div class="col-md-9">
                           <div class="tab-content">
-                            <div class="tab-pane active" id="Undri_2">
+                          <?php foreach ($resPropSaleLocCount as $respropCnt) {?>
+                            <div class="tab-pane active" id="rpsale_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
 
                             <?php 
                               //echo "<pre>"; print_r($residentialProperties);exit;
-                              foreach ($residentialPropertiesforSale as $resprop) {?>
+                              foreach ($residentialPropertiesforSaleArr[$respropCnt->location_id] as $resprop) {?>
                 <div class="row home_pro_box">
       <div class="col-sm-5 nopadding">
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner" role="listbox">
-          <div class="item active">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
-          <div class="item">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
-          <div class="item">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
+          <?php
+          $images = json_decode($resprop->gallery_images);
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }
+        else 
+          echo '<div class="item">
+            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+          ?>
+
+          
           </div>
           <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -401,39 +497,8 @@ $locationdata = Location::find()
     <?php }?>
                               
                             </div>
-                            <div class="tab-pane" id="Loni_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Wagholi_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Kharadi_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Kondhwa_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Aundh_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Koregao_park_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Kalyani_nagar_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Khadaki_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Hadapsar_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Karve_Nagar_2">
-                              
-                            </div>
-                            <div class="tab-pane" id="Kothrud_2">
-                              
-                            </div>
+                            <?php }?>
+                           
                           </div>
                         </div>
                       </div>
@@ -442,7 +507,20 @@ $locationdata = Location::find()
                       <div class="row">
                         <div class="col-md-3 nomargin nopadding">
                           <ul class="nav nav-tabs area_tabs">
-                            <li class="active"><a href="#Undri_3" data-toggle="tab">Undri</a></li>
+                          <?php 
+                          $i=0;
+                          foreach ($commPropLocCount as $rpc) {
+                            $cls = "";
+                            if($i== 0)
+                            {
+                              $cls = "active";
+                              $i++;
+                            }
+                              ?>
+                            <li class="<?=$cls?>"><a href="#comm_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab"><?=trim($rpc->locations->location)?></a></li>
+                          <?php } ?>
+
+                            <!-- <li class="active"><a href="#Undri_3" data-toggle="tab">Undri</a></li>
                             <li><a href="#Loni_3" data-toggle="tab">Loni</a></li>
                             <li><a href="#Wagholi_3" data-toggle="tab">Wagholi</a></li>
                             <li><a href="#Kharadi_3" data-toggle="tab">Kharadi</a></li>
@@ -453,25 +531,35 @@ $locationdata = Location::find()
                             <li><a href="#Khadaki_3" data-toggle="tab">Khadaki</a></li>
                             <li><a href="#Hadapsar_3" data-toggle="tab">Hadapsar</a></li>
                             <li><a href="#Karve_Nagar_3" data-toggle="tab">Karve Nagar</a></li>
-                            <li><a href="#Kothrud_3" data-toggle="tab">Kothrud</a></li>
+                            <li><a href="#Kothrud_3" data-toggle="tab">Kothrud</a></li> -->
                           </ul>
                         </div>
                         <div class="col-md-9">
                           <div class="tab-content">
-                            <div class="tab-pane active" id="Undri_3">
+                          <?php foreach ($commPropLocCount as $respropCnt) {?>
+                            <div class="tab-pane active" id="comm_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
                               <?php 
                               //echo "<pre>"; print_r($residentialProperties);exit;
-                              foreach ($commercialProperties as $model) {?>
+                              foreach ($commercialPropertiesArr[$respropCnt->location_id] as $model) {?>
                 <div class="row home_pro_box">
       <div class="col-sm-5 nopadding">
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner" role="listbox">
-          <div class="item active">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
-          <div class="item">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
-          <div class="item">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
+          <?php
+          $images = json_decode($model->gallery_images);
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }
+        else 
+          echo '<div class="item">
+            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+          ?>
+          
           </div>
           <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -539,6 +627,7 @@ $locationdata = Location::find()
     </div>
     <?php }?>
                             </div>
+                            <?php }?>
                             <div class="tab-pane" id="Loni_3">
                               
                             </div>
@@ -572,7 +661,20 @@ $locationdata = Location::find()
                       <div class="row">
                         <div class="col-md-3 nomargin nopadding">
                           <ul class="nav nav-tabs area_tabs">
-                            <li class="active"><a href="#Undri_4" data-toggle="tab">Undri</a></li>
+                          <?php 
+                          $i=0;
+                          foreach ($agriPropLocCount as $rpc) {
+                            $cls = "";
+                            if($i== 0)
+                            {
+                              $cls = "active";
+                              $i++;
+                            }
+                              ?>
+                            <li class="<?=$cls?>"><a href="#agri_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab"><?=trim($rpc->locations->location)?></a></li>
+                          <?php } ?>
+
+                            <!-- <li class="active"><a href="#Undri_4" data-toggle="tab">Undri</a></li>
                             <li><a href="#Loni_4" data-toggle="tab">Loni</a></li>
                             <li><a href="#Wagholi_4" data-toggle="tab">Wagholi</a></li>
                             <li><a href="#Kharadi_4" data-toggle="tab">Kharadi</a></li>
@@ -583,25 +685,36 @@ $locationdata = Location::find()
                             <li><a href="#Khadaki_4" data-toggle="tab">Khadaki</a></li>
                             <li><a href="#Hadapsar_4" data-toggle="tab">Hadapsar</a></li>
                             <li><a href="#Karve_Nagar_4" data-toggle="tab">Karve Nagar</a></li>
-                            <li><a href="#Kothrud_4" data-toggle="tab">Kothrud</a></li>
+                            <li><a href="#Kothrud_4" data-toggle="tab">Kothrud</a></li> -->
                           </ul>
                         </div>
                         <div class="col-md-9">
                           <div class="tab-content">
-                            <div class="tab-pane active" id="Undri_4">
+                          <?php foreach ($agriPropLocCount as $respropCnt) {?>
+                            <div class="tab-pane active" id="agri_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
                               <?php 
                               //echo "<pre>"; print_r($residentialProperties);exit;
-                              foreach ($agriculturalProperties as $model) {?>
+                              foreach ($agriculturalPropertiesArr[$respropCnt->location_id] as $model) {?>
                 <div class="row home_pro_box">
       <div class="col-sm-5 nopadding">
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner" role="listbox">
-          <div class="item active">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
-          <div class="item">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
-          <div class="item">
-            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>
+          <?php
+          $images = json_decode($model->gallery_images);
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }
+        else 
+          echo '<div class="item active">
+            <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+          ?>
+
+          
           </div>
           <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -667,941 +780,8 @@ $locationdata = Location::find()
     </div>
     <?php }?>
                             </div>
-                            <div class="tab-pane" id="Loni_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Loni Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Wagholi_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Wagholi Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Kharadi_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Kharadi Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Kondhwa_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Kondhwa Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Aundh_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Aundh Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Koregao_park_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Koregao_park Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Kalyani_nagar_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Kalyani_nagar Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Khadaki_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Khadaki Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Hadapsar_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Hadapsar Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Karve_Nagar_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Karve_Nagar Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="tab-pane" id="Kothrud_4">
-                              <div class="row back5">
-                                <div class="col-md-4 col-sm-6">
-                                  <!-- <img src="images/img1.jpg" width="100%"/> -->
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6">Kothrud Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <div class="add2">
-                                    <button class="button button1">1BHK </button>
-                                    <button class="button button2">Rent 12,000</button>
-                                    <button class="button button1">Deposit 30,000</button>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row back6">
-                                <div class="col-md-4 col-sm-6">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                                      <!-- <li data-target="#myCarousel" data-slide-to="2"></li> -->
-                                      <!-- <li data-target="#myCarousel" data-slide-to="3"></li> -->
-                                    </ol>
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-                                      <div class="item active"> <img src="images/image3.jpg" alt="Chania"> </div>
-                                      <div class="item"> <img src="images/image1.jpg" alt="Chania"> </div>
-                                    </div>
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
-                                </div>
-                                <div class="col-md-8 mall col-sm-6"> Kanchanganga Apatment, Near Kinara hotel, Kothrud.<br/>
-                                  <button class="button button1">1BHK </button>
-                                  <button class="button button2">Rent 12,000</button>
-                                  <button class="button button1">Deposit 30,000</button>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/family.png"/> Family only </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car.png"/> Car parking </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/select_area.png"/> Area - 600 Sq.Ft. </div>
-                                    <div class="col-md-4 col-sm-6 add3"> <img src="images/car1.png"/> Un-furnished </div>
-                                  </div>
-                                  <div class="add">
-                                    <input type="checkbox" name="vehicle" value="Bike">
-                                    Add to compare<br>
-                                  </div>
-                                  <div>
-                                    <button class="button button3">Get Details</button>
-                                    <button class="button button3">Compare</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+
+                            <?php }?>
                           </div>
                         </div>
                       </div>
@@ -10633,8 +9813,31 @@ $locationdata = Location::find()
     </div>
   </div>
 </section>
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Tutorials
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="#">HTML</a></li>
+      <li><a href="#">CSS</a></li>
+      <li><a href="#">JavaScript</a></li>
+      <li class="divider"></li>
+      <li><a href="#">About Us</a></li>
+    </ul>
+  </div>
 <?php 
+$this->registerJsFile(Yii::$app->request->baseUrl . '/js/bootstrap-multiselect.js');
+
+$this->registerJS("
+$(function() {
+
+  //var dd = new DropDown( $('#residentialpropertysearch-city_id') );
+
+  //$('.ui.dropdown').dropdown();
+
+});
+  ");
 /*$this->registerJS("
+
       $( '#myTab a' ).click( function ( e ) {
         e.preventDefault();
         $( this ).tab( 'show' );

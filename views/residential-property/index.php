@@ -285,3 +285,28 @@ Pjax::begin([
     </div>
   </div>
 </div>
+
+
+
+<?php
+
+$this->registerJs("
+    /*$('#filterResProp_floor').multiselect({
+        nonSelectedText: 'Floor'
+    });
+
+    $('#filterCommProp_floor').multiselect({
+        nonSelectedText: 'Floor'
+    });
+
+    $('#homeresbhkfilter').multiselect({
+        nonSelectedText: 'Select Bhk'
+    });
+
+    $('#homeresmin_rate_pricefilter').multiselect({
+        nonSelectedText: 'Select Budget'
+    });*/
+");?>
+
+<?php //$this->registerJsFile('js/jquery-multiselect.js', [yii\web\JqueryAsset::className()]); ?>
+<?php //$this->registerJsFile('js/bootstrap-multiselect.js', [yii\web\JqueryAsset::className()]); ?>

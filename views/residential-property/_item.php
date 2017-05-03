@@ -1,4 +1,7 @@
-<?php $host = "103.208.73.2";
+<?php 
+
+use yii\helpers\Url;
+$host = "103.208.73.2";
 //echo "<pre>"; print_r($model);exit;
 ?>
 <div class="col-sm-5 nopadding">
@@ -36,7 +39,7 @@
 		</div>
 	</div>
 
-	<div class="col-sm-7">
+	<a href="<?=Url::to(['residential-property/view','id'=>$model->id])?>"><div class="col-sm-7">
 		<div class="row pro_detail">
 			<h1><?= $model->bhks->name?> Near <?= $model->locations->location?>.</h1>
 			<button class="button yellow_btn"><?= $model->bhks->name?></button>
@@ -106,3 +109,4 @@
 			</div>
 		</div>
 	</div>
+	</a>

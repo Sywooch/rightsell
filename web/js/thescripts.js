@@ -7,18 +7,31 @@ function extractLast( term ) {
 
 $(document).on("ready", function(){
 
- 	/*$('#filterResProp_floor').multiselect({
- 		 nonSelectedText: 'Floor'
+ 	$('#filterResProp_floor').multiselect({
+ 		nonSelectedText: 'Floor'
  	});
 
- 	$('#residentialproperty-bhk').multiselect({
+ 	$('#filterCommProp_floor').multiselect({
+ 		nonSelectedText: 'Floor'
+ 	});
+
+ 	$('#homeresbhkfilter').multiselect({
+ 		nonSelectedText: 'Select Bhk'
+ 	});
+
+ 	$('#homeresmin_rate_pricefilter').multiselect({
+ 		nonSelectedText: 'Select Budget'
+ 	});
+
+
+ 	/*$('#residentialproperty-bhk').multiselect({
  		 nonSelectedText: 'Select BHK'
  	});*/
 
 
- 	//$('#homerad_avaiblefor_rent').on("click")
-//$('#homerad_avaiblefor_buy').on("click")
-//$('#homerad_avaiblefor_flatmate').on("click")
+ 	// $('#homerad_avaiblefor_rent').on("click")
+	// $('#homerad_avaiblefor_buy').on("click")
+	// $('#homerad_avaiblefor_flatmate').on("click")
 
 	var selectedlocs = [];
 
@@ -129,7 +142,7 @@ $(document).on("ready", function(){
 		var floor = $("#filterResProp_floor").val();
 	});*/
 
-	$( "#residentialpropertysearch-locationname")
+	/*$( "#residentialpropertysearch-locationname")
 		.autocomplete({
 		source: function( request, response ) {
 			cityid = $("#residentialpropertysearch-city_id").val();
@@ -149,7 +162,52 @@ $(document).on("ready", function(){
 		  $( "#residentialpropertysearch-location_id").val(ui.item.id);
 		  return false;
 		}
-	});
+	});*/
+
+		$( "#residentialpropertysearch-locationname").autocomplete({
+        source: function( request, response ) {
+        	cityid = $("#residentialpropertysearch-city_id").val();
+          //$.getJSON( "index.php?r=residential-property/get-city-locations", {term: request.term}, response );
+          $.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
+        },
+        search: function() {
+          // custom minLength
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          if($.inArray(ui.item.id, selectedlocs) == -1)
+          {
+          	//$("#hidlocationids").append("<input type='hidden' name='rplocations[]' value='"+ui.item.id+"'/>");
+          	$("#homerespropform").append("<input type='hidden' name='ResidentialpropertySearch[location_id][]' value='"+ui.item.id+"'/>");
+          	//$("#sidelocationid").val(ui.item.id);
+          	//$("#sidelocationid").val(ui.item.id);
+          	this.value = terms.join( ", " );
+          	selectedlocs.push(ui.item.id);
+          	send();
+          }
+          else
+          {
+          	alert(ui.item.value+" already selected");	
+          }
+          //alert(ui.item.value+" selected");
+          return false;
+        }
+      });
+
 
 		$( "#commercialpropertysearch-locationname")
 		.autocomplete({
@@ -206,8 +264,9 @@ $(document).on("ready", function(){
       // })
       .autocomplete({
         source: function( request, response ) {
-        	cityid = $("#residentialpropertysearch-city_id").val();
-        	cityid = $("#property_city_id").val();
+        	var cityid = $("#residentialpropertysearch-city_id").val();
+        	var cityid = $("#property_city_id").val();
+
           //$.getJSON( "index.php?r=residential-property/get-city-locations", {term: request.term}, response );
           $.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
         },
@@ -407,7 +466,7 @@ $("#filterCommProp_maxws").on("keyup", function(){
 		//getRProperties();
 		var bathroom = $("#filterResProp_bathroom").val();
 		var facing = $("#filterResProp_facing").val();
-		var floor = $("#filterResProp_floor").val();
+		var floor = $("#filterCommProp_floor").val();
 		$("#floor_nofilter").val(floor);
 		$("#facingfilter").val(facing);
 		$("#bathroomfilter").val(bathroom);

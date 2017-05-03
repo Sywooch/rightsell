@@ -287,12 +287,12 @@ class ResidentialpropertySearch extends Residentialproperty
 
         $query->andFilterWhere(['=', 'available_for', $this->available_for])
             ->andFilterWhere(['in', 'property_type', $this->property_type])
-            ->andFilterWhere(['=', 'location_id', $this->location_id])
+            ->andFilterWhere(['in', 'location_id', $this->location_id])
             ->andFilterWhere(['=', 'city_id', $this->city_id])
             ->andFilterWhere(['=', 'property_by', $this->property_by])
-            //->andFilterWhere(['in', 'bhk', $this->bhk])
-        ->andFilterWhere(['=', 'status', 1])
-        ->andFilterWhere(['=', 'publish_on_web', 1]);
+            ->andFilterWhere(['in', 'bhk', $this->bhk])
+            ->andFilterWhere(['=', 'status', 1])
+            ->andFilterWhere(['=', 'publish_on_web', 1]);
         //->andFilterWhere(['=', 'tbl_residentialproperty_amenities.property_id', $this->id]);
         
 

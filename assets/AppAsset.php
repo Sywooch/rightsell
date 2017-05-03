@@ -31,23 +31,25 @@ class AppAsset extends AssetBundle
         'css/bootstrap-multiselect.css',
     ];
     public $js = [
-        //'js/jquery-1.10.2.min.js',
-        //'js/bootstrap-multiselect.js',
+        // 'js/jquery-1.10.2.min.js',
         'js/jquery-ui.js',
         'js/bootstrap.js',
         'js/responsiveTabs.js',
+        'js/bootstrap-multiselect.js',
         'js/jquery.mousewheel.js',
         'js/jquery.jscrollpane.min.js',
         'js/propertysearch.js',
-        'js/demo.js',
+        //'js/demo.js',
+        'js/simpleLightbox.min.js',
         'js/thescripts.js',
+        // 'https://rawgit.com/dbrekalo/attire/master/dist/js/build.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
 
-    public $publishOptions = [
+    /*public $publishOptions = [
         "only" => [
             "css/*",
             "js/*",
@@ -56,5 +58,5 @@ class AppAsset extends AssetBundle
             "doc/",
             "*.less",
         ],
-    ];
+    ];*/
 }

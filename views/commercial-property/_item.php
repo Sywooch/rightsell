@@ -63,7 +63,20 @@
 				<?= "Workstation - ".$ws?>
 				</p></div>
 				<div class="col-xs-6">
-				<p><img src="images/car.png" alt="">Parking - Four wheeler:<?=$model->four_wheeler_parking?$model->four_wheeler_parking:"0"?> Two wheeler: <?=$model->two_wheeler_parking?$model->two_wheeler_parking:"0"?> Lift: <?=$model->lift_facility?$model->lift_facility:"0"?></p>
+				<?php
+				$fwp = $model->four_wheeler_parking;
+				$twp = $model->two_wheeler_parking;
+				$parking = "No";
+				if($fwp != 0 && $twp != 0)
+					$parking = "Yes";
+				
+				// $parking = $model->four_wheeler_parking;
+
+				?>
+				<!-- <p><img src="images/car.png" alt="">Parking - Four wheeler:<?php /*$model->four_wheeler_parking?$model->four_wheeler_parking:"0"*/?> Two wheeler: <?php /*$model->two_wheeler_parking?$model->two_wheeler_parking:"0"*/?> Lift: <?php /*$model->lift_facility?$model->lift_facility:"0"*/?></p> -->
+
+				<p><img src="images/car.png" alt="">Parking - <?=$parking ?></p>
+
 				</div>
 			</div>	
 			<div class="row">
