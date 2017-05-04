@@ -14,6 +14,8 @@ use app\models\City;
 use app\models\Location;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
+use yii\db\Query;
+
 /**
  * ResidentialPropertyController implements the CRUD actions for Residentialproperty model.
  */
@@ -35,7 +37,7 @@ class ResidentialPropertyController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','indexhome', 'get-properties','get-all-cities','index-new','ajax-get-properties-update','get-city-locations','view'],
+                        'actions' => ['index','indexhome', 'get-properties','get-all-cities','index-new','ajax-get-properties-update','get-city-locations','view','city-list'],
                         'allow' => true,
                         'roles' => ['?'],
                     ]
@@ -65,6 +67,7 @@ class ResidentialPropertyController extends Controller
         if(Yii::$app->request->isPost)
         {
             $postdata = Yii::$app->request->post();
+
             $available_for = $postdata['available_for'];
             $nearby = false;
             if(isset($postdata['nearby']))
@@ -116,11 +119,52 @@ class ResidentialPropertyController extends Controller
         }
         else
         {
+            if(isset($_GET['home']) && $_GET['home']==1)
+            {
+                $available_for = $_GET['ResidentialpropertySearch']['available_for'];
+                $city_id = $_GET['ResidentialpropertySearch']['city_id'];
+                $locationname = $_GET['ResidentialpropertySearch']['locationname'];
+                $bhk = $_GET['ResidentialpropertySearch']['bhk'];
+                $min_rate_price = $_GET['ResidentialpropertySearch']['min_rate_price'];
+                $searchModel = new ResidentialpropertySearch();
+                $searchModel->available_for = $available_for;
+                $searchModel->location_id = $locationname;
+                $searchModel->city_id = $city_id;
+                $searchModel->bhk = $bhk;
 
-            $searchModel = new ResidentialpropertySearch();
-            if(isset($_GET['city']) && $_GET['city'] != "")
-                $searchModel->city_id = $_GET['city'];
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                $searchModel->min_rate_price = $min_rate_price;
+
+                if($searchModel->min_rate_price != "")
+                {
+                    if($searchModel->min_rate_price < 20)
+                    {
+                        $searchModel->min_rate_price = 10 * 100000;
+                        $searchModel->max_rate_price = 20 * 100000;
+                    }
+                    else if($searchModel->min_rate_price < 30)
+                    {
+                        $searchModel->min_rate_price = 20 * 100000;
+                        $searchModel->max_rate_price = 30 * 100000;
+                    }
+                    else if($searchModel->min_rate_price < 40)
+                    {
+                        $searchModel->min_rate_price = 30 * 100000;
+                        $searchModel->max_rate_price = 40 * 100000;
+                    }
+                }
+
+
+                $dataProvider = $searchModel->search(null);
+            }
+            else
+            {
+
+                $searchModel = new ResidentialpropertySearch();
+                
+                if(isset($_GET['city']) && $_GET['city'] != "")
+                    $searchModel->city_id = $_GET['city'];
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            }
             //echo "<pre>"; print_r($searchModel);exit;
         }
         return $this->render('index', [
@@ -357,23 +401,50 @@ class ResidentialPropertyController extends Controller
                 'allModels' => $newarr,
                 'pagination' => false,
             ]);
+            if(!$searchModel->available_for)
+                $available_for="Buy and Rent";
+            else
+                $available_for = $searchModel->available_for;
             return $this->renderPartial('property_item', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $provider,
                 'locationname' => implode(",", $locationnames),
                 'propby' => $searchModel->property_by,
-                'availablefr' => $searchModel->available_for,
+                'availablefr' => $available_for,
             ]);
         }
         else
         {
+            if(!$searchModel->available_for)
+                $available_for="Sale, Rent and Flatmate";
+            else
+                $available_for = $searchModel->available_for;
             return $this->renderPartial('property_item', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'locationname' => implode(",", $locationnames),
                 'propby' => $searchModel->property_by,
-                'availablefr' => $searchModel->available_for,
+                'availablefr' => $available_for,
             ]);
         }
     }
+
+    public function actionCityList($q = null, $id = null) {
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $out = ['results' => ['id' => '', 'text' => '']];
+    if (!is_null($q)) {
+        $query = new Query;
+        $query->select('id, location AS text')
+            ->from('tbl_location')
+            ->where(['like', 'location', $q])
+            ->limit(20);
+        $command = $query->createCommand();
+        $data = $command->queryAll();
+        $out['results'] = array_values($data);
+    }
+    elseif ($id > 0) {
+        $out['results'] = ['id' => $id, 'text' => Location::find($id)->location];
+    }
+    return $out;
+}
 }

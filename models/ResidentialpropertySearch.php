@@ -65,7 +65,13 @@ class ResidentialpropertySearch extends Residentialproperty
             ]);
 
         $this->load($params);
-        $locidstemp=$this->location_id;
+        $locidstemp=[];
+        if(isset($this->location_id) && $this->location_id!="")
+        {
+            $locidstemp=$this->location_id;
+
+
+        }
         //echo "<pre>"; print_r($this);exit;
         if($this->available_for == 'Flatmate')
         {
@@ -123,7 +129,7 @@ class ResidentialpropertySearch extends Residentialproperty
             $query->andFilterWhere(['=', 'bathroom', $this->bathroom]);
         }
         //echo $this->nearby; exit;
-        if($this->nearby === "true")
+        if($this->nearby === "true" && $this->location_id)
         {
             $Nearbylocationsmodels = Nearbylocations::find()->where(["in",'location_id',$this->location_id])->all();
             $nearbylocs = [];
@@ -133,10 +139,26 @@ class ResidentialpropertySearch extends Residentialproperty
                     $locidstemp[] = $nearbyloc->nearbylocation_id;
                 }
             }
+            // echo "<pre>"; 
+            // print_r($locidstemp); 
+            // exit;
+        }
+        else if($this->nearby === "false")
+        {
+            /*$Nearbylocationsmodels = Nearbylocations::find()->where(["in",'location_id',$this->location_id])->all();
+            $nearbylocs = [];
+            if($Nearbylocationsmodels)
+            {
+                foreach ($Nearbylocationsmodels as $nearbyloc) {
+                    $locidstemp[] = $nearbyloc->nearbylocation_id;
+                }
+            }*/
+            $this->nearby = null;
             /*echo "<pre>"; 
             print_r($locidstemp); 
             exit;*/
         }
+
 
         $query->andFilterWhere(['like', 'property_id', $this->property_id])
         ->andFilterWhere(['like', 'property_by', $this->property_by])
@@ -155,7 +177,7 @@ class ResidentialpropertySearch extends Residentialproperty
             //->andFilterWhere(['=', 'floor_no', $this->floor_no])
             //->andFilterWhere(['in', 'floor_no', $floortemp])
         ->andFilterWhere(['=', 'facing', $this->facing])
-        ->andFilterWhere(['in', 'location_id', $locidstemp])
+        
         ->andFilterWhere(['in', 'furnished', $this->furnished])
         ->andFilterWhere(['in', 'bhk', $this->bhk])
 
@@ -212,6 +234,11 @@ class ResidentialpropertySearch extends Residentialproperty
         //$query->andFilterWhere(['>=', 'expected_rent_comp', $this->min_rent_price])
             //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
 
+        if(count($locidstemp)>0)
+        {
+         // echo "<pre>"; print_r($locidstemp);exit;   
+        $query->andFilterWhere(['in', 'location_id', $locidstemp]);
+        }
         if($this->gallery_images === "true")
         {
             //echo "1"; exit;

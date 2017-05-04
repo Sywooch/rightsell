@@ -1700,14 +1700,15 @@ input[type="radio"]:checked + label span {
 	-webkit-appearance: none;  
 	-moz-appearance: none; 
 	background: #f2f2f2 url(../images/dd_sm_arrow.jpg) no-repeat right center;
-	width: 80px; 
+	width: 60px;         /* updated by harshu */
 	text-indent: 0.01px; 
 	text-overflow: ""; 
 
 	color: #646464;
 	border-radius: 0;
 	padding: 5px 0;
-	box-shadow:none; float:left
+	box-shadow:none; float:left;
+	margin-left: 3px; /* updated by harshu */
 }
 .demo select.balck {
 	background-color: #000;
@@ -1742,7 +1743,7 @@ input[type="radio"]:checked + label span {
 .border_right{ /*border-right:2px solid #929292; margin:5px 0*/ background:url(../images/sep.jpg) no-repeat left top}
 
 .chkbob_lable{ font-size:13px; font-weight:400; padding-top:2px;}
-.filter_text{ font-size:13px; font-weight:600; padding-top:3px;}
+.filter_text{ font-size:15px; font-weight:600; padding-top:3px;}  /* updated by harshu */
 .search_btn{ background:#ec3237; padding:6px 10px; font-size:18px; font-weight:300; color:#fdfdfd; border-radius:0; outline:none; float:right}
 .search_btn:hover, .search_btn:focus, .search_btn.focus{ background:#ec3237; color:#fff;}
 .nopadding{ padding:0}

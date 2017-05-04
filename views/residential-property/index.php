@@ -25,7 +25,7 @@ $host = "103.208.73.2";
 
 <form id="toprespropfilter">
 <div class="container-fluid toolbar_section">
-<div class="row search_section">
+<div class="row" style="background-color:#f3f3f3;">
 <div class="container">
 <div class="row ">
 <div class="col-sm-9">
@@ -105,9 +105,9 @@ $host = "103.208.73.2";
 <option value="West">West</option>
 <option value="North">North</option>
 <option value="South">South</option>
-<option value="North East">North East</option>
-<option value="North West">North West</option>
-<option value="South East">South East</option>
+<option value="North East">North-East</option>
+<option value="North West">North-West</option>
+<option value="South East">South-East</option>
 </select>
 <hr>
 <select id="filterResProp_floor" name="filterResProp_floor" multiple="multiple">
@@ -147,7 +147,8 @@ $host = "103.208.73.2";
 <hr>
 <p>
 <input type="checkbox" id="filterResProp_haveimage" name="filterResProp_haveimage" />
-<label class="chkbob_lable" for="filterResProp_haveimage"><span></span><img src="images/photo.png" alt="">Photos</label>
+<label class="chkbob_lable" for="filterResProp_haveimage"><span></span>Properties with images only
+<!-- <img src="images/photo.png" alt="">Photos</label> -->
 </p>
 <hr>
 <p><img src="images/rs_veryfi.png" alt=""><br>
@@ -162,13 +163,13 @@ $host = "103.208.73.2";
 </div>
 </li>
 
-<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/short_ico.jpg" class="short" alt="">Sort by Relevance <img src="images/dd_arrow.jpg" alt=""></a>
+<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/short_ico.jpg" class="short" alt="">Sort Properties <img src="images/dd_arrow.jpg" alt=""></a>
 <ul class="dropdown-menu" style="left:18px">
 <li class="first"><a href="#">Relavance</a></li>
 <li><a href="#" class="sortresprop" data-val="popular">Popularity</a></li>
 <li><a href="#" class="sortresprop" data-val="asc">Price (Low to high)</a></li>
 <li><a href="#" class="sortresprop" data-val="desc">Price (High to low)</a></li>
-<li><a href="#" class="sortresprop" data-val="rate">Seller Ratings </a></li>
+<li><a href="#" class="sortresprop" data-val="rate">Recommended Properties</a></li>
 <li><a href="#" class="sortresprop" data-val="postdate">Date Posted</a></li>
 </ul>
 </li>
@@ -185,11 +186,11 @@ $host = "103.208.73.2";
 <div class="col-md-12 breadcrum">
 <!-- <a href="<?= Url::to(["site/index"]);?>">Home</a> › <a href="#">Property for <?=$availablefr?> in <?=$city?></a> › <a href="#"><?=$locationname?></a> › All Residential --></div>
 <div class="col-md-3">
-<div class="pro_left_column"><div class="row">
-<div class="col-xs-7 filter_text">Filter your Search</div>
-<div class="col-xs-5"><a href="<?= Url::to(["residential-property/index","city"=>$city]);?>" class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
+<div class=""><div class="row">
+<div class="col-xs-7 filter_text">&nbsp;Filter your Search</div>
+<div class="col-xs-5"><a href="<?= Url::to(["residential-property/index","city"=>$city]);?>" class="button reset_btn" style="float:right; font-size:14px; margin:0; color:#f28533"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
 </div>
-</div>
+</div><br>
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 </div>
 
