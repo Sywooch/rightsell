@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
 use \app\models\Residentialproperty;
 use \app\models\Commercialproperty;
 use \app\models\Agriculturalproperty;
+use kartik\select2\Select2;
+use yii\web\JsExpression;
 
 $this->title = 'Rightsell';
 ?>
@@ -158,14 +160,47 @@ $locationdata = Location::find()
                 </div> -->
               </li>
           <li>
-          <?= $form->field($model, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
+          <?php //$form->field($model, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
+
+          <?php 
+
+          echo $form->field($model, 'locationname')->widget(Select2::classname(), [
+    'options' => ['placeholder' => 'Select Area ...',"class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"],
+    'size' => Select2::MEDIUM,
+    'theme' => Select2::THEME_BOOTSTRAP,
+    'pluginOptions' => [
+        'allowClear' => true,
+        'multiple' => true,
+    'ajax' => [
+        'url' => \yii\helpers\Url::to(['residential-property/city-list']),
+        'dataType' => 'json',
+        'data' => new JsExpression('function(params) { return {q:params.term}; }')
+    ],
+    ],
+])->label(false);
+
+          ?>
           <!-- <div class="dropdown">
           <div id="" class="dd2 dd_resi2" tabindex="1" style="width:450px; padding:0px 33px; border:1px solid #a5a5a5">
           <input name="" class="form-control" type="text" style="border:0; width:100%; background:#f3f3f3; height:32px; margin:0" placeholder="Search Area" id="filterIndex_locationname">
           </div>
           </div> --></li>
           <li>
-<?= $form->field($model, 'bhk')->dropdownList(ArrayHelper::map(Bhk::find()->where(['status'=>1])->orderBy("name asc")->all(),"id","name"),['class'=>"dd wrapper-dropdown-3 dd_resi",'multiple'=>true,'id'=>"homeresbhkfilter"])->label(false);?>
+<?php // $form->field($model, 'bhk')->dropdownList(ArrayHelper::map(Bhk::find()->where(['status'=>1])->orderBy("name asc")->all(),"id","name"),['class'=>"dd wrapper-dropdown-3 dd_resi",'multiple'=>true,'id'=>"homeresbhkfilter"])->label(false);?>
+<?php
+echo $form->field($model, 'bhk')->widget(Select2::classname(), [
+    'options' => ['placeholder' => 'Select BHK',"class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"],
+    'size' => Select2::MEDIUM,
+    'theme' => Select2::THEME_BOOTSTRAP,
+    'pluginOptions' => [
+        'allowClear' => true,
+        'multiple' => true,
+    ],
+    'data'=>[1=>'1 BHK',2=>'2 BHK',3=>'3 BHK',4=>'4 BHK',5=>'5 BHK'],
+])->label(false);
+
+?>
+<input type="hidden" name="home" value="1"/>
           <!-- <div class="dropdown">
                     <div id="dd" class="wrapper-dropdown-4 dd_resi3" tabindex="1">
             <span>Select BHK</span>
@@ -179,7 +214,7 @@ $locationdata = Location::find()
           </div>
                   </div> --></li>
           <li>
-          <?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['class'=>"dd wrapper-dropdown-3 dd_resi",'id'=>"homeresmin_rate_pricefilter"])->label(false);?>
+          <?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi",'id'=>"homeresmin_rate_pricefilter"])->label(false);?>
           <!-- <div class="dropdown">
           <div id="" class="dd4 wrapper-dropdown-3 dd_resi4" tabindex="1">
           <span>Select Budget</span>

@@ -275,7 +275,7 @@ $bhkModels = Bhk::find()->where(['status'=>1])->orderBy(["name" => "asc"])->all(
 ?>
     <?php // $form->field($model, 'area_id')->dropDownList(ArrayHelper::map($arealist,'id', 'area')) ?>
     <div id="vis">
-    <?= $form->field($model, 'location_id[]')->hiddenInput()->label(false) ?>
+    <?php // $form->field($model, 'location_id[]')->hiddenInput()->label(false) ?>
     </div>
     <?php // $form->field($model, 'locationname')->hiddenInput(['id'=>'sidelocationname'])->label(false) ?>
     <?php echo $form->field($model, 'nearby')->hiddenInput(['id'=>'resprop_nearby'])->label(false); ?>
