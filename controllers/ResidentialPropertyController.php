@@ -121,21 +121,31 @@ class ResidentialPropertyController extends Controller
         {
             if(isset($_GET['home']) && $_GET['home']==1)
             {
-                $available_for = $_GET['ResidentialpropertySearch']['available_for'];
-                $city_id = $_GET['ResidentialpropertySearch']['city_id'];
-                $locationname = $_GET['ResidentialpropertySearch']['locationname'];
-                $bhk = $_GET['ResidentialpropertySearch']['bhk'];
-                $min_rate_price = $_GET['ResidentialpropertySearch']['min_rate_price'];
+                // echo "<pre>"; print_r($_GET);exit;
                 $searchModel = new ResidentialpropertySearch();
-                $searchModel->available_for = $available_for;
-                $searchModel->location_id = $locationname;
-                $searchModel->city_id = $city_id;
-                $searchModel->bhk = $bhk;
 
-                $searchModel->min_rate_price = $min_rate_price;
-
-                if($searchModel->min_rate_price != "")
+                if(isset($_GET['ResidentialpropertySearch']['available_for']) && $_GET['ResidentialpropertySearch']['available_for'] != "")
                 {
+                    $searchModel->available_for = $_GET['ResidentialpropertySearch']['available_for'];
+                    $available_for = $searchModel->available_for;
+                }
+                else
+                {
+                    $available_for = "Sale and Rent";
+                }
+
+                if(isset($_GET['ResidentialpropertySearch']['locationname']) && $_GET['ResidentialpropertySearch']['locationname'] != "")
+                    $searchModel->location_id = $_GET['ResidentialpropertySearch']['locationname'];
+
+                if(isset($_GET['ResidentialpropertySearch']['city_id']) && $_GET['ResidentialpropertySearch']['city_id'] != "")
+                    $searchModel->city_id = $_GET['ResidentialpropertySearch']['city_id'];
+
+                if(isset($_GET['bhk']) && $_GET['bhk'] != "")
+                    $searchModel->bhk = $_GET['bhk'];
+
+                if(isset($_GET['ResidentialpropertySearch']['min_rate_price']) && $_GET['ResidentialpropertySearch']['min_rate_price'] != "")              
+                {
+                    $searchModel->min_rate_price = $_GET['ResidentialpropertySearch']['min_rate_price'];
                     if($searchModel->min_rate_price < 20)
                     {
                         $searchModel->min_rate_price = 10 * 100000;
@@ -163,14 +173,21 @@ class ResidentialPropertyController extends Controller
                 
                 if(isset($_GET['city']) && $_GET['city'] != "")
                     $searchModel->city_id = $_GET['city'];
+
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+                if($searchModel->available_for != "")
+                    $available_for = "Sale and Rent";
+                else
+                    $available_for = $searchModel->available_for;
             }
-            //echo "<pre>"; print_r($searchModel);exit;
+            
         }
+        // echo "<pre>"; print_r($searchModel);exit;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'availablefr' => "Sale and Rent",
+            'availablefr' => $available_for,
             'city' => $searchModel->city_id,
             'locationname' => "",
             //'location' => $searchModel->locations->name,

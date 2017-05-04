@@ -140,14 +140,35 @@ $locationdata = Location::find()
               <div class="row text-center">
                 <h2 class="rb_text_h1">
                 <!-- <a href="#." id="homerad_avaiblefor_rent" class="rb_text">Rent</a>  |  <a href="#." class="rb_text" id="homerad_avaiblefor_buy">Buy</a>  |  <a href="#." id="homerad_avaiblefor_flatmate" class="rb_text">Flatmate</a> -->
-                  <?= $form->field($model, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Sale','Flatmate'=>'Flatmate'])->label(false);?>
+                  <?= $form->field($model, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Sale','Flatmate'=>'Flatmate'],
+                        [
+                                'item' => function($index, $label, $name, $checked, $value) {
+                                    if($checked)
+                                    {
+                                    $return = '<label for="" class="radio_text_active">';
+                                    }
+                                    else
+                                    $return = '<label for="" class="radio_text">';
+
+
+                                    $return .= '<input type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
+                                    $return .= '<i></i>';
+                                    $return .= '<span>' . ucwords($label) . ' | </span>';
+                                    $return .= '</label>';
+
+                                    return $return;
+                                }
+                            ])->label(false);?>
 
                 </h2>
               </div>
               <div class="dd_row">
                 <ul class="">
-                <li class="demo">
-                <?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi ", 'required'=>true])->label(false);?>
+                <li class="demo_home">
+                <table class="dd_table">
+                  <tr><td><img src="images/location_30km.png" class="img-responsive" alt="">
+                  </td><td><?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi ", 'required'=>true])->label(false);?></td></tr>
+                </table>
                   <!-- <div class="dropdown">
                   <div id="" class="dd wrapper-dropdown-3 dd_resi_city" tabindex="1">
                     <span>Select City</span>
@@ -200,12 +221,12 @@ $locationdata = Location::find()
 // ])->label(false);
 
 ?>
-<select id="lstFruits" multiple="multiple">
-        <option value="1">Mango</option>
-        <option value="2">Apple</option>
-        <option value="3">Banana</option>
-        <option value="4">Guava</option>
-        <option value="5">Orange</option>
+<select id="bhk" name="bhk[]" multiple="multiple">
+        <option value="1">1 BHK</option>
+        <option value="2">2 BHK</option>
+        <option value="3">3 BHK</option>
+        <option value="4">4 BHK</option>
+        <option value="5">5 BHK</option>
 
     </select>
 <input type="hidden" name="home" value="1"/>
@@ -9856,17 +9877,7 @@ $locationdata = Location::find()
     </div>
   </div>
 </section>
-<div class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Tutorials
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu">
-      <li><a href="#">HTML</a></li>
-      <li><a href="#">CSS</a></li>
-      <li><a href="#">JavaScript</a></li>
-      <li class="divider"></li>
-      <li><a href="#">About Us</a></li>
-    </ul>
-  </div>
+
 <?php 
 //$this->registerJsFile(Yii::$app->request->baseUrl . '/js/bootstrap-multiselect.js');
 
