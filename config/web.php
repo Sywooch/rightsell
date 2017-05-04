@@ -8,20 +8,20 @@ $config = [
     'bootstrap' => ['log'],
     'components' => [
 
-        'assetManager' => [
+        /*'assetManager' => [
             'bundles' => [
                 'yii\web\JqueryAsset' => [
                     // 'js'=>[]
                 ],
                 'yii\bootstrap\BootstrapPluginAsset' => [
-                    // 'js'=>[]
+                    'js'=>[]
                 ],
                 'yii\bootstrap\BootstrapAsset' => [
                     'css' => [],
                 ],
 
             ],
-        ],
+        ],*/
 
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
