@@ -93,7 +93,7 @@ class ResidentialpropertySearch extends Residentialproperty
             'id' => $this->id,
             //'location_id' => $this->location_id,
             //'gallery_images' => $this->gallery_images,
-            'bhk' => $this->bhk,
+            //'bhk' => $this->bhk,
             'society_id' => $this->society_id,
             'city_id' => $this->city_id,
             'area_id' => $this->area_id,
@@ -162,7 +162,7 @@ class ResidentialpropertySearch extends Residentialproperty
 
         $query->andFilterWhere(['like', 'property_id', $this->property_id])
         ->andFilterWhere(['like', 'property_by', $this->property_by])
-        ->andFilterWhere(['like', 'available_for', $this->available_for])
+        ->andFilterWhere(['=', 'available_for', $this->available_for])
         ->andFilterWhere(['in', 'property_type', $this->property_type])
         ->andFilterWhere(['like', 'builtup_area', $this->builtup_area])
         ->andFilterWhere(['like', 'builtup_unit', $this->builtup_unit])
