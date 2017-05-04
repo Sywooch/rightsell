@@ -306,7 +306,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <hr class="detail_hr_line2">
                     <div class="row detail_neighbourhood">
                         <h1>Neighbourhood</h1>
-                        <div id="map">Your map</div>
+                        <div id="map" style="width: 100%; height: 250px" >Your map</div>
                         <!-- <img src="images/map.jpg" class="img-responsive" alt=""> -->
                     </div>
                 </div>
