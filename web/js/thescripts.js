@@ -8,8 +8,31 @@ function extractLast( term ) {
 $(document).on("ready", function(){
 
  	$('#filterResProp_floor').multiselect({
- 		 nonSelectedText: 'Floor'
+ 		nonSelectedText: 'Floor'
  	});
+
+ 	$('#filterCommProp_floor').multiselect({
+ 		nonSelectedText: 'Floor'
+ 	});
+
+ 	$('#homeresbhkfilter').multiselect({
+ 		nonSelectedText: 'Select Bhk'
+ 	});
+
+ 	$('#homeresmin_rate_pricefilter').multiselect({
+ 		nonSelectedText: 'Select Budget'
+ 	});
+
+
+ 	/*$('#residentialproperty-bhk').multiselect({
+ 		 nonSelectedText: 'Select BHK'
+ 	});*/
+
+
+ 	// $('#homerad_avaiblefor_rent').on("click")
+	// $('#homerad_avaiblefor_buy').on("click")
+	// $('#homerad_avaiblefor_flatmate').on("click")
+
 	var selectedlocs = [];
 
 	var cityid = $("#residentialpropertysearch-city_id").val();
@@ -97,7 +120,7 @@ $(document).on("ready", function(){
 		}
 	});
 
-	$('#filterResProp_locationname').keydown(function(e){
+	$('#filterResProp_locationname, #filterCommProp_locationname,#filterAgriProp_locationname').keydown(function(e){
 		if(this.value == "")
 		{
 			$("#vis").html("");
@@ -119,7 +142,119 @@ $(document).on("ready", function(){
 		var floor = $("#filterResProp_floor").val();
 	});*/
 
-	$( "#filterResProp_locationname" )
+	/*$( "#residentialpropertysearch-locationname")
+		.autocomplete({
+		source: function( request, response ) {
+			cityid = $("#residentialpropertysearch-city_id").val();
+			$.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
+		},
+		search: function() {
+		  var term = extractLast( this.value );
+		  if ( term.length < 2 ) {
+		    return false;
+		  }
+		},
+		focus: function() {
+		  return false;
+		},
+		select: function( event, ui ) {
+		  this.value = ui.item.value;
+		  $( "#residentialpropertysearch-location_id").val(ui.item.id);
+		  return false;
+		}
+	});*/
+
+		$( "#residentialpropertysearch-locationname").autocomplete({
+        source: function( request, response ) {
+        	cityid = $("#residentialpropertysearch-city_id").val();
+          //$.getJSON( "index.php?r=residential-property/get-city-locations", {term: request.term}, response );
+          $.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
+        },
+        search: function() {
+          // custom minLength
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          if($.inArray(ui.item.id, selectedlocs) == -1)
+          {
+          	//$("#hidlocationids").append("<input type='hidden' name='rplocations[]' value='"+ui.item.id+"'/>");
+          	$("#homerespropform").append("<input type='hidden' name='ResidentialpropertySearch[location_id][]' value='"+ui.item.id+"'/>");
+          	//$("#sidelocationid").val(ui.item.id);
+          	//$("#sidelocationid").val(ui.item.id);
+          	this.value = terms.join( ", " );
+          	selectedlocs.push(ui.item.id);
+          	send();
+          }
+          else
+          {
+          	alert(ui.item.value+" already selected");	
+          }
+          //alert(ui.item.value+" selected");
+          return false;
+        }
+      });
+
+
+		$( "#commercialpropertysearch-locationname")
+		.autocomplete({
+		source: function( request, response ) {
+			cityid = $("#commercialpropertysearch-city_id").val();
+			$.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
+		},
+		search: function() {
+		  var term = extractLast( this.value );
+		  if ( term.length < 2 ) {
+		    return false;
+		  }
+		},
+		focus: function() {
+		  return false;
+		},
+		select: function( event, ui ) {
+		  this.value = ui.item.value;
+		  $( "#commercialpropertysearch-location_id").val(ui.item.id);
+		  return false;
+		}
+	});
+
+		$( "#agriculturalpropertysearch-locationname")
+		.autocomplete({
+		source: function( request, response ) {
+			cityid = $("#agriculturalpropertysearch-city_id").val();
+			$.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
+		},
+		search: function() {
+		  var term = extractLast( this.value );
+		  if ( term.length < 2 ) {
+		    return false;
+		  }
+		},
+		focus: function() {
+		  return false;
+		},
+		select: function( event, ui ) {
+		  this.value = ui.item.value;
+		  $( "#agriculturalpropertysearch-location_id").val(ui.item.id);
+		  return false;
+		}
+	});
+
+
+      $( "#filterResProp_locationname" )
       // don't navigate away from the field on tab when selecting an item
       // .on( "keydown", function( event ) {
       //   if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -129,8 +264,9 @@ $(document).on("ready", function(){
       // })
       .autocomplete({
         source: function( request, response ) {
-        	cityid = $("#residentialpropertysearch-city_id").val();
-        	cityid = $("#property_city_id").val();
+        	var cityid = $("#residentialpropertysearch-city_id").val();
+        	var cityid = $("#property_city_id").val();
+
           //$.getJSON( "index.php?r=residential-property/get-city-locations", {term: request.term}, response );
           $.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
         },
@@ -161,6 +297,7 @@ $(document).on("ready", function(){
           	//$("#sidelocationid").val(ui.item.id);
           	this.value = terms.join( ", " );
           	selectedlocs.push(ui.item.id);
+          	send();
           }
           else
           {
@@ -170,9 +307,111 @@ $(document).on("ready", function(){
           return false;
         }
       });
+
+
+      $( "#filterCommProp_locationname" )
+      .autocomplete({
+        source: function( request, response ) {
+        	//cityid = $("#commercialpropertysearch-city_id").val();
+        	cityid = $("#comm_property_city_id").val();
+          	$.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
+        },
+        search: function() {
+          // custom minLength
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        },
+        focus: function() {
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          if($.inArray(ui.item.id, selectedlocs) == -1)
+          {
+          	$("#vis").append("<input type='hidden' name='CommercialpropertySearch[location_id][]' value='"+ui.item.id+"'/>");
+          	this.value = terms.join( ", " );
+          	selectedlocs.push(ui.item.id);
+          	sendCP();
+          }
+          else
+          {
+          	alert(ui.item.value+" already selected");	
+          }
+          //alert(ui.item.value+" selected");
+          return false;
+        }
+      });
+
+      $( "#filterAgriProp_locationname" )
+      .autocomplete({
+        source: function( request, response ) {
+        	cityid = $("#agri_property_city_id").val();
+          	$.getJSON( "index.php?r=residential-property/get-city-locations", {cityid:cityid, locationname: extractLast(request.term)}, response );
+        },
+        search: function() {
+          // custom minLength
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        },
+        focus: function() {
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          if($.inArray(ui.item.id, selectedlocs) == -1)
+          {
+          	$("#vis").append("<input type='hidden' name='AgriculturalpropertySearch[location_id][]' value='"+ui.item.id+"'/>");
+          	this.value = terms.join( ", " );
+          	selectedlocs.push(ui.item.id);
+          	sendAP();
+          }
+          else
+          {
+          	alert(ui.item.value+" already selected");	
+          }
+          //alert(ui.item.value+" selected");
+          return false;
+        }
+      });
+
 $("#filterResProp_nearby").on("change", function(){
-	$("#resprop_nearby").val($("#filterResProp_nearby").is(":checked"));
+	$("#resprop_nearby").val($(this).is(":checked"));
 	//alert($("#filterResProp_nearby").is(":checked"));
+});
+
+
+$("#filterCommProp_nearby").on("change", function(){
+	$("#comprop_nearby").val($(this).is(":checked"));
+});
+
+$("#filterAgriProp_nearby").on("change", function(){
+	$("#agriprop_nearby").val($(this).is(":checked"));
+});
+
+$("#filterResProp_haveimage, #filterCommProp_haveimage, #filterAgriProp_haveimage").on("change", function(){
+	//$("#haveimagefilter").val($("#filterResProp_haveimage").is(":checked"));
+	$("#haveimagefilter").val($(this).is(":checked"));
+});
+
+
+$("#filterResProp_status").on("change", function(){
+	$("#remarkfilter").val($(this).val());
 });
 
 $("#filterResProp_minsqfeet").on("keyup", function(){
@@ -183,6 +422,16 @@ $("#filterResProp_minsqfeet").on("keyup", function(){
 $("#filterResProp_maxsqfeet").on("keyup", function(){
 	var maxsqval = $(this).val();
 	$("#resprop_maxsqval").val(maxsqval);
+});
+
+$("#filterCommProp_minws").on("keyup", function(){
+	var minsqval = $(this).val();
+	$("#commprop_minws").val(minsqval);
+});
+
+$("#filterCommProp_maxws").on("keyup", function(){
+	var maxsqval = $(this).val();
+	$("#commprop_maxws").val(maxsqval);
 });
 
 	$("#searchfilterresidentialproperty :input, #searchfilterresidentialproperty > select, #toprespropfilter :input, #toprespropfilter > select").on("change", function() {
@@ -212,20 +461,19 @@ $("#filterResProp_maxsqfeet").on("keyup", function(){
     /*$("#searchfiltercommercialproperty > select").on("change", function() {
     	sendCP();
     });*/
-    $("#searchfiltercommercialproperty :input, #searchfiltercommercialproperty > select").on("change", function() {
+    $("#searchfiltercommercialproperty :input, #searchfiltercommercialproperty > select, #topcommpropfilter :input, #topcommpropfilter > select").on("change", function() {
 		//$.pjax.submit($("#search-form"));
 		//getRProperties();
 		var bathroom = $("#filterResProp_bathroom").val();
 		var facing = $("#filterResProp_facing").val();
-		var floor = $("#filterResProp_floor").val();
+		var floor = $("#filterCommProp_floor").val();
 		$("#floor_nofilter").val(floor);
 		$("#facingfilter").val(facing);
 		$("#bathroomfilter").val(bathroom);
-		
 		sendCP();
     });
 
-    $("#searchfilteragriculturalproperty :input, #searchfilteragriculturalproperty > select").on("change", function() {
+    $("#searchfilteragriculturalproperty :input, #searchfilteragriculturalproperty > select, #topagripropfilter :input, #topagripropfilter > select").on("change", function() {
 		//$.pjax.submit($("#search-form"));
 		//getRProperties();
 		var bathroom = $("#filterResProp_bathroom").val();
@@ -245,7 +493,7 @@ $("#filterResProp_maxsqfeet").on("keyup", function(){
 		var order = $(this).data('val');
 		//$("#sortby").val($(this).data('val'));
 		var availablefor = '';
-		availablefor = $("input[name='available_for']:checked").val();
+		availablefor = $("input[name='ResidentialpropertySearch[available_for]']:checked").val();
 		if(availablefor=="Sale" && order == "asc")
 		{
 			$("#sortby").val("&sort=expected_rate_comp");
@@ -281,69 +529,95 @@ $("#filterResProp_maxsqfeet").on("keyup", function(){
 		send();
 	});
 
-	/*$("#proplocations > .selloc").on("click", function(){
-		console.log("hsad");
+
+	$(".sortcommprop").on("click", function(e){
+		e.preventDefault();
+		var order = $(this).data('val');
+		//$("#sortby").val($(this).data('val'));
+		var availablefor = '';
+		availablefor = $("input[name='CommercialpropertySearch[available_for]']:checked").val();
+		if(availablefor=="Sale" && order == "asc")
+		{
+			$("#sortby").val("&sort=rate_details_comp");
+		}
+		else if(availablefor=="Sale" && order == "desc")
+		{
+			$("#sortby").val("&sort=-rate_details_comp");
+		}
+		else if(availablefor=="Lease" && order == "asc")
+		{
+			$("#sortby").val("&sort=rent_details_comp");
+		}
+		else if(availablefor=="Lease" && order == "desc")
+		{
+			$("#sortby").val("&sort=-rent_details_comp");
+		}
+		else if(order == "asc")
+		{
+			$("#sortby").val("&sort=rate_details_comp");
+		}
+		else if(order == "desc")
+		{
+			$("#sortby").val("&sort=-rate_details_comp");
+		}
+		sendCP();
 	});
 
-	$(".filterResPropAmenity").on("click", function()
-	{
-		getRProperties();
+	$(".sortagriprop").on("click", function(e){
+		e.preventDefault();
+		var order = $(this).data('val');
+		//$("#sortby").val($(this).data('val'));
+		var availablefor = '';
+		availablefor = $("input[name='AgriculturalpropertySearch[available_for]']:checked").val();
+		if(availablefor=="Sale" && order == "asc")
+		{
+			$("#sortby").val("&sort=expected_rate_comp");
+		}
+		else if(availablefor=="Sale" && order == "desc")
+		{
+			$("#sortby").val("&sort=-expected_rate_comp");
+		}
+		else if(availablefor=="Rent" && order == "asc")
+		{
+			$("#sortby").val("&sort=expected_rent_comp");
+		}
+		else if(availablefor=="Rent" && order == "desc")
+		{
+			$("#sortby").val("&sort=-expected_rent_comp");
+		}
+		else if(order == "asc")
+		{
+			$("#sortby").val("&sort=expected_rate_comp");
+		}
+		else if(order == "desc")
+		{
+			$("#sortby").val("&sort=-expected_rate_comp");
+		}
+		sendAP();
 	});
-
-	$(".filterResPropFurnished").on("click", function()
-	{
-		getRProperties();
-	});
-
-	$("#filterResProp_bathroom").on("change", function()
-	{
-		getRProperties();
-	});
-	$("#filterResProp_facing").on("change", function()
-	{
-		getRProperties();
-	});
-	$("#filterResProp_floor").on("change", function()
-	{
-		getRProperties();
-	});
-
-	$(".rpfilter_availablefor").on("change", function()
-	{
-		getRProperties();
-	});
-
-	$(".rpfilter_propertyby").on("change", function()
-	{
-		getRProperties();
-	});
-
-	$(".search_btn").on("click", function(){
-		getRProperties();
-	})*/
 });
 
 function getCityLocations(cityid, locationname)
 {
 	$.ajax(
-		{
-			type:"POST",
-			url:"index.php?r=residential-property/get-city-locations",
-			data:{cityid:cityid, locationname: locationname},
-		}).success(function(data){
-			if(data)
-			 	$("#proplocations").html("");
-			var jsonobj = $.parseJSON(data);
-			for (var i = jsonobj.length - 1; i >= 0; i--) {
-				$("#proplocations").append("<li class='selloc'>"+jsonobj[i].location+"</li>");
-				//console.log(jsonobj[i]);
-			}
-		}).fail(function(data){
-			console.log(data);			
-		});
+	{
+		type:"POST",
+		url:"index.php?r=residential-property/get-city-locations",
+		data:{cityid:cityid, locationname: locationname},
+	}).success(function(data){
+		if(data)
+		 	$("#proplocations").html("");
+		var jsonobj = $.parseJSON(data);
+		for (var i = jsonobj.length - 1; i >= 0; i--) {
+			$("#proplocations").append("<li class='selloc'>"+jsonobj[i].location+"</li>");
+			//console.log(jsonobj[i]);
+		}
+	}).fail(function(data){
+		console.log(data);			
+	});
 }
 
-function getRProperties()
+/*function getRProperties()
 {
 	var cityid = $("#filterResProp_cityid").val();
 	var bathroom = $("#filterResProp_bathroom").val();
@@ -403,23 +677,31 @@ function getRProperties()
 			//console.log(data);			
 		});
 }
-
+*/
 function sendAP(){
 	//var data = {bathroom:bathroom,facing:facing,floor_no:floor,city_id:cityid,location_id:locationidsarr,amenities:checkedamenities,furnished:furnishedarr,available_for:availablefor,property_by:propertyby,bhk:bhkarr,property_type:proptypearr,minrate:minrate,maxrate:maxrate,minrent:minrent,maxrent:maxrent};
 	var locationidsarr = [];
 	$.each($("input[name='rplocations[]']"), function(){
 		locationidsarr.push($(this).val());
 	});
-	//console.log(locationidsarr);
+	var checkedamenities = [];
+	$.each($("input[name='filterAgriProp_amenity[]']:checked"), function(){
+		checkedamenities. push($(this). val());
+	$("#agriprop_amenities").val(checkedamenities);
+	});
 
+	//$("#haveimagefilter").val($("#filterCommProp_haveimage").is(":checked"));
+	
+
+	var sortng = $("#sortby").val();
 	var data = $("#searchfilteragriculturalproperty").serialize();
 
 	$.ajax(
 		{
-			method:'get',
-			//url:"index.php?r=residential-property/ajax-get-properties-update",
-			url:"index.php?"+data
-			//data:{data},
+			url    : $("#searchfilteragriculturalproperty").attr('action'),
+			//url:"index.php?"+data+sortng
+            type   : 'get',
+            data   : data+sortng,
 		}).done(function(data){
 			//console.log(data);
 		}).success(function(data){
@@ -439,8 +721,13 @@ function send(){
 		locationidsarr.push($(this).val());
 	});
 
+	var checkedamenities = [];
+	$.each($("input[name='filterResProp_amenity[]']:checked"), function(){
+		checkedamenities. push($(this). val());
+	});
+	$("#resiprop_amenities").val(checkedamenities);
 	
-	//console.log(locationidsarr);
+	console.log($("#haveimagefilter").val() );
 	var sortng = $("#sortby").val();
 
 	var data = $("#searchfilterresidentialproperty").serialize();
@@ -467,16 +754,22 @@ function sendCP(){
 	$.each($("input[name='rplocations[]']"), function(){
 		locationidsarr.push($(this).val());
 	});
-	//console.log(locationidsarr);
+	var checkedamenities = [];
+	$.each($("input[name='filterCommProp_amenity[]']:checked"), function(){
+		checkedamenities. push($(this). val());
+	});
+	$("#commprop_amenities").val(checkedamenities);
 
+	var sortng = $("#sortby").val();
 	var data = $("#searchfiltercommercialproperty").serialize();
+	// console.log(data);
 
 	$.ajax(
 		{
-			method:'get',
-			//url:"index.php?r=residential-property/ajax-get-properties-update",
-			url:"index.php?"+data
-			//data:{data},
+			url    : $("#searchfiltercommercialproperty").attr('action'),
+			//url:"index.php?"+data+sortng
+            type   : 'get',
+            data   : data+sortng,
 		}).done(function(data){
 			//console.log(data);
 		}).success(function(data){

@@ -17,7 +17,7 @@ use app\models\Bhk;
 
     <?php $form = ActiveForm::begin([
         'options'=>['id'=>'searchfilteragriculturalproperty','name'=>'frmAgriculturalProperty','class'=>'frmAgriculturalProperty'],
-        'action' => ['ajax-get-properties-update'],
+        'action' => ['agricultural-property/ajax-get-properties-update'],
         'method' => 'get',
     ]); ?>
 
@@ -191,7 +191,10 @@ use app\models\Bhk;
 
     <?php // echo $form->field($model, 'society_id') ?>
 
-    <?php echo $form->field($model, 'city_id')->hiddenInput(['value'=>33, 'id' => 'property_city_id'])->label(false); ?>
+    <input type="hidden" name="sortby" id="sortby" value="">
+    <?php echo $form->field($model, 'city_id')->hiddenInput(['id' => 'agri_property_city_id'])->label(false); ?>
+
+    <?php echo $form->field($model, 'nearby')->hiddenInput(['id'=>'agriprop_nearby'])->label(false); ?>
 
     <?php // echo $form->field($model, 'area_id') ?>
 
@@ -207,7 +210,7 @@ use app\models\Bhk;
 
     <?php // echo $form->field($model, 'lift_facility') ?>
 
-    <?php // echo $form->field($model, 'amenities') ?>
+    <?php echo $form->field($model, 'amenities')->hiddenInput(['id'=>'agriprop_amenities'])->label(false); ?>
 
     <?php // echo $form->field($model, 'expected_rate') ?>
 
@@ -265,7 +268,7 @@ use app\models\Bhk;
 
     <?php // echo $form->field($model, 'property_profile_photo') ?>
 
-    <?php // echo $form->field($model, 'gallery_images') ?>
+    <?php echo $form->field($model, 'gallery_images')->hiddenInput(['id'=>'haveimagefilter'])->label(false); ?>
 
     <?php // echo $form->field($model, 'property_video_link') ?>
 

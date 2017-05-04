@@ -140,8 +140,8 @@ $host = "localhost";
 </table>
 <hr>
 <p>
-<input type="checkbox" id="pop_6" id="filterResProp_haveimage" name="filterResProp_haveimage"/>
-<label class="chkbob_lable" for="pop_6"><span></span><img src="images/photo.png" alt="">Photos</label>
+<input type="checkbox" id="filterResProp_haveimage" name="filterResProp_haveimage" />
+<label class="chkbob_lable" for="filterResProp_haveimage"><span></span><img src="images/photo.png" alt="">Photos</label>
 </p>
 <hr>
 <p><img src="images/rs_veryfi.png" alt=""><br>

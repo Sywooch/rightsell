@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
 use app\models\City;
 use app\models\Location;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 /**
  * ResidentialPropertyController implements the CRUD actions for Residentialproperty model.
  */
@@ -34,7 +35,7 @@ class ResidentialPropertyController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'get-properties','get-all-cities','index-new','ajax-get-properties-update','get-city-locations'],
+                        'actions' => ['index','indexhome', 'get-properties','get-all-cities','index-new','ajax-get-properties-update','get-city-locations','view'],
                         'allow' => true,
                         'roles' => ['?'],
                     ]
@@ -58,20 +59,115 @@ class ResidentialPropertyController extends Controller
     //         'dataProvider' => $dataProvider,
     //     ]);
     // }
-
+    public $enableCsrfValidation = false;
     public function actionIndex()
     {
-        $searchModel = new ResidentialpropertySearch();
-        $searchModel->city_id = $_GET['city'];
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        //echo "<pre>"; print_r($searchModel);exit;
+        if(Yii::$app->request->isPost)
+        {
+            $postdata = Yii::$app->request->post();
+            $available_for = $postdata['available_for'];
+            $nearby = false;
+            if(isset($postdata['nearby']))
+                $nearby = $postdata['nearby'];
+            $locarray = explode(", ", $postdata['locationnames']);
+            $searchModel = new ResidentialpropertySearch();
+            if($nearby == 1)
+            {
+                $searchModel->nearby = true;
+            }
+            if(count($locarray) > 0)
+            {
+                $locmodels =Location::find()->select('id')->where(['in', 'location',$locarray])->all();
+                $locations =[];
+                foreach ($locmodels as $locsmodel) {
+                    $locations[]= $locsmodel->id;
+                }
+                // echo "<pre>"; print_r($locations);exit;
+                // $locations = $postdata;
+                //$query->andFilterWhere(["in", "location_id", $locations]);
+                $searchModel->location_id = $locations;
+            }
+
+            
+            $searchModel->available_for = $available_for;
+            $dataProvider = $searchModel->search(null);
+
+            /*$query = Residentialproperty::find();
+            
+            
+            $query->andFilterWhere(["=", "available_for", $available_for]);*/
+
+            /*$dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => false,
+            ]);*/
+            
+            // $searchModel->locationnames = $postdata['locationnames'];
+            $searchModel->city_id = $postdata['property_city_id'];
+
+            return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'availablefr' => $available_for,
+            'city' => $searchModel->city_id,
+            'locationname' => $postdata['locationnames'],
+            //'location' => $searchModel->locations->name,
+        ]);
+        }
+        else
+        {
+
+            $searchModel = new ResidentialpropertySearch();
+            if(isset($_GET['city']) && $_GET['city'] != "")
+                $searchModel->city_id = $_GET['city'];
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            //echo "<pre>"; print_r($searchModel);exit;
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'availablefr' => "Sale and Rent",
-            'city' => $searchModel->cityName->city,
+            'city' => $searchModel->city_id,
             'locationname' => "",
             //'location' => $searchModel->locations->name,
+        ]);
+    }
+
+    public function actionIndexhome()
+    {
+        $searchModel = new ResidentialpropertySearch();
+        $searchModel->load(Yii::$app->request->queryParams);
+        // echo "<pre>"; print_r($searchModel);exit;
+        //if($searchModel->bhk != "")
+        //$searchModel->available_for = null;
+        //$searchModel->bhk = [$searchModel->bhk];
+        if($searchModel->min_rate_price != "")
+        {
+            if($searchModel->min_rate_price < 20)
+            {
+                $searchModel->min_rate_price = 10 * 100000;
+                $searchModel->max_rate_price = 20 * 100000;
+            }
+            else if($searchModel->min_rate_price < 30)
+            {
+                $searchModel->min_rate_price = 20 * 100000;
+                $searchModel->max_rate_price = 30 * 100000;
+            }
+            else if($searchModel->min_rate_price < 40)
+            {
+                $searchModel->min_rate_price = 30 * 100000;
+                $searchModel->max_rate_price = 40 * 100000;
+            }
+        }
+
+        // echo "<pre>"; print_r($searchModel);exit;
+        $dataProvider = $searchModel->searchHome();
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'availablefr' => "Sale and Rent",
+            'city' => $searchModel->city_id,
+            'locationname' => $searchModel->locationname,
         ]);
     }
 
@@ -107,7 +203,7 @@ class ResidentialPropertyController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('view_newlayout', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -224,13 +320,8 @@ class ResidentialPropertyController extends Controller
 
     public function actionAjaxGetPropertiesUpdate()
     {
+        // echo "<pre>"; print_r($_GET);exit;
         $searchModel = new ResidentialpropertySearch();
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // $v = urldecode($_GET);
-        // $parts = parse_url($v);
-        // parse_str($parts['path'], $query);
-        //echo "<pre>"; print_r($_GET);exit;
-        //$searchModel->nearby = $_GET['nearby'];
         $dataProvider = $searchModel->search($_GET);
         
         $locationnames = [];
@@ -242,13 +333,47 @@ class ResidentialPropertyController extends Controller
                 $locationnames[] = $location['location'];
             }
         }
-        
-        return $this->renderPartial('property_item', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'locationname' => implode(",", $locationnames),
-            'propby' => $searchModel->property_by,
-            'availablefr' => $searchModel->available_for,
-        ]);
+        if(isset($searchModel->amenities) && $searchModel->amenities != "" )
+        {
+            $newarr = [];
+            $amenitiesarr = explode(",", $searchModel->amenities);
+            foreach ($dataProvider->getModels() as $modl) {
+                $propamenityids = \app\models\ResidentialpropertyAmenities::find()->where(['property_id' => $modl->id])->all();
+                $ids=[];
+                if($propamenityids)
+                {
+                    foreach ($propamenityids as $val) {
+                        if(in_array($val->amenity_id,$amenitiesarr)===true);
+                        {
+                            $newarr[]=$modl;
+                            break;
+                        }
+
+                    }
+                }
+            }
+            
+            $provider = new ArrayDataProvider([
+                'allModels' => $newarr,
+                'pagination' => false,
+            ]);
+            return $this->renderPartial('property_item', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $provider,
+                'locationname' => implode(",", $locationnames),
+                'propby' => $searchModel->property_by,
+                'availablefr' => $searchModel->available_for,
+            ]);
+        }
+        else
+        {
+            return $this->renderPartial('property_item', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'locationname' => implode(",", $locationnames),
+                'propby' => $searchModel->property_by,
+                'availablefr' => $searchModel->available_for,
+            ]);
+        }
     }
 }

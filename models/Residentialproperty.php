@@ -234,6 +234,11 @@ class Residentialproperty extends \yii\db\ActiveRecord
         return $this->hasOne(Bhk::className(), ['id' => 'bhk']);
     }
 
+    public function getSocietys()
+    {
+        return $this->hasOne(Society::className(), ['id' => 'society_id']);
+    }
+
     public function getLocations()
     {
         return $this->hasOne(Location::className(), ['id' => 'location_id']);
@@ -242,5 +247,10 @@ class Residentialproperty extends \yii\db\ActiveRecord
     public function getCityName()
     {
         return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    public function getAmenityies()
+    {
+        return $this->hasMany(ResidentialpropertyAmenities::className(), ['property_id' => 'id']);
     }
 }

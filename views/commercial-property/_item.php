@@ -39,27 +39,54 @@
 			<h1><?= $model->type?> Near <?= $model->locations?$model->locations->location:""?>.</h1>
 			<button class="button yellow_btn"><?= $model->type?></button>
 			<?php if(strtolower($model->available_for)=="lease"):?>
-			<button class="button orrange_btn">Rent <?=$model->rent_details." ".$model->rentunit?></button>
-			<button class="button yellow_btn">Deposit <?=$model->deposite_details." ".$model->depositunit?></button>
+			<button class="button orrange_btn">Rent <?=number_format($model->rent_details_comp)?></button>
+			<button class="button yellow_btn">Deposit <?=number_format($model->deposite_details_comp)?></button>
 			<?php endif;?>
 
 			<?php if(strtolower($model->available_for)=="sale"):?>
-			<button class="button orrange_btn">Rate <?=$model->rate_details." ".$model->rate_details_unit?></button>
+			<button class="button orrange_btn">Rate <?=number_format($model->rate_details_comp)?></button>
 			<?php endif;?>
 			<div class="row">
-				<div class="col-xs-6"><p><img src="images/shop.jpg" alt=""><?=$model->type?ucfirst($model->type):"Any"?></p></div>
+				<?php
+				$minws = $model->min_workstations;
+				$maxws = $model->max_workstations;
+				$ws = $minws." - ".$maxws;
+				if($minws == 0)
+					$ws = $maxws;
+				if($ws == "")
+				{
+					$ws = 0;
+				}
+				?>
+				<div class="col-xs-6"><p><img src="images/shop.jpg" alt="">
+				<?php //$model->type?ucfirst($model->type):"Any"?>
+				<?= "Workstation - ".$ws?>
+				</p></div>
 				<div class="col-xs-6">
-				<p><img src="images/car.png" alt="">Parking - Four wheeler:<?=$model->four_wheeler_parking?$model->four_wheeler_parking:"0"?> Two wheeler: <?=$model->two_wheeler_parking?$model->two_wheeler_parking:"0"?> Lift: <?=$model->lift_facility?$model->lift_facility:"0"?></p>
+				<?php
+				$fwp = $model->four_wheeler_parking;
+				$twp = $model->two_wheeler_parking;
+				$parking = "No";
+				if($fwp != 0 && $twp != 0)
+					$parking = "Yes";
+				
+				// $parking = $model->four_wheeler_parking;
+
+				?>
+				<!-- <p><img src="images/car.png" alt="">Parking - Four wheeler:<?php /*$model->four_wheeler_parking?$model->four_wheeler_parking:"0"*/?> Two wheeler: <?php /*$model->two_wheeler_parking?$model->two_wheeler_parking:"0"*/?> Lift: <?php /*$model->lift_facility?$model->lift_facility:"0"*/?></p> -->
+
+				<p><img src="images/car.png" alt="">Parking - <?=$parking ?></p>
+
 				</div>
 			</div>	
 			<div class="row">
 				<div class="col-xs-6"><p><img src="images/area.png" alt="">Area - <?=$model->area.' Sq.ft.'?></p></div>
 				<?php if(strtolower($model->furnished) == "sf"): ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Semi-furnished</p></div>
+				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Semi-Furnished</p></div>
 				<?php elseif(strtolower($model->furnished)=="ff"): ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Fully furnished</p></div>
+				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Fully Furnished</p></div>
 				<?php else: ?>
-				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Un-furnished</p></div>
+				<div class="col-xs-6"><p><img src="images/furnished.png" alt="">Non Furnished</p></div>
 				<?php endif;?>
 				<?php
 				$now = time(); // or your date as well

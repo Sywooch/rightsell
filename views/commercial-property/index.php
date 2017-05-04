@@ -18,12 +18,13 @@ $host = "localhost";
         <div class="col-sm-8">
           <h1>Get Your Perfect Commercial Property</h1>
         </div>
-        <div class="col-sm-4"><img src="images/home_img.jpg" alt=""></div>
+        <div class="col-sm-4"><img src="images/home_img.png" alt=""></div>
       </div>
     </div>
   </div>
 </div>
 
+<form id="topcommpropfilter">
 <div class="container-fluid toolbar_section">
 <div class="row search_section">
 <div class="container">
@@ -31,7 +32,7 @@ $host = "localhost";
 <div class="col-sm-9">
 <div class="row">
 <div class="col-sm-9 col9">
-<input type="text" class="form-control" id="filterResProp_locationname" placeholder="Add more Locations..">
+<input type="text" class="form-control" id="filterCommProp_locationname" placeholder="Add more Locations..">
 <!-- <ul id="proplocations">
 </ul> -->
 <div id="hidlocationids">
@@ -44,8 +45,8 @@ $host = "localhost";
 </div>
 <div class="col-xs-9 padding_left border_right">
 <div class="checkbox">
-<input type="checkbox" id="c1" name="cc" checked="checked" />
-<label class="chkbob_lable" for="c1" style="padding-left:0"><span></span>Nearby properties</label>
+<input type="checkbox" id="filterCommProp_nearby" name="nearbyresprop" value="1" />
+<label class="chkbob_lable" for="filterCommProp_nearby" style="padding-left:0"><span></span>Nearby properties</label>
 </div>
 </div>
 
@@ -66,39 +67,50 @@ $host = "localhost";
 <div class="col-sm-4 amenities_col">
 <h1>Amenities</h1>
 <p>
-<input type="checkbox" id="pop_1" name="filterResProp_amenity[]" value="gym" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_1"><span></span><img src="images/gym.png" alt="">Gym</label>
+<input type="checkbox" id="aminity_cafetria" name="filterCommProp_amenity[]" value="Cafeteria" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="aminity_cafetria"><span></span><img src="images/gym.png" alt="">Cafeteria</label>
 </p>
 
 <p>
-<input type="checkbox" id="pop_3" name="filterResProp_amenity[]" value="powerbkp" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_3"><span></span><img src="images/power.png" alt="">Power backup</label>
+<input type="checkbox" id="aminity_wifi" name="filterCommProp_amenity[]" value="Wifi" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="aminity_wifi"><span></span><img src="images/power.png" alt="">Wifi</label>
 </p>
 
 <p>
-<input type="checkbox" id="pop_4" name="filterResProp_amenity[]" value="swimming" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_4"><span></span><img src="images/swiming.png" alt="">Swimming pool</label>
+<input type="checkbox" id="aminity_conf" name="filterCommProp_amenity[]" value="Conference" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="aminity_conf"><span></span><img src="images/swiming.png" alt="">Conference Facility</label>
 </p>
 
 <p>
-<input type="checkbox" id="pop_5" name="filterResProp_amenity[]" value="club" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_5"><span></span><img src="images/home_popup.png" alt="">Club House</label>
+<input type="checkbox" id="aminity_vastu" name="filterCommProp_amenity[]" value="Vastu" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="aminity_vastu"><span></span><img src="images/home_popup.png" alt="">Vastu Compliant</label>
 </p>
 <p>
-<input type="checkbox" id="pop_2" name="filterResProp_amenity[]" value="doorcam" class="filterResPropAmenity"/>
-<label class="chkbob_lable" for="pop_2"><span></span><img src="images/door_cam.png" alt="">Door camera</label>
+<input type="checkbox" id="aminity_reception" name="filterCommProp_amenity[]" value="Reception" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="aminity_reception"><span></span><img src="images/door_cam.png" alt="">Reception</label>
 </p>
+
+<p>
+<input type="checkbox" id="aminity_washroom" name="filterCommProp_amenity[]" value="Washroom" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="aminity_washroom"><span></span><img src="images/door_cam.png" alt="">Washroom</label>
+</p>
+
+<p>
+<input type="checkbox" id="aminity_firefacility" name="filterCommProp_amenity[]" value="Fire Facility" class="filterCommPropAmenity"/>
+<label class="chkbob_lable" for="aminity_firefacility"><span></span><img src="images/door_cam.png" alt="">Fire Facility</label>
+</p>
+
 </div>
 <div class="col-sm-3 filter_col">
 <h1>Filter by</h1>
-<select id="filterResProp_bathroom" name="filterResProp_bathroom">
+<!-- <select id="filterResProp_bathroom" name="filterResProp_bathroom">
 <option value="">Bathroom</option>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
-</select>
+</select> -->
 <hr>
-<select id="filterResProp_facing" name="filterResProp_facing">
+<select id="filterCommProp_facing" name="filterCommProp_facing">
 <option value="">Facing</option>
 <option value="East">East</option>
 <option value="West">West</option>
@@ -106,21 +118,33 @@ $host = "localhost";
 <option value="South">South</option>
 </select>
 <hr>
-<select id="filterResProp_floor" name="filterResProp_floor">
+<!-- <select id="filterCommProp_floor" name="filterCommProp_floor">
 <option value="">Floor</option>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
+</select> -->
+
+<select id="filterCommProp_floor" name="filterCommProp_floor" multiple="multiple">
+<option value="-1">Basement</option>
+<option value="0">Ground</option>
+<option value="1,2,3,4">1-4</option>
+<option value="5,6,7,8">5-8</option>
+<option value="9,10,11,12">9-12</option>
+<option value="13,14,15,16">13-16</option>
+<option value="16+">16+</option>
 </select>
+
+
 <hr>
-<select id="filterResProp_family" name="filterResProp_family">
+<!-- <select id="filterResProp_family" name="filterResProp_family">
 <option value="">Family</option>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
-</select>
+</select> -->
 <hr>
-<select id="filterResProp_status" name="filterResProp_status">
+<select id="filterCommProp_status" name="filterCommProp_status">
 <option value="">Status</option>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -133,15 +157,15 @@ $host = "localhost";
 <table>
 <tr>
 <td>Sq. ft. </td>
-<td><input id="filterResProp_minsqfeet" name="filterResProp_minsqfeet" type="text"></td>
+<td><input id="filterCommProp_minws" name="filterCommProp_minws" type="text"></td>
 <td>to</td>
-<td><input id="filterResProp_maxsqfeet" name="filterResProp_maxsqfeet" type="text"></td>
+<td><input id="filterCommProp_maxws" name="filterCommProp_maxws" type="text"></td>
 </tr>
 </table>
 <hr>
 <p>
-<input type="checkbox" id="pop_6" id="filterResProp_haveimage" name="filterResProp_haveimage"/>
-<label class="chkbob_lable" for="pop_6"><span></span><img src="images/photo.png" alt="">Photos</label>
+<input type="checkbox" id="filterCommProp_haveimage" name="filterCommProp_haveimage"/>
+<label class="chkbob_lable" for="filterCommProp_haveimage"><span></span><img src="images/photo.png" alt="">Photos</label>
 </p>
 <hr>
 <p><img src="images/rs_veryfi.png" alt=""><br>
@@ -159,11 +183,11 @@ $host = "localhost";
 <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/short_ico.jpg" class="short" alt="">Sort by Relevance <img src="images/dd_arrow.jpg" alt=""></a>
 <ul class="dropdown-menu" style="left:18px">
 <li class="first"><a href="#">Relavance</a></li>
-<li><a href="#" class="sortresprop" data-val="popular">Popularity</a></li>
-<li><a href="#" class="sortresprop" data-val="asc">Price (Low to high)</a></li>
-<li><a href="#" class="sortresprop" data-val="desc">Price (High to low)</a></li>
-<li><a href="#" class="sortresprop" data-val="rate">Seller Ratings </a></li>
-<li><a href="#" class="sortresprop" data-val="postdate">Date Posted</a></li>
+<li><a href="#" class="sortcommprop" data-val="popular">Popularity</a></li>
+<li><a href="#" class="sortcommprop" data-val="asc">Price (Low to high)</a></li>
+<li><a href="#" class="sortcommprop" data-val="desc">Price (High to low)</a></li>
+<li><a href="#" class="sortcommprop" data-val="rate">Seller Ratings </a></li>
+<li><a href="#" class="sortcommprop" data-val="postdate">Date Posted</a></li>
 </ul>
 </li>
 </ul>
@@ -173,14 +197,14 @@ $host = "localhost";
 </div>
 </div>
 </div>
-
+</form>
 <div class="container">
 <div class="row">
 <div class="col-md-12 breadcrum"><a href="#">Home</a> › <a href="#">Property for rent/lease in Pune</a> › <a href="#">Bawdhan</a> › All Commercial</div>
 <div class="col-md-3">
 <div class="pro_left_column"><div class="row">
 <div class="col-xs-7 filter_text">Filter your Search</div>
-<div class="col-xs-5"><a href="<?= Url::to(["commercial-property/index","city"=>$_GET["city"]]);?>" class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
+<div class="col-xs-5"><a href="<?= Url::to(["commercial-property/index","city"=>$searchModel->city_id]);?>" class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
 </div>
 </div>
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>

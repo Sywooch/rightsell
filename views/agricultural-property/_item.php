@@ -39,12 +39,12 @@
 			<h1><?= $model->property_type?> Near <?= $model->locations->location?>.</h1>
 			<button class="button yellow_btn"><?= $model->property_type?></button>
 			<?php if(strtolower($model->available_for)=="rent"):?>
-			<button class="button orrange_btn">Rent <?=$model->expected_rent." ".$model->rent_currency?></button>
-			<button class="button yellow_btn">Deposit <?=$model->deposit." ".$model->deposit_currency?></button>
+			<button class="button orrange_btn">Rent <?=number_format($model->expected_rent_comp);?></button>
+			<button class="button yellow_btn">Deposit <?=number_format($model->deposit_comp)?></button>
 			<?php endif;?>
 
 			<?php if(strtolower($model->available_for)=="sale"):?>
-			<button class="button orrange_btn">Rate <?=$model->expected_rate." ".$model->rate_currency;?></button>
+			<button class="button orrange_btn">Rate <?=number_format($model->expected_rate_comp);?></button>
 			<?php endif;?>
 
 			
