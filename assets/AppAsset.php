@@ -44,7 +44,7 @@ class AppAsset extends AssetBundle
         // 'https://rawgit.com/dbrekalo/attire/master/dist/js/build.min.js',
         'http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js',
            
-        'js/bootstrap.js',
+        // 'js/bootstrap.js',
     
     
     ];
