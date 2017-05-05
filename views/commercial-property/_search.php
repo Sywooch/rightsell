@@ -10,7 +10,7 @@ use app\models\Bhk;
 /* @var $model app\models\ResidentialpropertySearch */
 /* @var $form yii\widgets\ActiveForm */
 
-//echo "<pre>"; print_r($model);exit;
+// echo "<pre>"; print_r($model);exit;
 ?>
 
 <div class="commercialproperty-search">
@@ -29,6 +29,9 @@ use app\models\Bhk;
 
 <div class="pro_left_column">
 <?php echo \yii\helpers\Html::activeRadioList($model,'available_for',["Sale"=>"Buy","Lease" =>"Rent"],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
+    if($checked)
+                    $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" checked="checked"/>';
+                else
                     $return = '<input id="rad_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '"/>';
                     $return .= '<label for="rad_'.$label.'"><span></span>' . ucwords($label).'</label>';
                     return $return;
@@ -190,7 +193,11 @@ use app\models\Bhk;
 
     
     <?php echo \yii\helpers\Html::activeCheckboxList($model,'type',['Shop'=>'Shop','Showroom'=>'Showroom','Office'=>'Office','Warehouse'=>'Warehouse','Industrial Shed'=>'Industrial Shed','Godown'=>'Godown','Hotel'=>'Hotel'],['tag'=>'div','item'=>function($index, $label, $name, $checked, $value) {
-                    $return = '<div class="col-xs-6"><input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
+                    $return = '<div class="col-xs-6">';
+                    if($checked)
+                    $return .= '<input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '" checked="checked"/>';
+                    else
+                    $return .= '<input id="rad_'.$label.'" type="checkbox" name="' . $name . '" value="' . $value . '"/>';
                     $return .= '<label for="rad_'.$label.'" style="font-weight:normal"><span></span>' . ucwords($label).'</label></div>';
                     return $return;
                 }, ]);?>
@@ -267,6 +274,12 @@ use app\models\Bhk;
 ?>
     <?php // $form->field($model, 'area_id')->dropDownList(ArrayHelper::map($arealist,'id', 'area')) ?>
     <div id="vis">
+    <?php if($model->location_id && count($model->location_id)>0)
+    {
+        foreach ($model->location_id as $location_id) {
+        echo "<input type='hidden' name='CommercialpropertySearch[location_id][]' value='".$location_id."'/>";
+        }
+    }?>
     <?php // $form->field($model, 'location_id[]')->hiddenInput()->label(false) ?>
     </div>
     <?php // $form->field($model, 'locationname')->hiddenInput(['id'=>'sidelocationname'])->label(false) ?>

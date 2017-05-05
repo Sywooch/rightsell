@@ -37,15 +37,76 @@ class AgriculturalPropertyController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AgriculturalpropertySearch();
-        if(isset($_GET['city']) && $_GET['city'] != "")
-            $searchModel->city_id = $_GET['city'];
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if(Yii::$app->request->isPost)
+        {
+            $postdata = Yii::$app->request->post();
+        }
+        else
+        {
+            if(isset($_GET['home']) && $_GET['home']==1)
+            {
+                // echo "<pre>"; print_r($_GET);exit;
+                $searchModel = new AgriculturalpropertySearch();
+
+                if(isset($_GET['AgriculturalpropertySearch']['available_for']) && $_GET['AgriculturalpropertySearch']['available_for'] != "")
+                {
+                    $searchModel->available_for = $_GET['AgriculturalpropertySearch']['available_for'];
+                    $available_for = $searchModel->available_for;
+                }
+                else
+                {
+                    $available_for = "Sale and Rent";
+                }
+
+                if(isset($_GET['AgriculturalpropertySearch']['locationname']) && $_GET['AgriculturalpropertySearch']['locationname'] != "")
+                    $searchModel->location_id = $_GET['AgriculturalpropertySearch']['locationname'];
+
+                if(isset($_GET['AgriculturalpropertySearch']['city_id']) && $_GET['AgriculturalpropertySearch']['city_id'] != "")
+                    $searchModel->city_id = $_GET['AgriculturalpropertySearch']['city_id'];
+
+                if(isset($_GET['AgriculturalpropertySearch']['property_type']) && $_GET['AgriculturalpropertySearch']['property_type'] != "")
+                    $searchModel->property_type = $_GET['AgriculturalpropertySearch']['property_type'];
+
+                if(isset($_GET['AgriculturalpropertySearch']['min_rate_price']) && $_GET['AgriculturalpropertySearch']['min_rate_price'] != "")              
+                {
+                    $searchModel->min_rate_price = $_GET['AgriculturalpropertySearch']['min_rate_price'];
+                    if($searchModel->min_rate_price < 20)
+                    {
+                        $searchModel->min_rate_price = 10 * 100000;
+                        $searchModel->max_rate_price = 20 * 100000;
+                    }
+                    else if($searchModel->min_rate_price < 30)
+                    {
+                        $searchModel->min_rate_price = 20 * 100000;
+                        $searchModel->max_rate_price = 30 * 100000;
+                    }
+                    else if($searchModel->min_rate_price < 40)
+                    {
+                        $searchModel->min_rate_price = 30 * 100000;
+                        $searchModel->max_rate_price = 40 * 100000;
+                    }
+                }
+
+
+                $dataProvider = $searchModel->search(null);
+            }
+            else
+            {
+                $searchModel = new AgriculturalpropertySearch();
+                if(isset($_GET['city']) && $_GET['city'] != "")
+                    $searchModel->city_id = $_GET['city'];
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                if($searchModel->available_for != "")
+                    $available_for = "Sale and Rent";
+                else
+                    $available_for = $searchModel->available_for;
+            }
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'availablefr' => "Sale and Rent",
+            'availablefr' => $available_for,
         ]);
     }
 

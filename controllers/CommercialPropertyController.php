@@ -35,18 +35,79 @@ class CommercialPropertyController extends Controller
      * Lists all Commercialproperty models.
      * @return mixed
      */
+    public $enableCsrfValidation = false;
     public function actionIndex()
     {
-        $searchModel = new CommercialpropertySearch();
-        // echo "<pre>"; print_r($_GET);exit;
-        if(isset($_GET['city']) && $_GET['city'] != "")
-            $searchModel->city_id = $_GET['city'];
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'availablefr'=>'Sale and Rent',
-        ]);
+        if(Yii::$app->request->isPost)
+        {
+            $postdata = Yii::$app->request->post();
+        }
+        else
+        {
+            if(isset($_GET['home']) && $_GET['home']==1)
+            {
+                // echo "<pre>"; print_r($_GET);exit;
+                $searchModel = new CommercialpropertySearch();
+
+                if(isset($_GET['CommercialpropertySearch']['available_for']) && $_GET['CommercialpropertySearch']['available_for'] != "")
+                {
+                    $searchModel->available_for = $_GET['CommercialpropertySearch']['available_for'];
+                    $available_for = $searchModel->available_for;
+                }
+                else
+                {
+                    $available_for = "Sale and Rent";
+                }
+
+                if(isset($_GET['CommercialpropertySearch']['locationname']) && $_GET['CommercialpropertySearch']['locationname'] != "")
+                    $searchModel->location_id = $_GET['CommercialpropertySearch']['locationname'];
+
+                if(isset($_GET['CommercialpropertySearch']['city_id']) && $_GET['CommercialpropertySearch']['city_id'] != "")
+                    $searchModel->city_id = $_GET['CommercialpropertySearch']['city_id'];
+
+                if(isset($_GET['type']) && $_GET['type'] != "")
+                    $searchModel->type = $_GET['type'];
+
+                if(isset($_GET['CommercialpropertySearch']['min_rate_price']) && $_GET['CommercialpropertySearch']['min_rate_price'] != "")              
+                {
+                    $searchModel->min_rate_price = $_GET['CommercialpropertySearch']['min_rate_price'];
+                    if($searchModel->min_rate_price < 20)
+                    {
+                        $searchModel->min_rate_price = 10 * 100000;
+                        $searchModel->max_rate_price = 20 * 100000;
+                    }
+                    else if($searchModel->min_rate_price < 30)
+                    {
+                        $searchModel->min_rate_price = 20 * 100000;
+                        $searchModel->max_rate_price = 30 * 100000;
+                    }
+                    else if($searchModel->min_rate_price < 40)
+                    {
+                        $searchModel->min_rate_price = 30 * 100000;
+                        $searchModel->max_rate_price = 40 * 100000;
+                    }
+                }
+
+
+                $dataProvider = $searchModel->search(null);
+            }
+            else
+            {
+                $searchModel = new CommercialpropertySearch();
+                if(isset($_GET['city']) && $_GET['city'] != "")
+                    $searchModel->city_id = $_GET['city'];
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                if($searchModel->available_for != "")
+                    $available_for = "Sale and Rent";
+                else
+                    $available_for = $searchModel->available_for;
+            }
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'availablefr'=>$available_for,
+            ]);
+        }
     }
 
     public function actionIndexhome()

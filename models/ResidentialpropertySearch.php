@@ -234,9 +234,9 @@ class ResidentialpropertySearch extends Residentialproperty
         //$query->andFilterWhere(['>=', 'expected_rent_comp', $this->min_rent_price])
             //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
 
+         // echo "<pre>"; print_r($locidstemp);exit;   
         if(count($locidstemp)>0)
         {
-         // echo "<pre>"; print_r($locidstemp);exit;   
         $query->andFilterWhere(['in', 'location_id', $locidstemp]);
         }
         if($this->gallery_images === "true")
