@@ -2198,7 +2198,7 @@ outline: none;}
 .radio_text_active{font-size: 20px;
 color: #727272;
 outline: none;font-weight: normal !important;
-border-bottom: solid 1px #e41919;}
+border-bottom: solid 2px #e41919; padding-top: 10px}
 
 
 
