@@ -184,10 +184,7 @@ AppAsset::register($this);
         <!-- scripts specific to this demo site -->
 
         <!--<script type="text/javascript">-->
-            <?php $this->registerJs("$(function()
-            {
-                $('.scroll-pane').jScrollPane();
-            });");?>
+            
         <!--</script>-->
 <script type="text/javascript">
     function DropDown(el) {

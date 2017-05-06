@@ -2191,14 +2191,14 @@ border-color: transparent transparent #ec3238}*/
 .select2-search--inline{ padding-left: 0 !important }
 
 .radio_text{font-size: 20px;
-color: #727272; font-weight: normal!important;
-outline: none;}
+color: #727272; font-weight: 400!important;
+outline: none; margin:15px 0px 0 5px;}
 
 
 .radio_text_active{font-size: 20px;
 color: #727272;
-outline: none;font-weight: normal !important;
-border-bottom: solid 1px #e41919;}
+outline: none;font-weight: 400 !important;
+border-bottom: solid 2px #e41919; margin:15px 0px 0 5px; padding-bottom:2px;}
 
 
 
