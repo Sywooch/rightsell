@@ -130,31 +130,20 @@ $locationdata = Location::find()
         $model = new \app\models\ResidentialpropertySearch();
         $form = ActiveForm::begin(['action'=>['residential-property/index'],'method'=>"get","id"=>"homerespropform"]);
         
-        //echo $form->field($model, 'available_for')->hiddenInput()->label(false);
-        //echo $form->field($model, 'location_id[]')->hiddenInput()->label(false);
-        //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
-        //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
         ?> 
           <section class="rent_residentialprop">
             <div class="container">
               <div class="row text-center">
                 <h2 class="rb_text_h1">
-                <!-- <a href="#." id="homerad_avaiblefor_rent" class="rb_text">Rent</a>  |  <a href="#." class="rb_text" id="homerad_avaiblefor_buy">Buy</a>  |  <a href="#." id="homerad_avaiblefor_flatmate" class="rb_text">Flatmate</a> -->
                   <?= $form->field($model, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Sale','Flatmate'=>'Flatmate'],
                         [
                                 'item' => function($index, $label, $name, $checked, $value) {
-                                    if($checked)
-                                    {
-                                    $return = '<label for="" class="radio_text_active">';
-                                    }
-                                    else
-                                    $return = '<label for="" class="radio_text">';
-
-
-                                    $return .= '<input type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
-                                    $return .= '<i></i>';
-                                    $return .= '<span>' . ucwords($label) . ' | </span>';
-                                    $return .= '</label>';
+                                    
+                                    
+                                    $return = '<input id="available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
+                                    $return .= '<a href="#"><label for="available_for_'.$label.'" class="input-group">';
+                                    $return .= ucwords($label);
+                                    $return .= '</label></a>';
 
                                     return $return;
                                 }
@@ -167,7 +156,7 @@ $locationdata = Location::find()
                 <li class="demo_home">
                 <table class="dd_table">
                   <tr><td><img src="images/location_30km.png" class="img-responsive" alt="">
-                  </td><td><?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi ", 'required'=>true])->label(false);?></td></tr>
+                  </td><td><?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi", 'required'=>true])->label(false);?></td></tr>
                 </table>
                   <!-- <div class="dropdown">
                   <div id="" class="dd wrapper-dropdown-3 dd_resi_city" tabindex="1">
@@ -222,11 +211,11 @@ $locationdata = Location::find()
 
 ?>
 <select id="bhk" name="bhk[]" multiple="multiple">
-        <option value="1">1 BHK</option>
+        <option value="8">1 BHK</option>
         <option value="2">2 BHK</option>
         <option value="3">3 BHK</option>
-        <option value="4">4 BHK</option>
-        <option value="5">5 BHK</option>
+        <option value="5">4 BHK</option>
+        <option value="12">5 BHK</option>
 
     </select>
 <input type="hidden" name="home" value="1"/>
@@ -861,41 +850,76 @@ $locationdata = Location::find()
           <?php 
 
         $model = new \app\models\CommercialpropertySearch();
-        $form = ActiveForm::begin(['action'=>['commercial-property/indexhome'],'method'=>"get"]);
+        $form = ActiveForm::begin(['action'=>['commercial-property/index'],'method'=>"get"]);
         
-        //echo $form->field($model, 'available_for')->hiddenInput()->label(false);
-        echo $form->field($model, 'location_id')->hiddenInput()->label(false);
-        //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
-        //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
+        //echo $form->field($model, 'location_id')->hiddenInput()->label(false);
         ?> 
             <div class="container">
               <div class="row text-center">
                <h2 class="rb_text_h1">
                <!-- <a href="#." class="rb_text">Rent</a>  |  <a href="#." class="rb_text active">Buy</a> -->
-                 <?= $form->field($model, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Sale'])->label(false);?>
+                 <?php // $form->field($model, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Sale'])->label(false);?>
+
+                 <?= $form->field($model, 'available_for')->radioList(['Lease'=>'Rent','Sale'=>'Sale'],
+                        [
+                    'item' => function($index, $label, $name, $checked, $value) {
+                        
+                        
+                        $return = '<input id="comm_available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
+                        $return .= '<a href="#"><label for="comm_available_for_'.$label.'" class="input-group">';
+                        $return .= ucwords($label);
+                        $return .= '</label></a>';
+
+                        return $return;
+                    }
+                ])->label(false);?>
+
                </h2>
               </div>
               <div class=" dd_row">
         <ul class="">
-          <li><?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?><!-- <div class="dropdown">
-          <div id="" class="dd wrapper-dropdown-3 dd_comm_city" tabindex="1">
-          <span>Select City</span>
-          <ul class="dropdown" style="width:200px;">
-          <li><a href="#">Pune</a></li>
-          <li><a href="#">Mumbai</a></li>
-          <li><a href="#">Thane</a></li>
-          <li><a href="#">Nashik</a></li>
-          <li><a href="#">Nagpur</a></li>
-          <li><a href="#">Solapur</a></li>
-          </ul>
-          </div>
-          </div> --></li>
-          <li><?= $form->field($model, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?><!-- <div class="dropdown">
-          <div id="" class="dd2 dd_resi2" tabindex="1" style="width:450px; padding:0px 33px; border:1px solid #a5a5a5">
-          <input name="" class="form-control" type="text" style="border:0; width:100%; background:#f3f3f3; height:32px; margin:0" placeholder="Search Area">
-          </div>
-          </div> --></li>
-          <li><?= $form->field($model, 'type')->dropdownList(['Shop'=>'Shop','Showroom'=>'Showroom','Office'=>'Office','Warehouse'=>'Warehouse','Industrial Shed'=>'Industrial Shed','Godown'=>'Godown','Hotel'=>'Hotel'],['prompt'=>"Select Property Type",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+          <li><?php // $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+
+          <table class="dd_table">
+                  <tr><td><img src="images/location_30km.png" class="img-responsive" alt="">
+                  </td><td><?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi", 'required'=>true])->label(false);?></td></tr>
+                </table>
+                </li><li>
+          <?php // $form->field($model, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
+
+<?php 
+
+          echo $form->field($model, 'locationname')->widget(Select2::classname(), [
+    'options' => ['placeholder' => 'Select Area ...',"class"=>"auto_search_bar"],
+    'size' => Select2::MEDIUM,
+    'theme' => Select2::THEME_BOOTSTRAP,
+    'pluginOptions' => [
+        'allowClear' => true,
+        'multiple' => true,
+    'ajax' => [
+        'url' => \yii\helpers\Url::to(['residential-property/city-list']),
+        'dataType' => 'json',
+        'data' => new JsExpression('function(params) { return {q:params.term}; }')
+    ],
+    ],
+])->label(false);
+
+          ?>
+          </li>
+          <li><?php // $form->field($model, 'type')->dropdownList(['Shop'=>'Shop','Showroom'=>'Showroom','Office'=>'Office','Warehouse'=>'Warehouse','Industrial Shed'=>'Industrial Shed','Godown'=>'Godown','Hotel'=>'Hotel'],['prompt'=>"Select Property Type",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+
+        <select id="type" name="type[]" multiple="multiple">
+          <option value="Shop">Shop</option>
+          <option value="Showroom">Showroom</option>
+          <option value="Office">Office</option>
+          <option value="Warehouse">Warehouse</option>
+          <option value="Industrial Shed">Industrial Shed</option>
+          <option value="Godown">Godown</option>
+          <option value="Hotel">Hotel</option>
+        </select>
+<input type="hidden" name="home" value="1"/>
+
+
           <!-- <div class="dropdown">
                     <div id="dd" class="wrapper-dropdown-4 dd_resi3" tabindex="1">
             <span>Select BHK</span>
@@ -5348,10 +5372,10 @@ $locationdata = Location::find()
           <?php 
 
         $modelagri = new \app\models\AgriculturalpropertySearch();
-        $form = ActiveForm::begin(['action'=>['agricultural-property/indexhome'],'method'=>"get"]);
+        $form = ActiveForm::begin(['action'=>['agricultural-property/index'],'method'=>"get"]);
         
         //echo $form->field($model, 'available_for')->hiddenInput()->label(false);
-        echo $form->field($modelagri, 'location_id')->hiddenInput()->label(false);
+        //echo $form->field($modelagri, 'location_id')->hiddenInput()->label(false);
         //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
         //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
         ?> 
@@ -5360,35 +5384,60 @@ $locationdata = Location::find()
               
 
                 <h2 class="rb_text_h1">
-                <?= $form->field($modelagri, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Buy','Lease'=>'Lease'])->label(false);?>
-                <!-- <a href="#." class="rb_text active">Rent</a>  |  <a href="#." class="rb_text">Buy</a> | <a href="#." class="rb_text">Lease</a> --></h2>
+                <?php // $form->field($modelagri, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Buy','Lease'=>'Lease'])->label(false);?>
+                <?= $form->field($modelagri, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Sale','Lease'=>'Lease'],
+                        [
+                    'item' => function($index, $label, $name, $checked, $value) {
+                        $return = '<input id="agri_available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
+                        $return .= '<a href="#"><label for="agri_available_for_'.$label.'" class="input-group">';
+                        $return .= ucwords($label);
+                        $return .= '</label></a>';
+
+                        return $return;
+                    }
+                ])->label(false);?>
+                  
+                </h2>
               </div>
               <div class=" dd_row">
         <ul class="">
           <li>
-<?= $form->field($modelagri, 'city_id')->dropdownList(ArrayHelper::map(City::find()->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
-<!-- <div class="dropdown">
-          <div id="" class="dd wrapper-dropdown-3 dd_agri_city" tabindex="1">
-          <span>Select City</span>
-          <ul class="dropdown" style="width:200px;">
+<?php // $form->field($modelagri, 'city_id')->dropdownList(ArrayHelper::map(City::find()->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+<table class="dd_table">
+  <tr><td><img src="images/location_30km.png" class="img-responsive" alt="">
+  </td><td><?= $form->field($modelagri, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi", 'required'=>true])->label(false);?></td></tr>
+</table>
 
-    
-          <li><a href="#">Pune</a></li>
-          <li><a href="#">Mumbai</a></li>
-          <li><a href="#">Thane</a></li>
-          <li><a href="#">Nashik</a></li>
-          <li><a href="#">Nagpur</a></li>
-          <li><a href="#">Solapur</a></li>
-          </ul>
-          </div>
-          </div> --></li>
-          <li><?= $form->field($modelagri, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
-<!-- <div class="dropdown">
-          <div id="" class="dd2 dd_resi2" tabindex="1" style="width:450px; padding:0px 33px; border:1px solid #a5a5a5">
-          <input name="" class="form-control" type="text" style="border:0; width:100%; background:#f3f3f3; height:32px; margin:0" placeholder="Search Area">
-          </div>
-          </div> --></li>
-          <li><?= $form->field($modelagri, 'property_type')->dropdownList(['Agricultural land'=>'Agricultural land','Industrial land'=>'Industrial land','NA plots'=>'NA plots','Farm house plot'=>'Farm house plot'],['prompt'=>"Select Property Type",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+</li>
+          <li><?php // $form->field($modelagri, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
+            <?php 
+
+          echo $form->field($modelagri, 'locationname')->widget(Select2::classname(), [
+    'options' => ['placeholder' => 'Select Area ...',"class"=>"auto_search_bar"],
+    'size' => Select2::MEDIUM,
+    'theme' => Select2::THEME_BOOTSTRAP,
+    'pluginOptions' => [
+        'allowClear' => true,
+        'multiple' => true,
+    'ajax' => [
+        'url' => \yii\helpers\Url::to(['residential-property/city-list']),
+        'dataType' => 'json',
+        'data' => new JsExpression('function(params) { return {q:params.term}; }')
+    ],
+    ],
+])->label(false);
+
+          ?>
+
+          </li>
+          <li><?= $form->field($modelagri, 'property_type')->dropdownList(['Agricultural land'=>'Agricultural land','Industrial land'=>'Industrial land','NA plots'=>'NA plots','Farm house plot'=>'Farm house plot'],['id'=>"proptype",'multiple'=>true,'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+          <!-- <select id="proptype" name="proptype[]" multiple="multiple">
+          <option value="Agricultural land">Agricultural land</option>
+          <option value="Industrial land">Industrial land</option>
+          <option value="NA plots">NA plots</option>
+          <option value="Farm house plot">Farm house plot</option>
+          </select> -->
+<input type="hidden" name="home" value="1"/>
           <!-- <div class="dropdown">
                     <div id="dd" class="wrapper-dropdown-4 dd_resi3" tabindex="1">
             <span>Select BHK</span>

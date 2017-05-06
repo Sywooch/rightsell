@@ -1,4 +1,6 @@
-<?php $host = "103.208.73.2";?>
+<?php $host = "103.208.73.2";
+//echo "Property By: ".$model->property_by;
+?>
 <div class="col-sm-5 nopadding">
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner" role="listbox">

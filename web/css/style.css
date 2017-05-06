@@ -5,6 +5,31 @@ a, a:hover{ text-decoration:none}
 body{ margin:0; padding:0;font-family: 'Open Sans', sans-serif; font-size:13px; color:#646464;}
 .logo img{ width:150px; margin:10px 0;}
 /* CSS Document */
+
+.radio-button input[type="radio"]:checked + a {
+  z-index: 2;
+  color: #fff;
+  background-color: #428bca;
+  border-color: #428bca;
+  cursor: default;
+}
+.radio-button label {
+  padding: 6px 12px;
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+.radio-button .pagination > li > a {
+  padding: 0px;
+}
+.radio-button input[type="radio"] {
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  color: transparent;
+  visibility: hidden;
+}
+
+
 .header_right{ margin-top:18px;}
 .bg{
 	/* background-color:#eee; */
