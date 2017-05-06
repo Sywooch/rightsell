@@ -300,13 +300,16 @@ $locationdata = Location::find()
               </div>
               <div class=" dd_row">
         <ul class="">
-          <li><?php // $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+          <li class="demo_home"><?php // $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
 
           <table class="dd_table">
                   <tr><td><img src="images/location_30km.png" class="img-responsive" alt="">
                   </td><td><?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi", 'required'=>true])->label(false);?></td></tr>
                 </table>
-                </li><li>
+                </li>
+				
+				
+				<li>
           <?php // $form->field($model, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
 
 <?php 
