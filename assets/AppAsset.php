@@ -33,8 +33,8 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         // 'js/jquery-1.10.2.min.js',
-        'js/bootstrap.js',
         'js/jquery-ui.js',
+        'js/responsiveTabs.js',
         'js/jquery.mousewheel.js',
         'js/jquery.jscrollpane.min.js',
         'js/propertysearch.js',
@@ -43,9 +43,8 @@ class AppAsset extends AssetBundle
         'js/thescripts.js',
         // 'https://rawgit.com/dbrekalo/attire/master/dist/js/build.min.js',
         'http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js',
-        'js/responsiveTabs.js',
            
-       
+        'js/bootstrap.js',
     
     
     ];
