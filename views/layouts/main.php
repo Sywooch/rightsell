@@ -20,20 +20,20 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <!-- <link href="css/bootstrap.css" rel="stylesheet" type="text/css"> -->
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+    <!-- <link href="css/style.css" rel="stylesheet" type="text/css"> -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet"> -->
 
-    <link rel="stylesheet" href="css/scroll.css">
-    <link href="css/responsive.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="css/responsive-tabs.css">
+    <!-- <link rel="stylesheet" href="css/scroll.css"> -->
+    <!-- <link href="css/responsive.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/responsive-tabs.css"> -->
 
 </head>
 <body>

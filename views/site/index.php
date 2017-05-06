@@ -9929,16 +9929,6 @@ $locationdata = Location::find()
 
 <?php 
 //$this->registerJsFile(Yii::$app->request->baseUrl . '/js/bootstrap-multiselect.js');
-
-$this->registerJS("
-$(function() {
-
-  //var dd = new DropDown( $('#residentialpropertysearch-city_id') );
-
-  //$('.ui.dropdown').dropdown();
-
-});
-  ");
 /*$this->registerJS("
 
       $( '#myTab a' ).click( function ( e ) {
