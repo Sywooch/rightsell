@@ -44,10 +44,10 @@ $this->title = 'Rightsell';
       </a></li>
         </ul>
       </div>
-	  </div>
-	  </div>
-	  </section>
-      <?php //$form = ActiveForm::begin(['action'=>['residential-property/index'],'method' => 'get']); 
+      </div>
+      </div>
+      </section>
+      <?php //$form = ActiveForm::begin(['action'=>['residential-property/index'],'method' => 'get']);
 
 $resPropRentLocCount = Residentialproperty::find()
 ->select(['*, COUNT(location_id) AS cnt'])
@@ -85,22 +85,22 @@ $residentialPropertiesforSaleArr = [];
 $commercialPropertiesArr = [];
 $agriculturalPropertiesArr = [];
 foreach ($resPropRentLocCount as $respropCnt) {
-  
+ 
   $residentialPropertiesforRentArr[$respropCnt->location_id] = Residentialproperty::find()->where(["available_for"=>"Rent",'status'=>1,'publish_on_web'=>1,'location_id'=> $respropCnt->location_id])->orderBy("added_on desc")->limit(20)->all();
 }
 
 foreach ($resPropSaleLocCount as $respropCnt) {
-  
+ 
   $residentialPropertiesforSaleArr[$respropCnt->location_id] = $residentialPropertiesforSale = Residentialproperty::find()->where(["available_for"=>"Sale",'status'=>1,'publish_on_web'=>1,'location_id'=> $respropCnt->location_id])->orderBy("added_on desc")->limit(20)->all();
 }
 
 foreach ($commPropLocCount as $respropCnt) {
-  
+ 
   $commercialPropertiesArr[$respropCnt->location_id] = $residentialPropertiesforSale = Commercialproperty::find()->where(['status'=>1,'publish_on_web'=>1,'location_id'=> $respropCnt->location_id])->orderBy("added_on desc")->limit(20)->all();
 }
 
 foreach ($agriPropLocCount as $respropCnt) {
-  
+ 
   $agriculturalPropertiesArr[$respropCnt->location_id] = $residentialPropertiesforSale = Agriculturalproperty::find()->where(['status'=>1,'publish_on_web'=>1,'location_id'=> $respropCnt->location_id])->orderBy("added_on desc")->limit(20)->all();
 }
 //echo "<pre>"; print_r($residentialPropertiesforSaleArr);exit;
@@ -125,27 +125,35 @@ $locationdata = Location::find()
 //echo "<pre>"; print_r($citydata); print_r($locationdata); exit;
     ?>
 
-    
+   
       <div class="tab-content responsive">
-        	<div class="tab-pane active hot_property_resi" id="resi">
-				
-				<?php 
+            <div class="tab-pane active hot_property_resi" id="resi">
+               
+                <?php
 
         $model = new \app\models\ResidentialpropertySearch();
         $form = ActiveForm::begin(['action'=>['residential-property/index'],'method'=>"get","id"=>"homerespropform"]);
-        
-        ?> 
+       
+        ?>
           <section class="rent_residentialprop">
             <div class="container">
-              <div class="row text-center">
+              <div id="tt" class="row text-center">
                 <h2 class="rb_text_h1">
+
+                <!-- <label for="radio-1">New York</label>
+                <input type="radio" name="radio-1" id="radio-1">
+                <label for="radio-2">Paris</label>
+                <input type="radio" name="radio-1" id="radio-2">
+                <label for="radio-3">London</label>
+                <input type="radio" name="radio-1" id="radio-3"> -->
+
                   <?= $form->field($model, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Sale','Flatmate'=>'Flatmate'],
                         [
                                 'item' => function($index, $label, $name, $checked, $value) {
-                                    
-                                    
+                                   
+                                   
                                     $return = '<input id="available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
-                                    $return .= '<a href="#"><label for="available_for_'.$label.'" class="radio_text_active">';
+                                    $return .= '<a href="#"><label for="available_for_'.$label.'" class="radio_text available_forradio">';
                                     $return .= ucwords($label);
                                     $return .= '</label></a> |';
 
@@ -176,7 +184,7 @@ $locationdata = Location::find()
           <li>
           <?php //$form->field($model, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
 
-          <?php 
+          <?php
 
           echo $form->field($model, 'locationname')->widget(Select2::classname(), [
     'options' => ['placeholder' => 'Select Area ...',"class"=>"auto_search_bar"],
@@ -231,13 +239,21 @@ $locationdata = Location::find()
               <li><input type="checkbox" id="el-2" name="el-2" value="neighbour"><label for="el-2">2 BHK</label></li>
               <li><input type="checkbox" id="el-3" name="el-3" value="T-rex"><label for="el-3">3 BHK</label></li>
               <li><input type="checkbox" id="el-3" name="el-3" value="T-rex"><label for="el-3">5 BHK</label></li>
-  
+ 
             </ul>
           </div>
                   </div> --></li>
-          <li>
-          <?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi",'id'=>"homeresmin_rate_pricefilter"])->label(false);?>
-          <!-- <div class="dropdown">
+         
+
+
+
+<li class="demo_home">
+<table class="dd_table">
+<tr><td><img src="images/select_budget.png" class="img-responsive" alt="">
+</td><td>
+<?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi",'id'=>""])->label(false);?></td></tr>
+</table>
+          <!-- homeresmin_rate_pricefilter <div class="dropdown">
           <div id="" class="dd4 wrapper-dropdown-3 dd_resi4" tabindex="1">
           <span>Select Budget</span>
           <ul class="dropdown" style="width:200px;">
@@ -249,11 +265,11 @@ $locationdata = Location::find()
           </div>
           </div> --></li>
         </ul>
-               
+              
               </div>
             </div>
           </section>
-          
+         
           <section class="business_place">
             <div class="container">
               <div class="row text-center">
@@ -264,18 +280,18 @@ $locationdata = Location::find()
             </div>
           </section>
           <?php ActiveForm::end(); ?>
-		  
-			</div>
-			
-			<div class="tab-pane  hot_property" id="com">
-				<section class="rent_commercialprop">
-				<?php 
+         
+            </div>
+           
+            <div class="tab-pane  hot_property" id="com">
+                <section class="rent_commercialprop">
+                <?php
 
         $model = new \app\models\CommercialpropertySearch();
         $form = ActiveForm::begin(['action'=>['commercial-property/index'],'method'=>"get"]);
-        
+       
         //echo $form->field($model, 'location_id')->hiddenInput()->label(false);
-        ?> 
+        ?>
             <div class="container">
               <div class="row text-center">
                <h2 class="rb_text_h1">
@@ -285,12 +301,12 @@ $locationdata = Location::find()
                  <?= $form->field($model, 'available_for')->radioList(['Lease'=>'Rent','Sale'=>'Sale'],
                         [
                     'item' => function($index, $label, $name, $checked, $value) {
-                        
-                        
+                       
+                       
                         $return = '<input id="comm_available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
-                        $return .= '<a href="#"><label for="comm_available_for_'.$label.'" class="input-group">';
+                        $return .= '<a href="#"><label for="comm_available_for_'.$label.'" class="radio_text_active">';
                         $return .= ucwords($label);
-                        $return .= '</label></a>';
+                        $return .= '</label></a> |';
 
                         return $return;
                     }
@@ -307,12 +323,12 @@ $locationdata = Location::find()
                   </td><td><?= $form->field($model, 'city_id')->dropdownList(ArrayHelper::map(City::find()->where(['status'=>1])->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi", 'required'=>true])->label(false);?></td></tr>
                 </table>
                 </li>
-				
-				
-				<li>
+               
+               
+                <li>
           <?php // $form->field($model, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
 
-<?php 
+<?php
 
           echo $form->field($model, 'locationname')->widget(Select2::classname(), [
     'options' => ['placeholder' => 'Select Area ...',"class"=>"auto_search_bar"],
@@ -353,11 +369,16 @@ $locationdata = Location::find()
               <li><input type="checkbox" id="el-2" name="el-2" value="neighbour"><label for="el-2">2 BHK</label></li>
               <li><input type="checkbox" id="el-3" name="el-3" value="T-rex"><label for="el-3">3 BHK</label></li>
               <li><input type="checkbox" id="el-3" name="el-3" value="T-rex"><label for="el-3">5 BHK</label></li>
-  
+ 
             </ul>
           </div>
                   </div> --></li>
-          <li><?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?><!-- <div class="dropdown">
+          <li class="demo_home">
+          <table class="dd_table">
+                  <tr><td><img src="images/select_budget.png" class="img-responsive" alt="">
+                  </td><td><?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?></td></tr>
+                </table>
+          <!-- <div class="dropdown">
           <div id="" class="dd4 wrapper-dropdown-3 dd_resi4" tabindex="1">
           <span>Select Budget</span>
           <ul class="dropdown" style="width:200px;">
@@ -368,8 +389,9 @@ $locationdata = Location::find()
           </ul>
           </div>
           </div> --></li>
+                
         </ul>
-               
+              
               </div>
             </div>
           </section>
@@ -383,22 +405,22 @@ $locationdata = Location::find()
             </div>
           </section>
           <?php ActiveForm::end(); ?>
-			</div>
-			<div class="tab-pane  hot_property_agri" id="agri">
-				<section class="rent_agriculturalprop">
-          <?php 
+            </div>
+            <div class="tab-pane  hot_property_agri" id="agri">
+                <section class="rent_agriculturalprop">
+          <?php
 
         $modelagri = new \app\models\AgriculturalpropertySearch();
         $form = ActiveForm::begin(['action'=>['agricultural-property/index'],'method'=>"get"]);
-        
+       
         //echo $form->field($model, 'available_for')->hiddenInput()->label(false);
         //echo $form->field($modelagri, 'location_id')->hiddenInput()->label(false);
         //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
         //echo $form->field($model, 'bhk')->hiddenInput()->label(false);
-        ?> 
+        ?>
             <div class="container">
               <div class="row text-center">
-              
+             
 
                 <h2 class="rb_text_h1">
                 <?php // $form->field($modelagri, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Buy','Lease'=>'Lease'])->label(false);?>
@@ -406,19 +428,19 @@ $locationdata = Location::find()
                         [
                     'item' => function($index, $label, $name, $checked, $value) {
                         $return = '<input id="agri_available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
-                        $return .= '<a href="#"><label for="agri_available_for_'.$label.'" class="input-group">';
+                        $return .= '<a href="#"><label for="agri_available_for_'.$label.'" class="radio_text_active">';
                         $return .= ucwords($label);
-                        $return .= '</label></a>';
+                        $return .= '</label></a> |';
 
                         return $return;
                     }
                 ])->label(false);?>
-                  
+                 
                 </h2>
               </div>
               <div class=" dd_row">
         <ul class="">
-          <li>
+          <li class="demo_home">
 <?php // $form->field($modelagri, 'city_id')->dropdownList(ArrayHelper::map(City::find()->all(),"id","city"),['prompt'=>"Select City",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
 <table class="dd_table">
   <tr><td><img src="images/location_30km.png" class="img-responsive" alt="">
@@ -427,7 +449,7 @@ $locationdata = Location::find()
 
 </li>
           <li><?php // $form->field($modelagri, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
-            <?php 
+            <?php
 
           echo $form->field($modelagri, 'locationname')->widget(Select2::classname(), [
     'options' => ['placeholder' => 'Select Area ...',"class"=>"auto_search_bar"],
@@ -463,14 +485,15 @@ $locationdata = Location::find()
               <li><input type="checkbox" id="el-2" name="el-2" value="neighbour"><label for="el-2">2 BHK</label></li>
               <li><input type="checkbox" id="el-3" name="el-3" value="T-rex"><label for="el-3">3 BHK</label></li>
               <li><input type="checkbox" id="el-3" name="el-3" value="T-rex"><label for="el-3">5 BHK</label></li>
-  
+ 
             </ul>
           </div>
                   </div> --></li>
-          <li>
-
-
-<?= $form->field($modelagri, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?>
+          <li class="demo_home">
+          <table class="dd_table">
+                  <tr><td><img src="images/select_budget.png" class="img-responsive" alt="">
+                  </td><td><?= $form->field($modelagri, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi"])->label(false);?></td></tr>
+                </table>
 <div class="dropdown">
           <!-- <div id="" class="dd4 wrapper-dropdown-3 dd_resi4" tabindex="1">
           <span>Select Budget</span>
@@ -483,11 +506,11 @@ $locationdata = Location::find()
           </div>
           </div> --></li>
         </ul>
-               
+              
               </div>
             </div>
           </section>
-          
+         
 
           <section class="business_place">
             <div class="container">
@@ -499,10 +522,10 @@ $locationdata = Location::find()
             </div>
           </section>
           <?php ActiveForm::end(); ?>
-		  
-			</div>
-			
-			
+         
+            </div>
+           
+           
     </div>
   </div>
 </section>
@@ -528,38 +551,38 @@ $locationdata = Location::find()
                   <div class="row">
                     <div class="col-md-3 nomargin nopadding">
                       <ul class="nav nav-tabs area_tabs">
-                        <?php 
-											  $i=0;
-											  foreach ($resPropRentLocCount as $rpc) {
-												$cls = "";
-												if($i== 0)
-												{
-												  $cls = "active";
-												  $i++;
-												}
-												  ?>
+                        <?php
+                                              $i=0;
+                                              foreach ($resPropRentLocCount as $rpc) {
+                                                $cls = "";
+                                                if($i== 0)
+                                                {
+                                                  $cls = "active";
+                                                  $i++;
+                                                }
+                                                  ?>
                         <li class="<?=$cls?>"><a href="#rprent_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab">
                           <?=trim($rpc->locations->location)?>
                           </a></li>
                         <?php } ?>
-                       
+                      
                       </ul>
                     </div>
                     <div class="col-md-9 nopadding">
                       <div class="tab-content">
-                        <?php 
-						$j=0;
-												  foreach ($resPropRentLocCount as $respropCnt) {
-												  $clsj = "";
-												if($j== 0)
-												{
-												  $clsj = "active";
-												  $j++;
-												}?>
+                        <?php
+                        $j=0;
+                                                  foreach ($resPropRentLocCount as $respropCnt) {
+                                                  $clsj = "";
+                                                if($j== 0)
+                                                {
+                                                  $clsj = "active";
+                                                  $j++;
+                                                }?>
                         <div class="tab-pane <?=$clsj?>" id="rprent_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
-                          <div class="scroll-pane1">
-                            <?php 
-												  foreach ($residentialPropertiesforRentArr[$respropCnt->location_id] as $resprop) {?>
+                         <div id="" class="example example2">
+                            <?php
+                                                  foreach ($residentialPropertiesforRentArr[$respropCnt->location_id] as $resprop) {?>
                             <div class="row home_pro_box">
                               <div class="col-sm-5 nopadding">
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -605,24 +628,24 @@ $locationdata = Location::find()
                                     <div class="col-xs-6">
                                       <p><img src="images/furnished.png" alt="">
                                         <?php
-							  if($resprop->furnished == "FF") 
-								echo "Fully Furnished"; 
-							  else if($resprop->furnished == "UN")
-								echo "Non Furnished";
-							  else if($resprop->furnished == "SF")
-								echo "Semi-Furnished";
-					
-							  
-							$now = time(); // or your date as well
-							$your_date = strtotime($resprop->added_on);
-							$datediff = $now - $your_date;
-					
-							$days = floor($datediff / (60 * 60 * 24));
-							$from=date_create(date('Y-m-d'));
-							$to=date_create($resprop->added_on);
-							$diff=date_diff($to,$from);
-							
-							  ?>
+                              if($resprop->furnished == "FF")
+                                echo "Fully Furnished";
+                              else if($resprop->furnished == "UN")
+                                echo "Non Furnished";
+                              else if($resprop->furnished == "SF")
+                                echo "Semi-Furnished";
+                   
+                             
+                            $now = time(); // or your date as well
+                            $your_date = strtotime($resprop->added_on);
+                            $datediff = $now - $your_date;
+                   
+                            $days = floor($datediff / (60 * 60 * 24));
+                            $from=date_create(date('Y-m-d'));
+                            $to=date_create($resprop->added_on);
+                            $diff=date_diff($to,$from);
+                           
+                              ?>
                                       </p>
                                     </div>
                                     <div class="col-xs-12"><strong>Status:</strong> This property
@@ -651,7 +674,7 @@ $locationdata = Location::find()
                           </div>
                         </div>
                         <?php }?>
-                        
+                       
                       </div>
                     </div>
                   </div>
@@ -660,48 +683,58 @@ $locationdata = Location::find()
                   <div class="row">
                     <div class="col-md-3 nomargin nopadding">
                       <ul class="nav nav-tabs area_tabs">
-                        <?php 
-											  $i=0;
-											  foreach ($resPropSaleLocCount as $rpc) {
-												$cls = "";
-												if($i== 0)
-												{
-												  $cls = "active0";
-												  $i++;
-												}
-												  ?>
+                        <?php
+                                              $i=0;
+                                              foreach ($resPropSaleLocCount as $rpc) {
+                                                $cls = "";
+                                                if($i== 0)
+                                                {
+                                                  $cls = "active";
+                                                  $i++;
+                                                }
+                                                  ?>
                         <li class="<?=$cls?>"><a href="#rpsale_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab">
                           <?=trim($rpc->locations->location)?>
                           </a></li>
                         <?php } ?>
-                       
+                      
                       </ul>
                     </div>
                     <div class="col-md-9">
                       <div class="tab-content">
-                        <?php foreach ($resPropSaleLocCount as $respropCnt) {?>
-                        <div class="tab-pane active" id="rpsale_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
-                          <?php 
-												  //echo "<pre>"; print_r($residentialProperties);exit;
-												  foreach ($residentialPropertiesforSaleArr[$respropCnt->location_id] as $resprop) {?>
+                        <?php 
+                        $j=0;
+                        foreach ($resPropSaleLocCount as $respropCnt) {
+                            
+                          $cls = "";
+                          if($j== 0)
+                          {
+                            $cls = "active";
+                            $j++;
+                          }
+                          ?>
+                        <div class="tab-pane <?=$cls?>" id="rpsale_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
+                          <?php
+                                                  //echo "<pre>"; print_r($residentialProperties);exit;
+                                                  foreach ($residentialPropertiesforSaleArr[$respropCnt->location_id] as $resprop) {?>
                           <div class="row home_pro_box">
                             <div class="col-sm-5 nopadding">
                               <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
                                   <?php
-							  $images = json_decode($resprop->gallery_images);
-							if(count($images) >0)
-							{
-							  foreach ($images as $image) {
-								echo "<div class='item'>";
-								echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
-								echo "</div>";
-							  }
-							}
-							else 
-							  echo '<div class="item">
-								<img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
-							  ?>
+                              $images = json_decode($resprop->gallery_images);
+                            if(count($images) >0)
+                            {
+                              foreach ($images as $image) {
+                                echo "<div class='item'>";
+                                echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
+                                echo "</div>";
+                              }
+                            }
+                            else
+                              echo '<div class="item">
+                                <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+                              ?>
                                 </div>
                                 <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
                             </div>
@@ -737,24 +770,24 @@ $locationdata = Location::find()
                                   <div class="col-xs-6">
                                     <p><img src="images/furnished.png" alt="">
                                       <?php
-							  if($resprop->furnished == "FF") 
-								echo "Fully Furnished"; 
-							  else if($resprop->furnished == "UN")
-								echo "Non Furnished";
-							  else if($resprop->furnished == "SF")
-								echo "Semi-Furnished";
-					
-							  
-							$now = time(); // or your date as well
-							$your_date = strtotime($resprop->added_on);
-							$datediff = $now - $your_date;
-					
-							$days = floor($datediff / (60 * 60 * 24));
-							$from=date_create(date('Y-m-d'));
-							$to=date_create($resprop->added_on);
-							$diff=date_diff($to,$from);
-							
-							  ?>
+                              if($resprop->furnished == "FF")
+                                echo "Fully Furnished";
+                              else if($resprop->furnished == "UN")
+                                echo "Non Furnished";
+                              else if($resprop->furnished == "SF")
+                                echo "Semi-Furnished";
+                   
+                             
+                            $now = time(); // or your date as well
+                            $your_date = strtotime($resprop->added_on);
+                            $datediff = $now - $your_date;
+                   
+                            $days = floor($datediff / (60 * 60 * 24));
+                            $from=date_create(date('Y-m-d'));
+                            $to=date_create($resprop->added_on);
+                            $diff=date_diff($to,$from);
+                           
+                              ?>
                                     </p>
                                   </div>
                                   <div class="col-xs-12"><strong>Status:</strong> This property
@@ -790,48 +823,48 @@ $locationdata = Location::find()
                   <div class="row">
                     <div class="col-md-3 nomargin nopadding">
                       <ul class="nav nav-tabs area_tabs">
-                        <?php 
-											  $i=0;
-											  foreach ($commPropLocCount as $rpc) {
-												$cls = "";
-												if($i== 0)
-												{
-												  $cls = "active0";
-												  $i++;
-												}
-												  ?>
+                        <?php
+                                              $i=0;
+                                              foreach ($commPropLocCount as $rpc) {
+                                                $cls = "";
+                                                if($i== 0)
+                                                {
+                                                  $cls = "active0";
+                                                  $i++;
+                                                }
+                                                  ?>
                         <li class="<?=$cls?>"><a href="#comm_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab">
                           <?=trim($rpc->locations->location)?>
                           </a></li>
                         <?php } ?>
-                       
+                      
                       </ul>
                     </div>
                     <div class="col-md-9">
                       <div class="tab-content">
                         <?php foreach ($commPropLocCount as $respropCnt) {?>
                         <div class="tab-pane active" id="comm_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
-                          <?php 
-												  //echo "<pre>"; print_r($residentialProperties);exit;
-												  foreach ($commercialPropertiesArr[$respropCnt->location_id] as $model) {?>
+                          <?php
+                                                  //echo "<pre>"; print_r($residentialProperties);exit;
+                                                  foreach ($commercialPropertiesArr[$respropCnt->location_id] as $model) {?>
                           <div class="row home_pro_box">
                             <div class="col-sm-5 nopadding">
                               <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
                                   <?php
-							  $images = json_decode($model->gallery_images);
-							if(count($images) >0)
-							{
-							  foreach ($images as $image) {
-								echo "<div class='item'>";
-								echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
-								echo "</div>";
-							  }
-							}
-							else 
-							  echo '<div class="item">
-								<img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
-							  ?>
+                              $images = json_decode($model->gallery_images);
+                            if(count($images) >0)
+                            {
+                              foreach ($images as $image) {
+                                echo "<div class='item'>";
+                                echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+                                echo "</div>";
+                              }
+                            }
+                            else
+                              echo '<div class="item">
+                                <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+                              ?>
                                 </div>
                                 <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
                             </div>
@@ -894,15 +927,15 @@ $locationdata = Location::find()
                                   </div>
                                   <?php endif;?>
                                   <?php
-							$now = time(); // or your date as well
-							$your_date = strtotime($model->added_on);
-							$datediff = $now - $your_date;
-					
-							$days = floor($datediff / (60 * 60 * 24));
-							$from=date_create(date('Y-m-d'));
-							$to=date_create($model->added_on);
-							$diff=date_diff($to,$from);
-							?>
+                            $now = time(); // or your date as well
+                            $your_date = strtotime($model->added_on);
+                            $datediff = $now - $your_date;
+                   
+                            $days = floor($datediff / (60 * 60 * 24));
+                            $from=date_create(date('Y-m-d'));
+                            $to=date_create($model->added_on);
+                            $diff=date_diff($to,$from);
+                            ?>
                                   <div class="col-xs-12"><strong>Status:</strong> This property
                                     <?=$diff->format('%a days');?>
                                     old</div>
@@ -929,7 +962,7 @@ $locationdata = Location::find()
                           <?php }?>
                         </div>
                         <?php }?>
-                        
+                       
                       </div>
                     </div>
                   </div>
@@ -938,48 +971,48 @@ $locationdata = Location::find()
                   <div class="row">
                     <div class="col-md-3 nomargin nopadding">
                       <ul class="nav nav-tabs area_tabs">
-                        <?php 
-											  $i=0;
-											  foreach ($agriPropLocCount as $rpc) {
-												$cls = "";
-												if($i== 0)
-												{
-												  $cls = "active0";
-												  $i++;
-												}
-												  ?>
+                        <?php
+                                              $i=0;
+                                              foreach ($agriPropLocCount as $rpc) {
+                                                $cls = "";
+                                                if($i== 0)
+                                                {
+                                                  $cls = "active0";
+                                                  $i++;
+                                                }
+                                                  ?>
                         <li class="<?=$cls?>"><a href="#agri_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab">
                           <?=trim($rpc->locations->location)?>
                           </a></li>
                         <?php } ?>
-                        
+                       
                       </ul>
                     </div>
                     <div class="col-md-9">
                       <div class="tab-content">
                         <?php foreach ($agriPropLocCount as $respropCnt) {?>
                         <div class="tab-pane active" id="agri_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
-                          <?php 
-												  //echo "<pre>"; print_r($residentialProperties);exit;
-												  foreach ($agriculturalPropertiesArr[$respropCnt->location_id] as $model) {?>
+                          <?php
+                                                  //echo "<pre>"; print_r($residentialProperties);exit;
+                                                  foreach ($agriculturalPropertiesArr[$respropCnt->location_id] as $model) {?>
                           <div class="row home_pro_box">
                             <div class="col-sm-5 nopadding">
                               <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
                                   <?php
-							  $images = json_decode($model->gallery_images);
-							if(count($images) >0)
-							{
-							  foreach ($images as $image) {
-								echo "<div class='item'>";
-								echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
-								echo "</div>";
-							  }
-							}
-							else 
-							  echo '<div class="item active">
-								<img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
-							  ?>
+                              $images = json_decode($model->gallery_images);
+                            if(count($images) >0)
+                            {
+                              foreach ($images as $image) {
+                                echo "<div class='item'>";
+                                echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+                                echo "</div>";
+                              }
+                            }
+                            else
+                              echo '<div class="item active">
+                                <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+                              ?>
                                 </div>
                                 <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
                             </div>
@@ -1028,15 +1061,15 @@ $locationdata = Location::find()
                                     <p><img src="images/loc.jpg" alt="">30 Km from city</p>
                                   </div>
                                   <?php
-							$now = time(); // or your date as well
-							$your_date = strtotime($model->added_on);
-							$datediff = $now - $your_date;
-					
-							$days = floor($datediff / (60 * 60 * 24));
-							$from=date_create(date('Y-m-d'));
-							$to=date_create($model->added_on);
-							$diff=date_diff($to,$from);
-							?>
+                            $now = time(); // or your date as well
+                            $your_date = strtotime($model->added_on);
+                            $datediff = $now - $your_date;
+                   
+                            $days = floor($datediff / (60 * 60 * 24));
+                            $from=date_create(date('Y-m-d'));
+                            $to=date_create($model->added_on);
+                            $diff=date_diff($to,$from);
+                            ?>
                                   <div class="col-xs-12"><strong>Status:</strong> This property
                                     <?=$diff->format('%a days');?>
                                     old</div>
@@ -1100,9 +1133,9 @@ $locationdata = Location::find()
   </div>
 </section>
 
-      
-    
-<?php 
+     
+   
+<?php
 //$this->registerJsFile(Yii::$app->request->baseUrl . '/js/bootstrap-multiselect.js');
 /*$this->registerJS("
 
@@ -1124,10 +1157,6 @@ $locationdata = Location::find()
          // fakewaffle.responsiveTabs( [ 'xs', 'sm' ] );
       } )( jQuery );
     ");*/
-	
-	$this->registerJs("$(function()
-            {
-                $('.scroll-pane').jScrollPane();
-            });");
-			
-			?>
+
+           
+            ?>

@@ -34,7 +34,6 @@ AppAsset::register($this);
     <link rel="stylesheet" href="css/scroll.css">
     <link href="css/responsive.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/responsive-tabs.css">
-
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -178,9 +177,7 @@ AppAsset::register($this);
 
     <!--</script>-->
             
-            <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
-        <!-- the jScrollPane script -->
-        <script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
+            
         <!-- scripts specific to this demo site -->
 
         <!--<script type="text/javascript">-->
@@ -243,9 +240,16 @@ $(function() {
     });*/
 });
 </script>
+	<script type="text/javascript">
+	  $(document).ready(function(){
+	  	$('.example1, .example2').rollbar({zIndex:1}); 
+	  	//$('body').rollbar({zIndex:1});
+	  });
+	</script>
 
-<script>jQuery.noConflict();</script>
+<!-- <script>jQuery.noConflict();</script> -->
 <?php $this->endBody() ?>
+
 </body>
 </html>
 <?php $this->endPage() ?>

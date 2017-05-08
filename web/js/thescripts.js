@@ -7,6 +7,16 @@ function extractLast( term ) {
 
 $(document).on("ready", function(){
 
+	/*$( "#tt > input" ).checkboxradio({
+      icon: false
+    });*/
+
+	$(".available_forradio").on("click", function(){
+		//alert($(this).val());
+		$(".available_forradio").removeClass("radio_text_active");
+		$(this).addClass("radio_text_active");
+	});
+
  	$('#filterResProp_floor').multiselect({
  		nonSelectedText: 'Floor'
  	});

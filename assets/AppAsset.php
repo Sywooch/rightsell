@@ -29,14 +29,14 @@ class AppAsset extends AssetBundle
         'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
         'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600',
         'css/bootstrap-multiselect.css',
-        'css/bootstrap.css'
+        'css/bootstrap.css',
+		'css/jquery.rollbar.css',
     ];
     public $js = [
         // 'js/jquery-1.10.2.min.js',
         'js/bootstrap.js',
         'js/jquery-ui.js',
-        'js/jquery.mousewheel.js',
-        'js/jquery.jscrollpane.min.js',
+        
         'js/propertysearch.js',
         //'js/demo.js',
         'js/simpleLightbox.min.js',
@@ -44,6 +44,8 @@ class AppAsset extends AssetBundle
         // 'https://rawgit.com/dbrekalo/attire/master/dist/js/build.min.js',
         'http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js',
         'js/responsiveTabs.js',
+		'js/jquery.mousewheel.js',
+        'js/jquery.rollbar.min.js',
            
        
     
