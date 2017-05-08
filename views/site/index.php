@@ -137,15 +137,23 @@ $locationdata = Location::find()
         ?>
           <section class="rent_residentialprop">
             <div class="container">
-              <div class="row text-center">
+              <div id="tt" class="row text-center">
                 <h2 class="rb_text_h1">
+
+                <!-- <label for="radio-1">New York</label>
+                <input type="radio" name="radio-1" id="radio-1">
+                <label for="radio-2">Paris</label>
+                <input type="radio" name="radio-1" id="radio-2">
+                <label for="radio-3">London</label>
+                <input type="radio" name="radio-1" id="radio-3"> -->
+
                   <?= $form->field($model, 'available_for')->radioList(['Rent'=>'Rent','Sale'=>'Sale','Flatmate'=>'Flatmate'],
                         [
                                 'item' => function($index, $label, $name, $checked, $value) {
                                    
                                    
                                     $return = '<input id="available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
-                                    $return .= '<a href="#"><label for="available_for_'.$label.'" class="radio_text_active">';
+                                    $return .= '<a href="#"><label for="available_for_'.$label.'" class="radio_text available_forradio">';
                                     $return .= ucwords($label);
                                     $return .= '</label></a> |';
 
@@ -572,7 +580,7 @@ $locationdata = Location::find()
                                                   $j++;
                                                 }?>
                         <div class="tab-pane <?=$clsj?>" id="rprent_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
-                          <div class="scroll-pane1">
+                          <div class="scroll-pane">
                             <?php
                                                   foreach ($residentialPropertiesforRentArr[$respropCnt->location_id] as $resprop) {?>
                             <div class="row home_pro_box">
@@ -681,7 +689,7 @@ $locationdata = Location::find()
                                                 $cls = "";
                                                 if($i== 0)
                                                 {
-                                                  $cls = "active0";
+                                                  $cls = "active";
                                                   $i++;
                                                 }
                                                   ?>
@@ -694,8 +702,18 @@ $locationdata = Location::find()
                     </div>
                     <div class="col-md-9">
                       <div class="tab-content">
-                        <?php foreach ($resPropSaleLocCount as $respropCnt) {?>
-                        <div class="tab-pane active" id="rpsale_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
+                        <?php 
+                        $j=0;
+                        foreach ($resPropSaleLocCount as $respropCnt) {
+                            
+                          $cls = "";
+                          if($j== 0)
+                          {
+                            $cls = "active";
+                            $j++;
+                          }
+                          ?>
+                        <div class="tab-pane <?=$cls?>" id="rpsale_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
                           <?php
                                                   //echo "<pre>"; print_r($residentialProperties);exit;
                                                   foreach ($residentialPropertiesforSaleArr[$respropCnt->location_id] as $resprop) {?>
