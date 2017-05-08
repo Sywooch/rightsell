@@ -247,7 +247,7 @@ $(function() {
 });
 </script>
 
-<script>jQuery.noConflict();</script>
+<!-- <script>jQuery.noConflict();</script> -->
 <?php $this->endBody() ?>
 </body>
 </html>
