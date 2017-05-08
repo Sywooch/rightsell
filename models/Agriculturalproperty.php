@@ -149,4 +149,14 @@ class Agriculturalproperty extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Location::className(), ['id' => 'location_id']);
     }
+
+    public function getCityName()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    public function getAmenityies()
+    {
+        return $this->hasMany(AgriculturalpropertyAmenities::className(), ['property_id' => 'id']);
+    }
 }

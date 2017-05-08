@@ -1,4 +1,7 @@
-<?php $host = "103.208.73.2";?>
+<?php 
+
+use yii\helpers\Url;
+$host = "103.208.73.2";?>
 <div class="col-sm-5 nopadding">
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner" role="listbox">
@@ -33,7 +36,7 @@
 			</a>
 		</div>
 	</div>
-
+<a href="<?=Url::to(['agricultural-property/view','id'=>$model->id])?>">
 	<div class="col-sm-7">
 		<div class="row pro_detail">
 			<h1><?= $model->property_type?> Near <?= $model->locations->location?>.</h1>
@@ -84,3 +87,4 @@
 			</div>
 		</div>
 	</div>
+	</a>

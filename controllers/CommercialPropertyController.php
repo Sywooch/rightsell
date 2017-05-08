@@ -41,6 +41,56 @@ class CommercialPropertyController extends Controller
         if(Yii::$app->request->isPost)
         {
             $postdata = Yii::$app->request->post();
+            // echo "<pre>"; print_r($postdata);exit;
+            $available_for = $postdata['available_for'];
+            $nearby = false;
+            if(isset($postdata['nearby']))
+                $nearby = $postdata['nearby'];
+            $locarray = explode(", ", $postdata['locationnames']);
+            $searchModel = new CommercialpropertySearch();
+            if($nearby == 1)
+            {
+                $searchModel->nearby = true;
+            }
+            if(count($locarray) > 0)
+            {
+                $locmodels =Location::find()->select('id')->where(['in', 'location',$locarray])->all();
+                $locations =[];
+                foreach ($locmodels as $locsmodel) {
+                    $locations[]= $locsmodel->id;
+                }
+                // echo "<pre>"; print_r($locations);exit;
+                // $locations = $postdata;
+                //$query->andFilterWhere(["in", "location_id", $locations]);
+                $searchModel->location_id = $locations;
+            }
+
+            
+            $searchModel->available_for = $available_for;
+            $dataProvider = $searchModel->search(null);
+
+            /*$query = Residentialproperty::find();
+            
+            
+            $query->andFilterWhere(["=", "available_for", $available_for]);*/
+
+            /*$dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => false,
+            ]);*/
+            
+            // $searchModel->locationnames = $postdata['locationnames'];
+            $searchModel->city_id = $postdata['property_city_id'];
+
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'availablefr' => $available_for,
+                'city' => $searchModel->city_id,
+                'locationname' => $postdata['locationnames'],
+                //'location' => $searchModel->locations->name,
+            ]);
+
         }
         else
         {
@@ -150,7 +200,7 @@ class CommercialPropertyController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('view_newlayout', [
             'model' => $this->findModel($id),
         ]);
     }

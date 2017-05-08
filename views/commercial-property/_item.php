@@ -1,4 +1,6 @@
-<?php $host = "103.208.73.2";
+<?php 
+use yii\helpers\Url;
+$host = "103.208.73.2";
 //echo "Property By: ".$model->property_by;
 ?>
 <div class="col-sm-5 nopadding">
@@ -35,7 +37,7 @@
 			</a>
 		</div>
 	</div>
-
+<a href="<?=Url::to(['commercial-property/view','id'=>$model->id])?>">
 	<div class="col-sm-7">
 		<div class="row pro_detail">
 			<h1><?= $model->type?> Near <?= $model->locations?$model->locations->location:""?>.</h1>
@@ -115,3 +117,4 @@
 			</div>
 		</div>
 	</div>
+	</a>
