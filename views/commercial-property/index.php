@@ -144,13 +144,13 @@ $host = "localhost";
 <option value="3">3</option>
 </select> -->
 <hr>
-<select id="filterCommProp_status" name="filterCommProp_status">
+<!-- <select id="filterCommProp_status" name="filterCommProp_status">
 <option value="">Status</option>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
 </select>
-<hr>
+<hr> -->
 </div>
 <div class="col-sm-5 other_col">
 <h1>Other</h1>
@@ -168,7 +168,7 @@ $host = "localhost";
 <label class="chkbob_lable" for="filterCommProp_haveimage"><span></span><img src="images/photo.png" alt="">Photos</label>
 </p>
 <hr>
-<p><img src="images/rs_veryfi.png" alt=""><br>
+<p><br>
 <span>Rightsell verified property</span></p>
 
 </div>

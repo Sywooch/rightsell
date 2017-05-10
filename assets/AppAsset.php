@@ -22,7 +22,7 @@ class AppAsset extends AssetBundle
     ];
     public $css = [
         //'css/site.css',
-        'css/style.css',
+
         'css/scroll.css',
         'css/responsive.css',
         'css/responsive-tabs.css',
@@ -31,6 +31,7 @@ class AppAsset extends AssetBundle
         'css/bootstrap-multiselect.css',
         'css/bootstrap.css',
 		'css/jquery.rollbar.css',
+		'css/style.css',
     ];
     public $js = [
         // 'js/jquery-1.10.2.min.js',
