@@ -8,6 +8,7 @@ use yii\data\Pagination;
 
 //$host = "localhost";
 $host = "103.208.73.2";
+// echo "<pre>"; print_r($searchModel);exit;
 ?>
 
 <div class="container-fluid inner_banner">
@@ -44,7 +45,7 @@ $host = "103.208.73.2";
 </div>
 <div class="col-xs-9 padding_left border_right">
 <div class="checkbox">
-<input type="checkbox" id="filterResProp_nearby" name="nearbyresprop" value="1" />
+<input type="checkbox" id="filterResProp_nearby" name="nearbyresprop" value="1" <?php echo ($searchModel->nearby ==1) ? "checked=checked":"";?>/>
 <label class="chkbob_lable" for="filterResProp_nearby" style="padding-left:0"><span></span>Nearby properties</label>
 </div>
 </div>

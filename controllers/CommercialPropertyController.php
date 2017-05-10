@@ -46,7 +46,8 @@ class CommercialPropertyController extends Controller
             $nearby = false;
             if(isset($postdata['nearby']))
                 $nearby = $postdata['nearby'];
-            $locarray = explode(", ", $postdata['locationnames']);
+            // $locarray = explode(", ", $postdata['locationnames']);
+            $locarray = $postdata['locationnames'];
             $searchModel = new CommercialpropertySearch();
             if($nearby == 1)
             {
@@ -54,15 +55,13 @@ class CommercialPropertyController extends Controller
             }
             if(count($locarray) > 0)
             {
-                $locmodels =Location::find()->select('id')->where(['in', 'location',$locarray])->all();
+                $searchModel->location_id = $locarray;
+                /*$locmodels =Location::find()->select('id')->where(['in', 'location',$locarray])->all();
                 $locations =[];
                 foreach ($locmodels as $locsmodel) {
                     $locations[]= $locsmodel->id;
                 }
-                // echo "<pre>"; print_r($locations);exit;
-                // $locations = $postdata;
-                //$query->andFilterWhere(["in", "location_id", $locations]);
-                $searchModel->location_id = $locations;
+                $searchModel->location_id = $locations;*/
             }
 
             
@@ -87,7 +86,8 @@ class CommercialPropertyController extends Controller
                 'dataProvider' => $dataProvider,
                 'availablefr' => $available_for,
                 'city' => $searchModel->city_id,
-                'locationname' => $postdata['locationnames'],
+                // 'locationname' => $postdata['locationnames'],
+                'locationname' => "",
                 //'location' => $searchModel->locations->name,
             ]);
 

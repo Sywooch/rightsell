@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
+use kartik\select2\Select2;
+use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Residentialproperty */
@@ -37,7 +39,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 <option>Rent</option>
         </select></div>
         <div class="col-sm-7">
-          <input type="text" name="locationnames" class="form-control" id="filterResProp_locationname" placeholder="Add more Locations..">
+          <!-- <input type="text" name="locationnames" class="form-control" id="filterResProp_locationname" placeholder="Add more Locations.."> -->
+          <?php 
+            // Multiple select without model
+            echo Select2::widget([
+                'name' => 'locationnames',
+                'value' => '',
+                'pluginOptions' => [
+                'ajax' => [
+                    'url' => \yii\helpers\Url::to(['residential-property/city-list']),
+                    'dataType' => 'json',
+                    'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                ],
+                ],
+                'options' => ['multiple' => true, 'placeholder' => 'Add more locations ...']
+            ]);
+          ?>
           <input type="hidden" name="property_city_id" id="property_city_id" value="<?=$model->city_id?>">
         </div>
         <div class="col-sm-3">
@@ -123,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <span>Posted - <?=$diff->format('%a days');?> old</span>
                                     <h1><?=$model->property_type." in ".$model->locations->location?></h1>
-                                    <p>No Society, near bridge</p>
+                                    <p></p>
                                 </div>
                                 <div class="row detail_body_price">
                                     <ul>
@@ -134,18 +151,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?php if($model->available_for == "Rent") { ?>
                                         <li>
                                             <span>Rent</span>
-                                            <h1>| Rs.<?= number_format($model->expected_rent_comp)?> |</h1>
+                                            <h1>| <i class="fa fa-inr" aria-hidden="true"></i><?= number_format($model->expected_rent_comp)?> |</h1>
                                         </li>
                                         <li>
                                             <span>Deposit</span>
-                                            <h1>Rs.<?= number_format($model->deposit_comp)?></h1>
+                                            <h1><i class="fa fa-inr" aria-hidden="true"></i><?= number_format($model->deposit_comp)?></h1>
                                         </li>
                                         <?php }?>
 
                                         <?php if($model->available_for == "Sale") { ?>
                                         <li>
                                             <span>Rate</span>
-                                            <h1>| Rs.<?= number_format($model->expected_rate_comp)?> |</h1>
+                                            <h1>| <i class="fa fa-inr" aria-hidden="true"></i><?= number_format($model->expected_rate_comp)?> |</h1>
                                         </li>
                                         <?php }?>
                                     </ul>
@@ -162,7 +179,7 @@ $this->params['breadcrumbs'][] = $this->title;
                          </div>
                         </div>
                     </div>
-                    <div class="row detail_features_vr">
+                    <div class="row detail_features">
                         <h1>Features</h1>
                         <ul>
                             <li><strong>Ideal For :</strong> <?=$model->ideal_for?> </li>

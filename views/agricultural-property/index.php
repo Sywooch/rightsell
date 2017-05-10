@@ -44,7 +44,7 @@ $host = "localhost";
 </div>
 <div class="col-xs-9 padding_left border_right">
 <div class="checkbox">
-<input type="checkbox" id="filterAgriProp_nearby" name="nearbyresprop" value="1" />
+<input type="checkbox" id="filterAgriProp_nearby" name="nearbyresprop" value="1" <?php echo ($searchModel->nearby ==1) ? "checked=checked":"";?>/>
 <label class="chkbob_lable" for="filterAgriProp_nearby" style="padding-left:0"><span></span>Nearby properties</label>
 </div>
 </div>
@@ -133,7 +133,7 @@ $host = "localhost";
 </form>
 <div class="container">
 <div class="row">
-<div class="col-md-12 breadcrum"><a href="#">Home</a> › <a href="#">Property for Buy/Rent in Pune</a> › <a href="#">Wakad</a> › All Agricultural</div>
+<div class="col-md-12 breadcrum"><!-- <a href="#">Home</a> › <a href="#">Property for Buy/Rent in Pune</a> › <a href="#">Wakad</a> › All Agricultural --></div>
 <div class="col-md-3">
 <div class="pro_left_column"><div class="row">
 <div class="col-xs-7 filter_text">Filter your Search</div>

@@ -129,7 +129,7 @@ class ResidentialpropertySearch extends Residentialproperty
             $query->andFilterWhere(['=', 'bathroom', $this->bathroom]);
         }
         //echo $this->nearby; exit;
-        if($this->nearby === "true" && $this->location_id)
+        if(($this->nearby === "true" || $this->nearby == 1) && $this->location_id)
         {
             $Nearbylocationsmodels = Nearbylocations::find()->where(["in",'location_id',$this->location_id])->all();
             $nearbylocs = [];
@@ -139,9 +139,9 @@ class ResidentialpropertySearch extends Residentialproperty
                     $locidstemp[] = $nearbyloc->nearbylocation_id;
                 }
             }
-            // echo "<pre>"; 
-            // print_r($locidstemp); 
-            // exit;
+            /*echo "<pre>"; 
+            print_r($locidstemp); 
+            exit;*/
         }
         else if($this->nearby === "false")
         {

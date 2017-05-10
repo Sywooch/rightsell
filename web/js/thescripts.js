@@ -11,9 +11,19 @@ $(document).on("ready", function(){
       icon: false
     });*/
 
-	$(".available_forradio").on("click", function(){
+	$(".available_forradio_resi").on("click", function(){
 		//alert($(this).val());
-		$(".available_forradio").removeClass("radio_text_active");
+		$(".available_forradio_resi").removeClass("radio_text_active");
+		$(this).addClass("radio_text_active");
+	});
+	$(".available_forradio_comm").on("click", function(){
+		//alert($(this).val());
+		$(".available_forradio_comm").removeClass("radio_text_active");
+		$(this).addClass("radio_text_active");
+	});
+	$(".available_forradio_agri").on("click", function(){
+		//alert($(this).val());
+		$(".available_forradio_agri").removeClass("radio_text_active");
 		$(this).addClass("radio_text_active");
 	});
 
