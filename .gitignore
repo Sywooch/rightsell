@@ -49,3 +49,6 @@ Temporary Items
 /web/assets
 /runtime
 /commands
+/assets/AppAsset_vis.php
+/views/layouts/main_vis.php
+/views/site/index_vis.php
