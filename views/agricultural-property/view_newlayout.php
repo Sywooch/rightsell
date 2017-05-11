@@ -192,7 +192,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <ul>
                         <?php if($model->amenityies) {
                             foreach($model->amenityies as $amenities) {?>
-                            <li><?=$amenities->amenityName->name?></li>
+                            <li><?=$amenities->amenityName?$amenities->amenityName->name:""?></li>
                             <?php }
                             }?>
                             <!-- <li><img src="images/fensing.png" class="img-responsive" alt="">Fencing</li>
