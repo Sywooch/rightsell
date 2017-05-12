@@ -131,6 +131,11 @@ AppAsset::register($this);
             $('#bhk').multiselect({
                 includeSelectAllOption: true,
                 nonSelectedText: 'Select BHK',
+            });
+            $('#locsresi').multiselect({
+                includeSelectAllOption: true,
+                nonSelectedText: 'Select BHK',
+                enableFiltering: true,
 
             });
 

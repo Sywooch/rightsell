@@ -70,7 +70,14 @@ $host = "103.208.73.2";
 			<?php endif;?>
 
 			<div class="row">
-				<div class="col-xs-6"><p><img src="images/family.png" alt=""><?=$model->preferred_tenants?ucfirst($model->preferred_tenants):"Any"?></p></div>
+				<div class="col-xs-6"><p><img src="images/family.png" alt=""><?php
+                                        if($resprop->preferred_tenants == "f")
+                                          echo "Family";
+                                        else if($resprop->preferred_tenants == "b")
+                                          echo "Bachelors";
+                                        else
+                                          echo ucfirst($resprop->preferred_tenants);
+                                        ?></p></div>
 				<div class="col-xs-6">
 				<p><img src="images/car.png" alt="">Parking - <?=$model->no_of_parking?$model->no_of_parking:"No"?></p>
 				</div>

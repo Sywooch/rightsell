@@ -190,8 +190,11 @@ $locationdata = Location::find()
                   <tr><td valign="top"><img src="images/select_area.png" hspace="5" vspace="5" class="img-responsive" alt="">
                   </td><td><?php //$form->field($model, 'locationname',["options"=>["class"=>"dd_resi2","style"=>"width:450px; padding:0px 33px; border:1px solid #a5a5a5"]])->textInput(["style"=>"border:0; width:100%; background:#f3f3f3; height:23px; margin:0","placeholder"=>"Search Area"])->label(false);?>
 
+                  <!-- <select id="locsresi" name="locationname" multiple="true"> -->
           <?php
-
+          //foreach ($locationdata as $item) {
+            //echo "<option value='".$item['id']."'>".$item['label']."</option>";
+          //}
           echo $form->field($model, 'locationname')->widget(Select2::classname(), [
                 'options' => ['placeholder' => 'Select Area ...',"class"=>"auto_search_bar"],
                 'size' => Select2::MEDIUM,
@@ -204,6 +207,17 @@ $locationdata = Location::find()
                         'dataType' => 'json',
                         'data' => new JsExpression('function(params) { return {q:params.term}; }')
                     ],
+                ],
+                'pluginEvents' => [
+                    "change" => "function() { console.log('change'); }",
+                    "select2:opening" => "function() { console.log('select2:opening'); }",
+                    "select2:open" => "function() { console.log('open'); }",
+                    "select2:closing" => "function() { console.log('close'); }",
+                    "select2:close" => "function() { console.log('close'); }",
+                    "select2:selecting" => "function() { console.log('selecting'); }",
+                    "select2:select" => "function() { console.log('select'); }",
+                    "select2:unselecting" => "function() { console.log('unselecting'); }",
+                    "select2:unselect" => "function() { console.log('unselect'); }"
                 ],
             ])->label(false);
 
@@ -281,7 +295,7 @@ $locationdata = Location::find()
           <section class="business_place">
             <div class="container">
               <div class="row text-center">
-                <div class="col-md-12 col-sm-12">
+                <div class="col-md-12 col-sm-12" style="z-index:15 ">
                   <button type="submit" class="btn btn-danger">Get a Dream Home</button>
                 </div>
               </div>
@@ -429,7 +443,7 @@ $locationdata = Location::find()
           <section class="business_place">
             <div class="container">
               <div class="row text-center">
-                <div class="col-md-12 col-sm-12">
+                <div class="col-md-12 col-sm-12" style="z-index:15 ">
                   <button type="submit" class="btn btn-danger">Get a Business place</button>
                 </div>
               </div>
@@ -479,7 +493,7 @@ $locationdata = Location::find()
                             else
                               $return .= '<a href="#"><label for="agri_available_for_'.$label.'" class="radio_text available_forradio_agri">';
                             $return .= ucwords($label);
-                            $return .= '</label></a>';
+                            $return .= '</label></a>  |';
 
                             return $return;
                         }
@@ -569,7 +583,7 @@ $locationdata = Location::find()
           <section class="business_place">
             <div class="container">
               <div class="row text-center">
-                <div class="col-md-12 col-sm-12">
+                <div class="col-md-12 col-sm-12" style="z-index:15 ">
                   <button type="submit" class="btn btn-danger">Get a Farm</button>
                 </div>
               </div>
@@ -607,6 +621,7 @@ $locationdata = Location::find()
                       <ul class="nav nav-tabs area_tabs">
                         <?php
                                               $i=0;
+                                              $j=0;
                                               foreach ($resPropRentLocCount as $rpc) {
                                                 $cls = "";
                                                 if($i== 0)
@@ -625,19 +640,29 @@ $locationdata = Location::find()
                     <div class="col-md-9 nopadding">
                       <div class="tab-content">
                         <?php
-                        $j=0;
+                        
                                                   foreach ($resPropRentLocCount as $respropCnt) {
-                                                  $clsj = "";
+                                                $clsj = "";
                                                 if($j== 0)
                                                 {
                                                   $clsj = "active";
                                                   $j++;
-                                                }?>
+                                                }
+                                                ?>
                         <div class="tab-pane <?=$clsj?>" id="rprent_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
                          <div id="" class="example example2">
                             <?php
-                                                  foreach ($residentialPropertiesforRentArr[$respropCnt->location_id] as $resprop) {?>
-                            <div class="row home_pro_box">
+                            $k = 0;
+                                                  foreach ($residentialPropertiesforRentArr[$respropCnt->location_id] as $resprop) {
+                                                    $cls_alt_box = "home_pro_box";
+
+                                                if($k % 2 == 0)
+                                                {
+                                                  $cls_alt_box = "home_pro_box_2";
+                                                }
+                                                $k++;
+                                                ?>
+                            <div class="row home_pro_box <?=$cls_alt_box?>">
                               <div class="col-sm-5 nopadding">
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                   <div class="carousel-inner" role="listbox">
@@ -664,7 +689,14 @@ $locationdata = Location::find()
                                   <div class="row">
                                     <div class="col-xs-6">
                                       <p><img src="images/family.png" alt="">
-                                        <?= $resprop->preferred_tenants?>
+                                        <?php
+                                        if($resprop->preferred_tenants == "f")
+                                          echo "Family";
+                                        else if($resprop->preferred_tenants == "b")
+                                          echo "Bachelors";
+                                        else
+                                          echo ucfirst($resprop->preferred_tenants);
+                                        ?>
                                       </p>
                                     </div>
                                     <div class="col-xs-6">
@@ -739,6 +771,7 @@ $locationdata = Location::find()
                       <ul class="nav nav-tabs area_tabs">
                         <?php
                                               $i=0;
+                                              $j=0;
                                               foreach ($resPropSaleLocCount as $rpc) {
                                                 $cls = "";
                                                 if($i== 0)
@@ -754,20 +787,21 @@ $locationdata = Location::find()
                       
                       </ul>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-9 nopadding">
                       <div class="tab-content">
                         <?php 
-                        $j=0;
+                        
                         foreach ($resPropSaleLocCount as $respropCnt) {
                             
-                          $cls = "";
+                          $clsj = "";
                           if($j== 0)
                           {
-                            $cls = "active";
+                            $clsj = "active";
                             $j++;
                           }
                           ?>
-                        <div class="tab-pane <?=$cls?>" id="rpsale_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
+                        <div class="tab-pane <?=$clsj?>" id="rpsale_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
+                        <div id="" class="example example2">
                           <?php
                                                   //echo "<pre>"; print_r($residentialProperties);exit;
                                                   foreach ($residentialPropertiesforSaleArr[$respropCnt->location_id] as $resprop) {?>
@@ -868,6 +902,7 @@ $locationdata = Location::find()
                           </div>
                           <?php }?>
                         </div>
+                        </div>
                         <?php }?>
                       </div>
                     </div>
@@ -879,11 +914,12 @@ $locationdata = Location::find()
                       <ul class="nav nav-tabs area_tabs">
                         <?php
                                               $i=0;
+                                              $j=0;
                                               foreach ($commPropLocCount as $rpc) {
                                                 $cls = "";
                                                 if($i== 0)
                                                 {
-                                                  $cls = "active0";
+                                                  $cls = "active";
                                                   $i++;
                                                 }
                                                   ?>
@@ -894,13 +930,24 @@ $locationdata = Location::find()
                       
                       </ul>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-9 nopadding">
                       <div class="tab-content">
-                        <?php foreach ($commPropLocCount as $respropCnt) {?>
-                        <div class="tab-pane active" id="comm_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
+                        <?php foreach ($commPropLocCount as $respropCnt) {
+
+                                                $clsj = "";
+                                                if($j == 0)
+                                                {
+                                                  $clsj = "active";
+                                                  $j++;
+                                                }
+                                                ?>
+                        <div class="tab-pane <?=$clsj?>" id="comm_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
+                        <div id="" class="example example2">
                           <?php
                                                   //echo "<pre>"; print_r($residentialProperties);exit;
-                                                  foreach ($commercialPropertiesArr[$respropCnt->location_id] as $model) {?>
+                                                  foreach ($commercialPropertiesArr[$respropCnt->location_id] as $model) {
+
+                                                ?>
                           <div class="row home_pro_box">
                             <div class="col-sm-5 nopadding">
                               <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -1015,6 +1062,7 @@ $locationdata = Location::find()
                           </div>
                           <?php }?>
                         </div>
+                        </div>
                         <?php }?>
                        
                       </div>
@@ -1027,11 +1075,12 @@ $locationdata = Location::find()
                       <ul class="nav nav-tabs area_tabs">
                         <?php
                                               $i=0;
+                                              $j=0;
                                               foreach ($agriPropLocCount as $rpc) {
                                                 $cls = "";
                                                 if($i== 0)
                                                 {
-                                                  $cls = "active0";
+                                                  $cls = "active";
                                                   $i++;
                                                 }
                                                   ?>
@@ -1042,10 +1091,18 @@ $locationdata = Location::find()
                        
                       </ul>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-9 nopadding">
                       <div class="tab-content">
-                        <?php foreach ($agriPropLocCount as $respropCnt) {?>
-                        <div class="tab-pane active" id="agri_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
+                        <?php foreach ($agriPropLocCount as $respropCnt) {
+                          $clsj = "";
+                          if($j== 0)
+                          {
+                            $clsj = "active";
+                            $j++;
+                          }
+                                                ?>
+                        <div class="tab-pane <?=$clsj?>" id="agri_<?=str_replace(' ', '_',trim($respropCnt->locations->location))?>">
+                        <div id="" class="example example2">
                           <?php
                                                   //echo "<pre>"; print_r($residentialProperties);exit;
                                                   foreach ($agriculturalPropertiesArr[$respropCnt->location_id] as $model) {?>
@@ -1148,6 +1205,7 @@ $locationdata = Location::find()
                             <div class="col-sm-2"></div>
                           </div>
                           <?php }?>
+                        </div>
                         </div>
                         <?php }?>
                       </div>

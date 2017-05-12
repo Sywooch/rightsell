@@ -171,7 +171,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="row detail_body_detail">
                                     <h1>Overview</h1>
-                                    <p><?=$model->spl_attraction?></p>
+                                    <p><?=htmlspecialchars($model->spl_attraction, ENT_QUOTES)?></p>
                                     <span><img src="images/recomended.png" class="img-responsive" style="float:left;" alt="">30 People recommended this property</span>
                                 </div>
                                 <button class="contact_owner2">Contact Owner</button>
@@ -398,7 +398,7 @@ function initMap() {
       }
 
       function geocodeAddress(geocoder, resultsMap) {
-        var address = '".trim($model->locations->location).",".trim($model->cityName->city)."';
+        var address = '".trim($model->societys->society_name).",".trim($model->locations->location).",".trim($model->cityName->city)."';
         //var address = document.getElementById('address').value;
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
@@ -417,7 +417,8 @@ function initMap() {
 ?>
 
 
-<?php //$this->registerJsFile('https://rawgit.com/dbrekalo/attire/master/dist/js/build.min.js', [yii\web\JqueryAsset::className()]); ?> 
+<?php //$this->registerJsFile('https://rawgit.com/dbrekalo/attire/master/dist/js/build.min.js', [yii\web\JqueryAsset::className()]);
+//var address = '".$model->societys?trim($model->societys->society_name):"".",".$model->locations?trim($model->locations->location):"".",".$model->cityName?trim($model->cityName->city):""."'; ?> 
 
 <?php // $this->registerJsFile('js/simpleLightbox.min.js', [yii\web\JqueryAsset::className()]); ?> 
 
