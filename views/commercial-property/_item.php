@@ -37,10 +37,10 @@ $host = "103.208.73.2";
 			</a>
 		</div>
 	</div>
-<a href="<?=Url::to(['commercial-property/view','id'=>$model->id])?>">
+
 	<div class="col-sm-7">
 		<div class="row pro_detail">
-			<h1><?= $model->type?> Near <?= $model->locations?$model->locations->location:""?>.</h1>
+			<a href="<?=Url::to(['commercial-property/view','id'=>$model->id])?>"><h1><?= $model->type?> Near <?= $model->locations?$model->locations->location:""?>.</h1></a>
 			<button class="button yellow_btn"><?= $model->type?></button>
 			<?php if(strtolower($model->available_for)=="lease"):?>
 			<button class="button orrange_btn">Rent <?=number_format($model->rent_details_comp)?></button>

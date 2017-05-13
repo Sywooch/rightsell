@@ -39,9 +39,9 @@ $host = "103.208.73.2";
 		</div>
 	</div>
 
-	<a href="<?=Url::to(['residential-property/view','id'=>$model->id])?>"><div class="col-sm-7">
+	<div class="col-sm-7">
 		<div class="row pro_detail">
-			<h1><?= $model->bhks->name?> Near <?= $model->locations->location?>.</h1>
+			<a href="<?=Url::to(['residential-property/view','id'=>$model->id])?>"><h1><?= $model->bhks->name?> Near <?= $model->locations->location?>.</h1></a>
 			<button class="button yellow_btn"><?= $model->bhks->name?></button>
 			<?php if(strtolower($model->available_for)=="rent"):?>
 			<button class="button orrange_btn">Rent <?= number_format($model->expected_rent_comp)?></button>
@@ -71,12 +71,12 @@ $host = "103.208.73.2";
 
 			<div class="row">
 				<div class="col-xs-6"><p><img src="images/family.png" alt=""><?php
-                                        if($resprop->preferred_tenants == "f")
+                                        if($model->preferred_tenants == "f")
                                           echo "Family";
-                                        else if($resprop->preferred_tenants == "b")
+                                        else if($model->preferred_tenants == "b")
                                           echo "Bachelors";
                                         else
-                                          echo ucfirst($resprop->preferred_tenants);
+                                          echo ucfirst($model->preferred_tenants);
                                         ?></p></div>
 				<div class="col-xs-6">
 				<p><img src="images/car.png" alt="">Parking - <?=$model->no_of_parking?$model->no_of_parking:"No"?></p>
@@ -116,4 +116,3 @@ $host = "103.208.73.2";
 			</div>
 		</div>
 	</div>
-	</a>

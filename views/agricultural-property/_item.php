@@ -36,10 +36,10 @@ $host = "103.208.73.2";?>
 			</a>
 		</div>
 	</div>
-<a href="<?=Url::to(['agricultural-property/view','id'=>$model->id])?>">
+
 	<div class="col-sm-7">
 		<div class="row pro_detail">
-			<h1><?= $model->property_type?> Near <?= $model->locations->location?>.</h1>
+			<a href="<?=Url::to(['agricultural-property/view','id'=>$model->id])?>"><h1><?= $model->property_type?> Near <?= $model->locations->location?>.</h1></a>
 			<button class="button yellow_btn"><?= $model->property_type?></button>
 			<?php if(strtolower($model->available_for)=="rent"):?>
 			<button class="button orrange_btn">Rent <?=number_format($model->expected_rent_comp);?></button>
@@ -87,4 +87,3 @@ $host = "103.208.73.2";?>
 			</div>
 		</div>
 	</div>
-	</a>

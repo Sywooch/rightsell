@@ -13,6 +13,7 @@ use yii\web\JsExpression;
 $this->title = $model->bhks->name." in ".$model->locations->location;
 $this->params['breadcrumbs'][] = ['label' => 'Residentialproperties', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$host = "103.208.73.2";
 ?>
 
 <div class="container-fluid inner_banner">
@@ -91,7 +92,41 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div>
                         <div class="row">
                             <div class="col-sm-8 detail_body_lt">
-                                <div class="row imageGallery1">
+
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+                </div>
+                <?php 
+                //http://localhost/RealEstateCrm/files/residentialProperty/
+                $images = json_decode($model->gallery_images);
+                if(count($images) >0)
+                {
+                    foreach ($images as $image) {
+                        echo "<div class='item'>";
+                        echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+                        echo "</div>";
+                    }
+                }?>
+                <!-- <div class="item">
+                    <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
+                </div>
+                <div class="item">
+                    <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
+                </div> -->
+            </div>
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+                                <!--<div class="row imageGallery1">
                                     <div class="col-sm-8 col-xs-8 gallary_big_photo">
                                         <a href="http://visiongraphics.co.in/right_sell_property/images/photo1_back.jpg" title="Caption for gallery item 1">
                                             <img src="images/photo1_front.jpg" class="img-responsive" alt="Gallery image 1">
@@ -125,7 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="col-sm-4 detail_body_rt">
                                 <div class="row detail_body_title">
@@ -397,23 +432,21 @@ function initMap() {
         });*/
       }
 
-      function geocodeAddress(geocoder, resultsMap) {
-        var address = '".trim($model->societys->society_name).",".trim($model->locations->location).",".trim($model->cityName->city)."';
-        //var address = document.getElementById('address').value;
-        geocoder.geocode({'address': address}, function(results, status) {
-          if (status === 'OK') {
-            resultsMap.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-              map: resultsMap,
-              position: results[0].geometry.location
+        function geocodeAddress(geocoder, resultsMap) {
+            var address = '".trim($model->societys->society_name).",".trim($model->locations->location).",".trim($model->cityName->city)."';
+            //var address = document.getElementById('address').value;
+            geocoder.geocode({'address': address}, function(results, status) {
+              if (status === 'OK') {
+                resultsMap.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                  map: resultsMap,
+                  position: results[0].geometry.location
+                });
+              } else {
+                //alert('Geocode was not successful for the following reason: ' + status);
+              }
             });
-          } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-          }
-        });
-      }
-
-    ");
+        }");
 ?>
 
 

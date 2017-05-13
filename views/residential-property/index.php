@@ -111,7 +111,7 @@ $host = "103.208.73.2";
 <option value="South East">South-East</option>
 </select>
 <hr>
-<select id="filterResProp_floor" name="filterResProp_floor" multiple="multiple">
+<select id="filterResProp_floor" name="filterResProp_floor" multiple="true">
 <option value="-1">Basement</option>
 <option value="0">Ground</option>
 <option value="1,2,3,4">1-4</option>

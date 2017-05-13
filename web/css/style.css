@@ -798,7 +798,9 @@ border: none;
 .carousel-inner > .item > img,
  .carousel-inner > .item > a > img {
   width: 100%;
-  margin: auto;}
+  max-height: : 180px;
+  margin: auto;
+}
 
 
 
@@ -2007,6 +2009,7 @@ border-color: transparent transparent #ec3238}*/
 	padding: 5px 0;
 	box-shadow:none; float:left; 
 }
+
 .filter_col hr, .other_col hr{margin:0 0 2px 0; padding:0; border-top:solid 1px #e7e7e7; clear:both;}
 .other_col{ font-size:13px; font-weight:600;}
 .other_col h1{ font-size:18px; font-weight:500; margin:0 0 12px}

@@ -131,6 +131,8 @@ AppAsset::register($this);
             $('#bhk').multiselect({
                 includeSelectAllOption: true,
                 nonSelectedText: 'Select BHK',
+                numberDisplayed:2,
+                /*buttonWidth: '100px'*/
             });
             $('#locsresi').multiselect({
                 includeSelectAllOption: true,
@@ -142,12 +144,37 @@ AppAsset::register($this);
             $('#type').multiselect({
                 includeSelectAllOption: true,
                 nonSelectedText: 'Select Type',
+                numberDisplayed:1
 
             });
             $('#proptype').multiselect({
                 includeSelectAllOption: true,
                 nonSelectedText: 'Select Type',
+                numberDisplayed:1
 
+            });
+
+            $('#filterResProp_floor').multiselect({
+              nonSelectedText: 'Floor',
+              numberDisplayed:2,
+              buttonClass: 'btn btn-link',
+              inheritClass: true,
+
+            });
+
+            $('#filterCommProp_floor').multiselect({
+              nonSelectedText: 'Floor',
+              numberDisplayed:2
+            });
+
+            $('#homeresbhkfilter').multiselect({
+              nonSelectedText: 'Select Bhk',
+              numberDisplayed:2
+            });
+
+            $('#homeresmin_rate_pricefilter').multiselect({
+              nonSelectedText: 'Select Budget',
+              numberDisplayed:2
             });
 
             /*$('#btnSelected').click(function () {

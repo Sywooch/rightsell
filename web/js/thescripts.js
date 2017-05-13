@@ -27,21 +27,7 @@ $(document).on("ready", function(){
 		$(this).addClass("radio_text_active");
 	});
 
- 	$('#filterResProp_floor').multiselect({
- 		nonSelectedText: 'Floor'
- 	});
-
- 	$('#filterCommProp_floor').multiselect({
- 		nonSelectedText: 'Floor'
- 	});
-
- 	$('#homeresbhkfilter').multiselect({
- 		nonSelectedText: 'Select Bhk'
- 	});
-
- 	$('#homeresmin_rate_pricefilter').multiselect({
- 		nonSelectedText: 'Select Budget'
- 	});
+ 	
 
 
  	/*$('#residentialproperty-bhk').multiselect({
