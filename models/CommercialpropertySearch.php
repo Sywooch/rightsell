@@ -98,7 +98,7 @@ class CommercialpropertySearch extends Commercialproperty
         ]);
 
 
-        if(($this->nearby === "true" || $this->nearby === 1) && is_array($this->location_id))
+        if($this->nearby === "true" && is_array($this->location_id))
         {
             $Nearbylocationsmodels = Nearbylocations::find()->where(["in",'location_id',$this->location_id])->all();
             $nearbylocs = [];

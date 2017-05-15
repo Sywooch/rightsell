@@ -52,7 +52,7 @@ $host = "103.208.73.2";?>
 
 			
 			<div class="row">
-				<div class="col-xs-6"><p><img src="images/family.png" alt=""><?=$model->ideal_for?ucfirst($model->ideal_for):"Anyone"?></p></div>
+				<div class="col-xs-6"><p><img src="images/family.png" alt="">NA<?php //$model->ideal_for?ucfirst($model->ideal_for):"Anyone"?></p></div>
 				<div class="col-xs-6">
 				<p><img src="images/water.jpg" alt=""><?=$model->water_supply=="Yes"?"Water Available":"No water"?></p>
 				</div>
@@ -60,7 +60,7 @@ $host = "103.208.73.2";?>
 			<div class="row">
 				<div class="col-xs-6"><p><img src="images/area.png" alt="">Area - <?=$model->property_area.' '.$model->property_unit?></p></div>
 				
-				<div class="col-xs-6"><p><img src="images/loc.jpg" alt="">30 Km from city</p></div>
+				<div class="col-xs-6"><p><img src="images/loc.jpg" alt=""><?=$model->electric_supply=="Yes"?"Electricity Available":"No Electricity"?></p></div>
 				
 				<?php
 				$now = time(); // or your date as well

@@ -98,7 +98,8 @@ $host = "localhost";
 <hr>
 <p>
 <input type="checkbox" id="filterAgriProp_haveimage" name="filterAgriProp_haveimage"/>
-<label class="chkbob_lable" for="filterAgriProp_haveimage"><span></span><img src="images/photo.png" alt="">Photos</label>
+<label class="chkbob_lable" for="filterAgriProp_haveimage"><span></span>Properties with images only
+<!-- <img src="images/photo.png" alt="">Photos</label> -->
 </p>
 <hr>
 <p><img src="images/rs_veryfi.png" alt=""><br>
@@ -135,11 +136,18 @@ $host = "localhost";
 <div class="row">
 <div class="col-md-12 breadcrum"><!-- <a href="#">Home</a> › <a href="#">Property for Buy/Rent in Pune</a> › <a href="#">Wakad</a> › All Agricultural --></div>
 <div class="col-md-3">
-<div class="pro_left_column"><div class="row">
+<!--<div class="pro_left_column"><div class="row">
 <div class="col-xs-7 filter_text">Filter your Search</div>
 <div class="col-xs-5"><a href="<?= Url::to(["agricultural-property/index","city"=>$searchModel->city_id]);?>" class="button red_btn" style="float:right; font-size:13px; margin:0"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
 </div>
+</div>-->
+
+<div class=""><div class="row">
+<div class="col-xs-7 filter_text">&nbsp;Filter your Search</div>
+<div class="col-xs-5"><a href="<?= Url::to(["agricultural-property/index","city"=>$searchModel->city_id]);?>" class="button reset_btn" style="float:right; font-size:14px; margin:0; color:#f28533"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</a></div>
 </div>
+</div><br>
+
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 </div>
 

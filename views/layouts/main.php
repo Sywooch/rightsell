@@ -3,11 +3,13 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+
 
 AppAsset::register($this);
 ?>
@@ -39,7 +41,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 <div class="container-fluid" style="border-bottom:solid 1px #e6e6e6"><div class="container-fluid main_header">
   <div class="row">
-  <div class="col-sm-3 logo"><img src="images/logo.jpg" class="img-responsive" alt=""></div>
+  <div class="col-sm-3 logo"><a href="<?= Url::home()?>" ><img src="images/logo.jpg" class="img-responsive" alt=""></a></div>
         <div class="col-sm-9 header_right">
           <div class="row">
             <div class="col-xs-10 header_lt_col">

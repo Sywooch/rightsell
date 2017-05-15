@@ -93,7 +93,7 @@ class AgriculturalpropertySearch extends Agriculturalproperty
             'status' => $this->status,
         ]);
 
-        if(($this->nearby === "true" || $this->nearby == 1) && $this->location_id)
+        if($this->nearby === "true")
         {
             $Nearbylocationsmodels = Nearbylocations::find()->where(["in",'location_id',$this->location_id])->all();
             $nearbylocs = [];

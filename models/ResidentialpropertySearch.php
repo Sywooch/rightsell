@@ -129,7 +129,7 @@ class ResidentialpropertySearch extends Residentialproperty
             $query->andFilterWhere(['=', 'bathroom', $this->bathroom]);
         }
         //echo $this->nearby; exit;
-        if(($this->nearby === "true" || $this->nearby == 1) && $this->location_id)
+        if($this->nearby === "true" && $this->location_id)
         {
             $Nearbylocationsmodels = Nearbylocations::find()->where(["in",'location_id',$this->location_id])->all();
             $nearbylocs = [];
@@ -139,9 +139,9 @@ class ResidentialpropertySearch extends Residentialproperty
                     $locidstemp[] = $nearbyloc->nearbylocation_id;
                 }
             }
-            /*echo "<pre>"; 
-            print_r($locidstemp); 
-            exit;*/
+            // echo "<pre>"; 
+            // print_r($locidstemp); 
+            // exit;
         }
         else if($this->nearby === "false")
         {
@@ -212,7 +212,7 @@ class ResidentialpropertySearch extends Residentialproperty
             //->andFilterWhere(['like', 'property_video_link', $this->property_video_link])
             //->andFilterWhere(['like', 'maintenance_cost', $this->maintenance_cost])
             //->andFilterWhere(['like', 'unit', $this->unit])
-        ->andFilterWhere(['like', 'preferred_tenants', $this->preferred_tenants])
+        //->andFilterWhere(['like', 'preferred_tenants', $this->preferred_tenants])
         ->andFilterWhere(['like', 'available_rooms', $this->available_rooms])
             //->andFilterWhere(['like', 'tenant_profiling', $this->tenant_profiling])
             //->andFilterWhere(['like', 'tenant_profiling_desc', $this->tenant_profiling_desc])
@@ -235,16 +235,28 @@ class ResidentialpropertySearch extends Residentialproperty
             //->andFilterWhere(['<', 'expected_rent_comp', $this->max_rent_price]);
 
          // echo "<pre>"; print_r($locidstemp);exit;   
+		 
+		if($this->preferred_tenants == "f" or $this->preferred_tenants == "b")
+		{
+			$query->andFilterWhere(['like', 'preferred_tenants', $this->preferred_tenants]);
+		}
+		else if($this->preferred_tenants == "any"){
+				//->andFilterWhere(['like', 'preferred_tenants',])
+		}
         if(count($locidstemp)>0)
         {
         $query->andFilterWhere(['in', 'location_id', $locidstemp]);
         }
-        if($this->gallery_images === "true")
+        if($this->gallery_images === true)
         {
             //echo "1"; exit;
-            $query->andFilterWhere(['not', 'gallery_images', ""]);
-            $query->andFilterWhere(['not', 'gallery_images', null]);
+            //$query->andFilterWhere(['not', 'gallery_images', ""]);
+            $query->andFilterWhere(['!=', 'gallery_images', null]);
         }
+		else if($this->gallery_images === false)
+		{
+			//$query->andFilterWhere(['=', 'gallery_images', ]);
+		}
 
         $query->andFilterWhere(['between', 'expected_rate_comp', $this->min_rate_price, $this->max_rate_price]);
 
@@ -268,7 +280,7 @@ class ResidentialpropertySearch extends Residentialproperty
             //exit;
         }
 
-        // echo "<pre>"; print_r($query); exit;
+        //echo "<pre>"; print_r($query); exit;
 
         return $dataProvider;
     }

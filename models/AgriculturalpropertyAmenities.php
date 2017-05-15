@@ -43,8 +43,8 @@ class AgriculturalpropertyAmenities extends \yii\db\ActiveRecord
             'amenity_id' => 'Amenity ID',
         ];
     }
-
-    public function getAmenityName()
+	
+	public function getAmenityName()
     {
         return $this->hasOne(Amenities::className(), ['id' => 'amenity_id']);
     }
