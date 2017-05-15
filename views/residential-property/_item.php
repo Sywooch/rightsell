@@ -7,26 +7,25 @@ $host = "103.208.73.2";
 <div class="col-sm-5 nopadding">
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner" role="listbox">
-				<div class="item active">
-					<img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
-				</div>
-				<?php 
-				//http://localhost/RealEstateCrm/files/residentialProperty/
-				$images = json_decode($model->gallery_images);
-				if(count($images) >0)
-				{
-					foreach ($images as $image) {
-						echo "<div class='item'>";
-						echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
-						echo "</div>";
-					}
-				}?>
-				<!-- <div class="item">
-					<img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
-				</div>
-				<div class="item">
-					<img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
-				</div> -->
+			<div class='item active'>
+				<?php if($model->property_profile_photo != "" || $model->property_profile_photo != null) {?>
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+        <?php } else {?>
+        <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
+        <?php }?>
+        </div>
+        <?php 
+        //http://localhost/RealEstateCrm/files/residentialProperty/
+        $images = json_decode($model->gallery_images);
+        //echo "<pre> Images: "; print_r($images);exit;
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }?>
 			</div>
 			<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>

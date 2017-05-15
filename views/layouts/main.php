@@ -166,7 +166,8 @@ AppAsset::register($this);
 
             $('#filterCommProp_floor').multiselect({
               nonSelectedText: 'Floor',
-              numberDisplayed:2
+              numberDisplayed:2,
+              buttonClass: 'btn btn-link',
             });
 
             $('#homeresbhkfilter').multiselect({

@@ -22,7 +22,7 @@ $host = "103.208.73.2";
         <div class="col-sm-8">
           <h1>Get Your Perfect Agricultural  Property</h1>
         </div>
-        <div class="col-sm-4"><img src="images/resi_img.png" alt=""></div>
+        <div class="col-sm-4"><img src="images/agri_img.png" class="img-responsive" alt=""></div>
       </div>
     </div>
   </div>
@@ -94,12 +94,10 @@ $host = "103.208.73.2";
 
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
-                </div>
+                
                 <?php 
                 //http://localhost/RealEstateCrm/files/residentialProperty/
-                $images = json_decode($model->gallery_images);
+                /*$images = json_decode($model->gallery_images);
                 if(count($images) >0)
                 {
                     foreach ($images as $image) {
@@ -107,13 +105,27 @@ $host = "103.208.73.2";
                         echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
                         echo "</div>";
                     }
-                }?>
-                <!-- <div class="item">
-                    <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
-                </div>
-                <div class="item">
-                    <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">
-                </div> -->
+                }*/
+                ?>
+                <div class='item active'>
+                <?php if($model->property_profile_photo != "" && $model->property_profile_photo != null) {?>
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+        <?php } else {?>
+        <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
+        <?php }?>
+        </div>
+        <?php 
+        //http://localhost/RealEstateCrm/files/residentialProperty/
+        $images = json_decode($model->gallery_images);
+        //echo "<pre> Images: "; print_r($images);exit;
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }?>
             </div>
             <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -123,7 +135,7 @@ $host = "103.208.73.2";
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </a>
-        </div>
+        </div></div>
                                 <!-- <div class="row imageGallery1">
                                     <div class="col-sm-8 col-xs-8 gallary_big_photo">
                                         <a href="images/agri_photo1_back.jpg" title="Caption for gallery item 1">
@@ -204,7 +216,11 @@ $host = "103.208.73.2";
                                 </div>
                                 <div class="row detail_body_detail">
                                     <h1>Overview</h1>
-                                    <p>Property at prime location, near by market and school. ideal for family, twenty-four hrs water and security, car park, brokerage applicable. very nice flat, near joyti hotel. This place is a lovely abode for you and your family.</p>
+                                    <p><?=$model->description?>
+                                    <?php if(strlen($model->description)>100){?>
+                                    <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#more_popup">Read More</a>
+                                    <?php }?>
+                                    </p>
                                     <span><img src="images/recomended.png" class="img-responsive" style="float:left;" alt="">30 People recommended this property</span>
                                 </div>
                                 <button class="contact_owner2">Contact Owner</button>
@@ -257,7 +273,19 @@ $host = "103.208.73.2";
 </div>
 <br>
 <br>
-
+<div class="modal fade in" id="more_popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content popup_bg" style="border-radius: 0">
+      <div class="modal-header" style="background: #f58634;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Overview</h4>
+      </div>
+      <div class="modal-body">
+        <?=htmlspecialchars($model->description,ENT_QUOTES)?>
+      </div>
+          </div>
+  </div>
+</div>
 <?php $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyCHbbed7Sn9InZn4Gw5fJBLnnoee7hgrNM', [yii\web\JqueryAsset::className()]); ?>
 <?php $this->registerJsFile('js/simpleLightbox.min.js', [yii\web\JqueryAsset::className()]); ?>
 <?php

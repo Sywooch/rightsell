@@ -13,8 +13,8 @@ span.multiselect-native-select select {
     left: 50%;
     top: 30px;
 }
-.multiselect{ background:#f3f3f3 url(../images/bhk.png) no-repeat  11px 7px !important; width: 160px !important;}
-.multiselect-selected-text{ font-family: 'Open Sans', sans-serif; font-size:13px; color: #646464; padding-left: 30px }
+.multiselect{ background:#f3f3f3 /*url(../images/bhk.png) no-repeat  11px 7px !important;*/; width: 140px !important;}
+.multiselect-selected-text{ font-family: 'Open Sans', sans-serif; font-size:13px; color: #646464; padding-left:10px }
 .multiselect-container {
     position: absolute;
     list-style-type: none;

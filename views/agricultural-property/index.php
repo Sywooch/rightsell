@@ -18,7 +18,7 @@ $host = "localhost";
         <div class="col-sm-8">
           <h1>Get Your Perfect Agricultural Property</h1>
         </div>
-        <div class="col-sm-4"><img src="images/home_img.png" alt=""></div>
+        <div class="col-sm-4"><img src="images/agri_img.png" alt=""></div>
       </div>
     </div>
   </div>

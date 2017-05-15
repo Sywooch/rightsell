@@ -674,17 +674,33 @@ $locationdata = Location::find()
                               <div class="col-sm-5 nopadding">
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                   <div class="carousel-inner" role="listbox">
-                                    <div class="item active"> <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt=""> </div>
-                                    <div class="item"> <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt=""> </div>
-                                    <div class="item"> <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt=""> </div>
+                                  <div class='item active'>
+                                    <?php if($resprop->property_profile_photo != "" || $resprop->property_profile_photo != null) {?>
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $resprop->id.'_profiles_'.$resprop->property_profile_photo?>" alt="">
+        <?php } else {?>
+        <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
+        <?php }?>
+        </div>
+        <?php 
+        //http://localhost/RealEstateCrm/files/residentialProperty/
+        $images = json_decode($resprop->gallery_images);
+        //echo "<pre> Images: "; print_r($images);exit;
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }?>
                                   </div>
                                   <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
                               </div>
                               <div class="col-sm-7">
                                 <div class="row home_pro_detail">
-                                  <h1>
+                                  <a href="<?=Url::to(['residential-property/view','id'=>$resprop->id])?>"><h1>
                                     <?= $resprop->bhks->name.", Near ".$resprop->locations->location?>
-                                  </h1>
+                                  </h1></a>
                                   <button class="button yellow_btn">
                                   <?=$resprop->bhks->name?>
                                   </button>
@@ -818,7 +834,7 @@ $locationdata = Location::find()
                               <div id="myCarousel1" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
                                   <?php
-                              $images = json_decode($resprop->gallery_images);
+                              /*$images = json_decode($resprop->gallery_images);
                             if(count($images) >0)
                             {
                               foreach ($images as $image) {
@@ -828,17 +844,35 @@ $locationdata = Location::find()
                               }
                             }
                             else
-                              echo '<div class="item">
-                                <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+                              echo '<div class="item"><img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt=""></div>';*/
                               ?>
+                              <div class="item active">
+                              <?php if($resprop->property_profile_photo != "" || $resprop->property_profile_photo != null) {?>
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $resprop->id.'_profiles_'.$resprop->property_profile_photo?>" alt="">
+        <?php } else {?>
+        <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
+        <?php }?>
+        </div>
+        <?php 
+        //http://localhost/RealEstateCrm/files/commercialProperty/
+        $images = json_decode($resprop->gallery_images);
+        //echo "<pre> Images: "; print_r($images);exit;
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }?>
                                 </div>
                                 <a class="left carousel-control" href="#myCarousel1" role="button" data-slide="prev"> <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
                             </div>
                             <div class="col-sm-7">
                               <div class="row home_pro_detail">
-                                <h1>
+                                <a href="<?=Url::to(['residential-property/view','id'=>$resprop->id])?>"><h1>
                                   <?= $resprop->bhks->name.", Near ".$resprop->locations->location?>
-                                </h1>
+                                </h1></a>
                                 <button class="button yellow_btn">
                                 <?= $resprop->bhks->name?>
                                 </button>
@@ -961,7 +995,7 @@ $locationdata = Location::find()
                               <div id="myCarousel2" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
                                   <?php
-                              $images = json_decode($model->gallery_images);
+                              /*$images = json_decode($model->gallery_images);
                             if(count($images) >0)
                             {
                               foreach ($images as $image) {
@@ -972,13 +1006,32 @@ $locationdata = Location::find()
                             }
                             else
                               echo '<div class="item">
-                                <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+                                <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';*/
                               ?>
-                                </div>
+                              <div class="item active">
+                                <?php if($model->photo != "" || $model->photo != null) {?>
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/commercialProperty/profiles/<?= $model->id.'_profiles_'.$model->photo?>" alt="">
+        <?php } else {?>
+        <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
+        <?php }?>
+        </div>
+        <?php 
+        //http://localhost/RealEstateCrm/files/residentialProperty/
+        $images = json_decode($model->gallery_images);
+        //echo "<pre> Images: "; print_r($images);exit;
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }?>
+                                  </div>
                                 <a class="left carousel-control" href="#myCarousel2" role="button" data-slide="prev"> <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel2" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
                             </div>
                             <div class="col-sm-7">
-		<div class="row pro_detail">
+		<div class="row home_pro_detail">
 			<a href="<?=Url::to(['commercial-property/view','id'=>$model->id])?>"><h1><?= $model->type?> Near <?= $model->locations?$model->locations->location:""?>.</h1></a>
 			<button class="button yellow_btn"><?= $model->type?></button>
 			<?php if(strtolower($model->available_for)=="lease"):?>
@@ -1109,7 +1162,7 @@ $locationdata = Location::find()
                               <div id="myCarousel4" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" role="listbox">
                                   <?php
-                              $images = json_decode($respropCnt->gallery_images);
+                              /*$images = json_decode($respropCnt->gallery_images);
                             if(count($images) >0)
                             {
                               foreach ($images as $image) {
@@ -1120,18 +1173,37 @@ $locationdata = Location::find()
                             }
                             else
                               echo '<div class="item active">
-                                <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';
+                                <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg" alt="">          </div>';*/
                               ?>
-                                </div>
+                              <div class="item active">
+                                <?php if($model->property_profile_photo != "" || $model->property_profile_photo != null) {?>
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+        <?php } else {?>
+        <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
+        <?php }?>
+        </div>
+        <?php 
+        //http://localhost/RealEstateCrm/files/residentialProperty/
+        $images = json_decode($model->gallery_images);
+        //echo "<pre> Images: "; print_r($images);exit;
+        if(count($images) >0)
+        {
+          foreach ($images as $image) {
+            echo "<div class='item'>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "</div>";
+          }
+        }?>
+                                  </div>
                                 <a class="left carousel-control" href="#myCarousel4" role="button" data-slide="prev"> <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#myCarousel4" role="button" data-slide="next"> <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span> </a> </div>
                             </div>
                             <div class="col-sm-7">
                               <div class="row home_pro_detail">
-                                <h1>
+                                <a href="<?=Url::to(['agricultural-property/view','id'=>$model->id])?>"><h1>
                                   <?= $model->property_type?>
                                   Near
                                   <?= $model->locations->location?>
-                                  .</h1>
+                                  .</h1></a>
                                 <button class="button yellow_btn">
                                 <?= $model->property_type?>
                                 </button>
