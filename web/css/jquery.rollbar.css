@@ -94,7 +94,7 @@
 
 
 /*  examples */
-.example { height:525px; width:700px; }
+.example { height:530px; width:700px; }
 .example .rollbar-path-horizontal { height: 3px; background: rgba(255,255,255,0.2); }
 .example .rollbar-path-vertical { width: 7px; background:#6d6e6e}
 .example .rollbar-path-vertical, .example .rollbar-path-horizontal {

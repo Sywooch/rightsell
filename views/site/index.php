@@ -1082,7 +1082,7 @@ $locationdata = Location::find()
                                                   $i++;
                                                 }
                                                   ?>
-                        <li class="<?=$cls?>"><a href="#agri_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab">
+                        <li class="<?=$cls?>" style="border-bottom: 0px"><a href="#agri_<?=str_replace(' ', '_',trim($rpc->locations->location))?>" data-toggle="tab">
                           <?=trim($rpc->locations->location)?>
                           </a></li>
                         <?php } ?>
