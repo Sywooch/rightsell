@@ -6,7 +6,7 @@ $host = "103.208.73.2";?>
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
-					<img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+					<img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
 				</div>
 				<?php 
 				//http://localhost/RealEstateCrm/files/agriculturalProperty/
@@ -15,7 +15,7 @@ $host = "103.208.73.2";?>
 				{
 					foreach ($images as $image) {
 						echo "<div class='item'>";
-						echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+						echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
 						echo "</div>";
 					}
 				}?>
@@ -40,7 +40,7 @@ $host = "103.208.73.2";?>
 	<div class="col-sm-7">
 		<div class="row pro_detail">
 			<a href="<?=Url::to(['agricultural-property/view','id'=>$model->id])?>"><h1><?= $model->property_type?> Near <?= $model->locations->location?>.</h1></a>
-			<button class="button yellow_btn"><?= $model->property_type?></button>
+			<!--<button class="button yellow_btn"><?= $model->property_type?></button>-->
 			<?php if(strtolower($model->available_for)=="rent"):?>
 			<button class="button orrange_btn">Rent <?=number_format($model->expected_rent_comp);?></button>
 			<button class="button yellow_btn">Deposit <?=number_format($model->deposit_comp)?></button>
@@ -60,7 +60,7 @@ $host = "103.208.73.2";?>
 			<div class="row">
 				<div class="col-xs-6"><p><img src="images/area.png" alt="">Area - <?=$model->property_area.' '.$model->property_unit?></p></div>
 				
-				<div class="col-xs-6"><p><img src="images/loc.jpg" alt=""><?=$model->electric_supply=="Yes"?"Electricity Available":"No Electricity"?></p></div>
+				<div class="col-xs-6"><p><img src="images/electricity.jpg" alt=""><?=$model->electric_supply=="Yes"?"Electricity Available":"No Electricity"?></p></div>
 				
 				<?php
 				$now = time(); // or your date as well

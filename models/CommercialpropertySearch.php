@@ -246,9 +246,17 @@ class CommercialpropertySearch extends Commercialproperty
                 $ids=[];
                 for ($i=0; $i < count($amenitiesarr) ; $i++) { 
                     //$amenitids = \app\models\Amenities::find()->select("id")->where(["like", "name", $amenitiesarr[$i]])->all();
-                    
-
+                    if($amenitiesarr[$i] != "Washroom" && $amenitiesarr[$i] != "Fire Facility" )
                     $query->andFilterWhere([">=", $amenitiesarr[$i], 1]);
+                    else if($amenitiesarr[$i] != "Washroom")
+                    {
+                        $query->andFilterWhere([">=", "toilets", 1]);
+                    }
+                    else if($amenitiesarr[$i] != "Fire Facility" )
+                    {
+                        $query->andFilterWhere([">=", "lift_facility", 1]);
+                    }
+
                 }
 
                 // $query->andFilterWhere(['in', 'amenities', $ids]);

@@ -9,7 +9,7 @@ use yii\data\Pagination;
 ?>
 
 <h1><?=$dataProvider->getTotalCount();?> Properties <?= $locationname? "in ".$locationname: "" ?><?= $propby? " from ".$propby: "" ?><?= $availablefr? " for ".$availablefr: "" ?></h1>
-<h2>0 Nearby properties</h2>
+<!--<h2>0 Nearby properties</h2>-->
 <?php 
 
 

@@ -137,6 +137,7 @@ class ResidentialPropertyController extends Controller
                     $available_for = "Sale and Rent";
                 }
 
+
                 if(isset($_GET['ResidentialpropertySearch']['locationname']) && $_GET['ResidentialpropertySearch']['locationname'] != "")
                     $searchModel->location_id = $_GET['ResidentialpropertySearch']['locationname'];
 
@@ -146,7 +147,7 @@ class ResidentialPropertyController extends Controller
                 if(isset($_GET['bhk']) && $_GET['bhk'] != "")
                     $searchModel->bhk = $_GET['bhk'];
 
-                if(isset($_GET['ResidentialpropertySearch']['min_rate_price']) && $_GET['ResidentialpropertySearch']['min_rate_price'] != "")              
+                /*if(isset($_GET['ResidentialpropertySearch']['min_rate_price']) && $_GET['ResidentialpropertySearch']['min_rate_price'] != "")              
                 {
                     $searchModel->min_rate_price = $_GET['ResidentialpropertySearch']['min_rate_price'];
                     if($searchModel->min_rate_price < 20)
@@ -164,8 +165,20 @@ class ResidentialPropertyController extends Controller
                         $searchModel->min_rate_price = 30 * 100000;
                         $searchModel->max_rate_price = 40 * 100000;
                     }
-                }
+                }*/
+                if($searchModel->available_for == "Sale")
+                {
 
+                $searchModel->min_rate_price = $_GET['ResidentialpropertySearch']['min_rate_price'];
+                $searchModel->max_rate_price = $_GET['ResidentialpropertySearch']['max_rate_price'];
+
+                }
+                else if($searchModel->available_for == "Rent" || $searchModel->available_for == "Flatmate")
+                {
+
+                $searchModel->min_rent_price = $_GET['ResidentialpropertySearch']['min_rent_price'];
+                $searchModel->max_rent_price = $_GET['ResidentialpropertySearch']['max_rent_price'];
+                }
 
                 $dataProvider = $searchModel->search(null);
             }

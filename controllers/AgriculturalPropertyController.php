@@ -35,11 +35,13 @@ class AgriculturalPropertyController extends Controller
      * Lists all Agriculturalproperty models.
      * @return mixed
      */
+	 public $enableCsrfValidation = false;
     public function actionIndex()
     {
         if(Yii::$app->request->isPost)
         {
             $postdata = Yii::$app->request->post();
+			//echo "<pre>"; print_r($postdata);exit;
             $available_for = $postdata['available_for'];
             $nearby = false;
             if(isset($postdata['nearby']))

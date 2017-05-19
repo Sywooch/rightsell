@@ -63,7 +63,7 @@ $(document).on("ready", function(){
 	// 	//console.log();
 	// });
 
-	$(".rent").hide();
+	//$(".rent").hide();
 
 	$("#searchfilteragriculturalproperty").on("submit", function(e){
 		e.preventDefault();
@@ -80,6 +80,52 @@ $(document).on("ready", function(){
 		console.log($(this).serialize());
 		sendCP();
 	});
+
+	$("#available_for_Rent").on("change", function()
+	{
+		var availablefor = $("input[name='ResidentialpropertySearch[available_for]']:checked").val();
+		if(availablefor == "Sale")
+		{
+			$("#raterow").show();
+			$("#rentrow").hide();
+		}
+		else if(availablefor == "Flatmate" || availablefor == "Rent")
+		{
+			$("#raterow").hide();
+			$("#rentrow").show();
+		}
+	});
+
+	$("#available_for_Sale").on("change", function()
+	{
+		var availablefor = $("input[name='ResidentialpropertySearch[available_for]']:checked").val();
+		if(availablefor == "Sale")
+		{
+			$("#raterow").show();
+			$("#rentrow").hide();
+		}
+		else if(availablefor == "Flatmate" || availablefor == "Rent")
+		{
+			$("#raterow").hide();
+			$("#rentrow").show();
+		}
+	});
+
+	$("#available_for_Flatmate").on("change", function()
+	{
+		var availablefor = $("input[name='ResidentialpropertySearch[available_for]']:checked").val();
+		if(availablefor == "Sale")
+		{
+			$("#raterow").show();
+			$("#rentrow").hide();
+		}
+		else if(availablefor == "Flatmate" || availablefor == "Rent")
+		{
+			$("#raterow").hide();
+			$("#rentrow").show();
+		}
+	});
+
 
 	$("#residentialpropertysearch-available_for").on("change", function()
 	{
@@ -442,6 +488,11 @@ $("#filterResProp_minsqfeet").on("keyup", function(){
 $("#filterResProp_maxsqfeet").on("keyup", function(){
 	var maxsqval = $(this).val();
 	$("#resprop_maxsqval").val(maxsqval);
+});
+
+$("#filterResProp_builtupunit").change(function(){
+	var unitval = $(this).val();
+	$("#resprop_builtupunit").val(unitval);
 });
 
 $("#filterCommProp_minws").on("keyup", function(){

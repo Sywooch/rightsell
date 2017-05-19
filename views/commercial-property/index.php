@@ -78,7 +78,7 @@ $host = "localhost";
 
 <p>
 <input type="checkbox" id="aminity_conf" name="filterCommProp_amenity[]" value="Conference" class="filterCommPropAmenity"/>
-<label class="chkbob_lable" for="aminity_conf"><span></span><img src="images/swiming.png" alt="">Conference Facility</label>
+<label class="chkbob_lable" for="aminity_conf"><span></span><img src="images/swiming.png" alt="">Conference</label>
 </p>
 
 <p>
@@ -125,6 +125,21 @@ $host = "localhost";
 <option value="3">3</option>
 </select> -->
 
+
+<!-- <select id="filterResProp_family" name="filterResProp_family">
+<option value="">Family</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+</select> -->
+
+<select id="filterCommProp_status" name="filterCommProp_status">
+<option value="">Status</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+</select>
+<hr>
 <select id="filterCommProp_floor" name="filterCommProp_floor" multiple="multiple">
 <option value="-1">Basement</option>
 <option value="0">Ground</option>
@@ -137,26 +152,12 @@ $host = "localhost";
 
 
 <hr>
-<!-- <select id="filterResProp_family" name="filterResProp_family">
-<option value="">Family</option>
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-</select> -->
-<hr>
-<select id="filterCommProp_status" name="filterCommProp_status">
-<option value="">Status</option>
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-</select>
-<hr>
 </div>
 <div class="col-sm-5 other_col">
 <h1>Other</h1>
 <table>
 <tr>
-<td>Sq. ft. </td>
+<td>Sq. ft</td>
 <td><input id="filterCommProp_minws" name="filterCommProp_minws" type="text"></td>
 <td>to</td>
 <td><input id="filterCommProp_maxws" name="filterCommProp_maxws" type="text"></td>

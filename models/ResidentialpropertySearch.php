@@ -165,7 +165,6 @@ class ResidentialpropertySearch extends Residentialproperty
         ->andFilterWhere(['=', 'available_for', $this->available_for])
         ->andFilterWhere(['in', 'property_type', $this->property_type])
         ->andFilterWhere(['like', 'builtup_area', $this->builtup_area])
-        ->andFilterWhere(['like', 'builtup_unit', $this->builtup_unit])
         ->andFilterWhere(['like', 'carpet_area', $this->carpet_area])
         ->andFilterWhere(['like', 'carpet_unit', $this->carpet_unit])
         ->andFilterWhere(['like', 'other', $this->other])
@@ -262,6 +261,10 @@ class ResidentialpropertySearch extends Residentialproperty
 
         $query->andFilterWhere(['between', 'expected_rent_comp', $this->min_rent_price, $this->max_rent_price]);
         $query->andFilterWhere(['between', 'builtup_area', $this->min_carpet_area,$this->max_carpet_area]);
+        if($this->builtup_unit != "")
+        {
+            $query->andFilterWhere(['=', 'builtup_unit', $this->builtup_unit]); 
+        }
 
         $floortemp=[];
         if(isset($this->floor_no) && $this->floor_no != "")
@@ -280,7 +283,7 @@ class ResidentialpropertySearch extends Residentialproperty
             //exit;
         }
 
-        //echo "<pre>"; print_r($query); exit;
+        // echo "<pre>"; print_r($query); exit;
 
         return $dataProvider;
     }

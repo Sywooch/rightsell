@@ -30,7 +30,8 @@ class AppAsset extends AssetBundle
         'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600',
         'css/bootstrap-multiselect.css',
         'css/bootstrap.css',
-		'css/jquery.rollbar.css',
+        'css/jquery.rollbar.css',
+		'css/flexslider.css',
         'css/style.css',
     ];
     public $js = [
@@ -47,6 +48,7 @@ class AppAsset extends AssetBundle
         'js/responsiveTabs.js',
 		'js/jquery.mousewheel.js',
         'js/jquery.rollbar.min.js',
+        'js/jquery.flexslider.js',
            
        
     

@@ -114,7 +114,7 @@ use app\models\Bhk;
         <div class="col-xs-5 demo_col">
             <img src="images/rupee.jpg" alt="">
 
-<?php echo \yii\helpers\Html::activeDropDownList($model,'min_rate_price',["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min']);?>
+<?php echo \yii\helpers\Html::activeDropDownList($model,'min_rate_price',["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","3000000"=>"30 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","6000000"=>"60 Lac","7000000"=>"70 Lac","8000000"=>"80 Lac","9000000"=>"90 Lac","10000000"=>"1 Cr","12000000"=>"1.2 Cr","14000000"=>"1.4 Cr","16000000"=>"1.6 Cr","18000000"=>"1.8 Cr","20000000"=>"2 Cr","23000000"=>"2.3 Cr","26000000"=>"2.6 Cr","30000000"=>"3 Cr","35000000"=>"3.5 Cr","40000000"=>"4 Cr","45000000"=>"4.5 Cr","50000000"=>"5 Cr","100000000"=>"10 Cr","200000000"=>"20 Cr"],['prompt'=>'Min']);?>
 
             <?php
         /*$form->field($model, 'min_rate_price')->dropDownList(["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min'])->label(false);*/?>
@@ -132,7 +132,7 @@ use app\models\Bhk;
         <div class="col-xs-2 boldtxt">-</div>
         <div class="col-xs-5 demo_col">
         <img src="images/rupee.jpg" alt="">
-        <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rate_price',["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max']);?>
+        <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rate_price',["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","3000000"=>"30 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","6000000"=>"60 Lac","7000000"=>"70 Lac","8000000"=>"80 Lac","9000000"=>"90 Lac","10000000"=>"1 Cr","12000000"=>"1.2 Cr","14000000"=>"1.4 Cr","16000000"=>"1.6 Cr","18000000"=>"1.8 Cr","20000000"=>"2 Cr","23000000"=>"2.3 Cr","26000000"=>"2.6 Cr","30000000"=>"3 Cr","35000000"=>"3.5 Cr","40000000"=>"4 Cr","45000000"=>"4.5 Cr","50000000"=>"5 Cr","100000000"=>"10 Cr","200000000"=>"20 Cr"],['prompt'=>'Max']);?>
 
         <?php /*
         $form->field($model, 'max_rate_price')->dropDownList(["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max'])->label(false);*/?>
@@ -153,7 +153,7 @@ use app\models\Bhk;
         <div class="col-xs-5 demo_col">
             <img src="images/rupee.jpg" alt="">
 
-<?php echo \yii\helpers\Html::activeDropDownList($model,'min_rent_price',["5000"=>"5 Thousand", "10000"=>"10 Thousand","20000"=>"20 Thousand","25000"=>"25 Thousand","40000"=>"40 Thousand","50000"=>"50 Thousand","80000"=>"80 Thousand","100000"=>"1 Lac"],['prompt'=>'Min']);?>
+<?php echo \yii\helpers\Html::activeDropDownList($model,'min_rent_price',["5000"=>"5 k", "10000"=>"10 k", "15000"=>"15 k","20000"=>"20k","25000"=>"25 k", "30000"=>"30 k", "35000"=>"35 k","40000"=>"40 k","50000"=>"50 k","60000"=>"60 k","70000"=>"70 k","85000"=>"85 k","90000"=>"90 k","100000"=>"1 Lac"],['prompt'=>'Min']);?>
 
             <?php
         /*$form->field($model, 'min_rate_price')->dropDownList(["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr"],['prompt'=>'Min'])->label(false);*/?>
@@ -171,7 +171,7 @@ use app\models\Bhk;
         <div class="col-xs-2 boldtxt">-</div>
         <div class="col-xs-5 demo_col">
         <img src="images/rupee.jpg" alt="">
-        <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rent_price',["10000"=>"10 Thousand","20000"=>"20 Thousand","25000"=>"25 Thousand","40000"=>"40 Thousand","50000"=>"50 Thousand","80000"=>"80 Thousand","100000"=>"1 Lac"],['prompt'=>'Max']);?>
+        <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rent_price',["5000"=>"5 k", "10000"=>"10 k", "15000"=>"15 k","20000"=>"20k","25000"=>"25 k", "30000"=>"30 k", "35000"=>"35 k","40000"=>"40 k","50000"=>"50 k","60000"=>"60 k","70000"=>"70 k","85000"=>"85 k","90000"=>"90 k","100000"=>"1 Lac"],['prompt'=>'Max']);?>
 
         <?php /*
         $form->field($model, 'max_rate_price')->dropDownList(["1000000"=>"10 Lac","2000000"=>"20 Lac","2500000"=>"25 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","8000000"=>"80 Lac","10000000"=>"1 Cr","15000000"=>"1.5 Cr"],['prompt'=>'Max'])->label(false);*/?>

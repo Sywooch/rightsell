@@ -9,7 +9,7 @@ $host = "103.208.73.2";
 			<div class="carousel-inner" role="listbox">
 			<div class='item active'>
 				<?php if($model->property_profile_photo != "" || $model->property_profile_photo != null) {?>
-          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
         <?php } else {?>
         <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
         <?php }?>
@@ -22,7 +22,7 @@ $host = "103.208.73.2";
         {
           foreach ($images as $image) {
             echo "<div class='item'>";
-            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
             echo "</div>";
           }
         }?>
@@ -69,13 +69,20 @@ $host = "103.208.73.2";
 			<?php endif;?>
 
 			<div class="row">
-				<div class="col-xs-6"><p><img src="images/family.png" alt=""><?php
+				<div class="col-xs-6"><p><img src="images/family.png" alt="">
+				<?php
+				if($model->available_for == "Rent")
+				{
                                         if($model->preferred_tenants == "f")
                                           echo "Family";
                                         else if($model->preferred_tenants == "b")
                                           echo "Bachelors";
                                         else
                                           echo ucfirst($model->preferred_tenants);
+				}
+				else{
+					echo "Any";
+				}
                                         ?></p></div>
 				<div class="col-xs-6">
 				<p><img src="images/car.png" alt="">Parking - <?=$model->no_of_parking?$model->no_of_parking:"No"?></p>
@@ -100,7 +107,8 @@ $host = "103.208.73.2";
 				$to=date_create($model->added_on);
 				$diff=date_diff($to,$from);
 				?>
-				<div class="col-xs-12"><strong>Status:</strong> This property <?=$diff->format('%a days');?> old</div>
+				<div class="col-xs-12"><strong>Status:</strong><?=$model->age_of_building?$model->age_of_building:"NA"?></div>
+				<!--<div class="col-xs-12"><strong>Status:</strong> This property <?=$diff->format('%a days');?> old</div>-->
 				<!-- <div class="col-xs-12"><strong>Status:</strong> This property 2 years old</div> -->
 			</div>
 			<div class="row">

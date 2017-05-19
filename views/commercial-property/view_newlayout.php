@@ -53,7 +53,7 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                     'data' => new JsExpression('function(params) { return {q:params.term}; }')
                 ],
                 ],
-                'options' => ['multiple' => true, 'placeholder' => 'Add more locations ...']
+                'options' => ['multiple' => true, 'placeholder' => 'Add more locations ...',"required"=>"required"]
             ]);
           ?>
           
@@ -102,14 +102,14 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                 {
                     foreach ($images as $image) {
                         echo "<div class='item'>";
-                        echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+                        echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
                         echo "</div>";
                     }
                 }*/
                 ?>
                 <div class='item active'>
                 <?php if($model->photo != "" && $model->photo != null) {?>
-          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/commercialProperty/profiles/<?= $model->id.'_profiles_'.$model->photo?>" alt="">
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/commercialProperty/<?= $model->id.'_'.$model->photo?>" alt="">
         <?php } else {?>
         <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
         <?php }?>
@@ -122,7 +122,7 @@ $host = "103.208.73.2";$host = "103.208.73.2";
         {
           foreach ($images as $image) {
             echo "<div class='item'>";
-            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
             echo "</div>";
           }
         }?>
@@ -185,7 +185,7 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                 ?>
 
                                     <span>Posted - <?=$diff->format('%a days');?> old</span>
-                                    <h1><?=$model->type." in ".$model->locations->location?></h1>
+                                    <h1><?=$model->type." in<br/>".$model->locations->location?></h1>
                                     <p></p>
                                 </div>
                                 <div class="row detail_body_price">
@@ -199,10 +199,10 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                                             <span>Rent</span>
                                             <h1>| <i class="fa fa-inr" aria-hidden="true"></i><?= number_format($model->rent_details_comp)?> |</h1>
                                         </li>
-                                        <li>
+                                        <!--<li>
                                             <span>Deposit</span>
                                             <h1><i class="fa fa-inr" aria-hidden="true"></i><?= number_format($model->deposite_details_comp)?></h1>
-                                        </li>
+                                        </li>-->
                                         <?php }?>
 
                                         <?php if($model->available_for == "Sale") { ?>
@@ -214,12 +214,17 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                                     </ul>
                                 </div>
                                 <div class="row detail_body_detail">
+                                    <?php $overview = strip_tags($model->ideal_for);
+									if($overview!=""){
+										?>
                                     <h1>Overview</h1>
-                                    <p><?=$model->ideal_for?>
-                                    <?php if(strlen($model->ideal_for)>100){?>
+									<p><?= substr($overview,0,220)."..."?> 
+                                    <?php if(strlen($overview)>220){?>
                                     <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#more_popup">Read More</a>
                                     <?php }?>
-                                    </p>
+									</p>
+                                    <?php }?>
+									
                                     <span><img src="images/recomended.png" class="img-responsive" style="float:left;" alt="">30 People recommended this property</span>
                                 </div>
                                 <button class="contact_owner2">Contact Owner</button>
@@ -243,21 +248,21 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                                 $furnished = "Semi-Furnished";
                             ?>
                             <li>Furnished status : <?=$furnished?></li>
-                            <li>Facing : <?=$model->facing?></li>
-                            <li>Available From : <?=$model->available_from?></li>
+                            <li>Facing : <?=$model->facing?$model->facing:"NA"?></li>
+                            <li>Available From : <?=$model->available_from?$model->available_from:"NA"?></li>
                         </ul>
                     </div>
                     <hr class="detail_hr_line">
                     <div class="row detail_features">
                         <h1>Ideal For</h1>
-                        <p><?=$model->ideal_for?></p>
+                        <p><?=$model->ideal_for?$model->ideal_for:"NA"?></p>
                     </div>
                     <hr class="detail_hr_line">
                     <div class="row detail_aminities">
                         <h1>Prime Amenities</h1>
 
                          <?php 
-
+						 $amenityflag = true;
                          /*$amenitiesname=[];
                         if($model->amenityies) {
                             foreach($model->amenityies as $amenities) {
@@ -266,7 +271,9 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                             }*/
                             ?>
                         <ul>
-                        <?php if($model->cafeteria == 1) {?>
+                        <?php if($model->cafeteria == 1) { 
+						
+						?>
                             <li class="commercial"><img src="images/cafeteria.png" class="img-responsive" alt="">Cafeteria</li>
                         <?php } else { ?>
                         <li class="commercial"><img src="images/cafeteria.png" class="img-responsive" alt="">Cafeteria</li>
@@ -310,21 +317,30 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                     <hr class="detail_hr_line">
                     <div class="row detail_regular_aminities2">
                         <h1>Internal Structure</h1>
-                        <ul>
-                            <?php if($model->reception >= 1) {?>
+                        <ul><?php $intStruct = true;?>
+                            <?php if($model->reception >= 1) {
+								$intStruct = false;?>
                             <li>Reception</li>
                             <?php } ?>
-                            <?php if($model->min_workstations >= 1) {?>
+                            <?php if($model->min_workstations >= 1) {
+								$intStruct = false;?>
                             <li>Workstations</li>
                             <?php } ?>
-                            <?php if($model->conference_room >= 1) {?>
+                            <?php if($model->conference_room >= 1) {
+								$intStruct = false;?>
                             <li>Conference Room</li>
                             <?php } ?>
-                            <?php if($model->storage_room >= 1) {?>
+                            <?php if($model->storage_room >= 1) {
+								$intStruct = false;?>
                             <li>Storage Room</li>
                             <?php } ?>
-                            <?php if($model->server_room >= 1) {?>
+                            <?php if($model->server_room >= 1) {
+								$intStruct = false;?>
                             <li>Server Room</li>
+                            <?php } ?>
+							
+							<?php if($intStruct) {?>
+                            <li>NA</li>
                             <?php } ?>
                         </ul>
                     </div>
@@ -332,18 +348,25 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                     <hr class="detail_hr_line">
                     <div class="row detail_regular_aminities2">
                         <h1>Outer Structure</h1>
-                        <ul>
-                        <?php if($model->lift_facility >= 1) {?>
+                        <ul><?php $othStruct = true;?>
+                        <?php if($model->lift_facility >= 1) {
+							$othStruct = false;?>
                             <li>Lift Facility</li>
                             <?php } ?>
-                            <?php if($model->two_wheeler_parking >= 1) {?>
+                            <?php if($model->two_wheeler_parking >= 1) {
+								$othStruct = false;?>
                             <li>Two Wheeler Parking</li>
                             <?php } ?>
-                            <?php if($model->four_wheeler_parking >= 1) {?>
+                            <?php if($model->four_wheeler_parking >= 1) {
+								$othStruct = false;?>
                             <li>Four Wheeler Parking</li>
                             <?php } ?>
-                            <?php if($model->power_backup >= 1) {?>
+                            <?php if($model->power_backup >= 1) {
+								$othStruct = false;?>
                             <li>Outer Power Backup</li>
+                            <?php } ?>
+							<?php if($othStruct) {?>
+                            <li>NA</li>
                             <?php } ?>
                         </ul>
                     </div>
@@ -351,7 +374,7 @@ $host = "103.208.73.2";$host = "103.208.73.2";
                     <hr class="detail_hr_line2">
                     <div class="row detail_neighbourhood">
                         <h1>Neighbourhood</h1>
-                        <div id="map" style="width: 100%; height: 250px" >Your map</div>
+                        <div id="map" style="width: 100%; height: 250px" >NA</div>
                     </div>
                 </div>
             </div>
@@ -369,7 +392,7 @@ $host = "103.208.73.2";$host = "103.208.73.2";
         <h4 class="modal-title" id="myModalLabel">Overview</h4>
       </div>
       <div class="modal-body">
-        <?=htmlspecialchars($model->ideal_for, ENT_QUOTES)?>
+        <?=  $overview?>
       </div>
           </div>
   </div>

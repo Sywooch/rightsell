@@ -59,7 +59,7 @@ $host = "103.208.73.2";
 <ul class="nav navbar-nav">
 <li><a href="#" data-toggle="modal" data-target="#myModal-5"><img src="images/more.jpg" class="short" alt="">More <img src="images/dd_arrow.jpg" alt=""></a>
 <div class="modal" tabindex="-1" id="myModal-5" role="dialog">
-<div class="modal-dialog more_modal_dilog" role="document">
+<div class="modal-dialog more_modal_dilog" role="document" style="width: 750px;">
 <div class="modal-content">
 
 <div class="modal-body popup_content">
@@ -111,16 +111,6 @@ $host = "103.208.73.2";
 <option value="South East">South-East</option>
 </select>
 <hr>
-<select id="filterResProp_floor" name="filterResProp_floor" multiple="multiple">
-<option value="-1">Basement</option>
-<option value="0">Ground</option>
-<option value="1,2,3,4">1-4</option>
-<option value="5,6,7,8">5-8</option>
-<option value="9,10,11,12">9-12</option>
-<option value="13,14,15,16">13-16</option>
-<option value="16+">16+</option>
-</select>
-<hr>
 <select id="filterResProp_preferred_tenants" name="filterResProp_preferred_tenants">
 <option value="">Prefered Tenant</option>
 <option value="f">Family</option>
@@ -134,12 +124,26 @@ $host = "103.208.73.2";
 <option value="under construction">Under Construction</option>
 </select>
 <hr>
+<select id="filterResProp_floor" name="filterResProp_floor" multiple="multiple">
+<option value="-1">Basement</option>
+<option value="0">Ground</option>
+<option value="1,2,3,4">1-4</option>
+<option value="5,6,7,8">5-8</option>
+<option value="9,10,11,12">9-12</option>
+<option value="13,14,15,16">13-16</option>
+<option value="16+">16+</option>
+</select>
+<hr>
 </div>
 <div class="col-sm-5 other_col">
 <h1>Other</h1>
 <table>
 <tr>
-<td>Sq. ft. </td>
+<td><select id="filterResProp_builtupunit" name="builtup_unit">
+    <option value="">Select Unit</option>
+    <option>Sq.ft</option>
+    <option>Sq.mtrs</option>
+</select></td>
 <td><input id="filterResProp_minsqfeet" name="filterResProp_minsqfeet" type="text"></td>
 <td>to</td>
 <td><input id="filterResProp_maxsqfeet" name="filterResProp_maxsqfeet" type="text"></td>
@@ -291,6 +295,12 @@ Pjax::begin([
 
 
 <?php
+if(isset($searchModel))
+{
+
+if($searchModel->available_for == "Rent")
+{
+
 
 $this->registerJs("
     /*$('#filterResProp_floor').multiselect({
@@ -307,8 +317,22 @@ $this->registerJs("
 
     $('#homeresmin_rate_pricefilter').multiselect({
         nonSelectedText: 'Select Budget'
-    });*/
-");?>
+    });*/ 
+    $('.rent').show(); 
+    $('.sale').hide(); 
+
+");
+
+}
+else 
+{
+    $this->registerJs("
+    $('.rent').hide(); 
+    $('.sale').show(); 
+    ");
+}
+}
+?>
 
 <?php //$this->registerJsFile('js/jquery-multiselect.js', [yii\web\JqueryAsset::className()]); ?>
 <?php //$this->registerJsFile('js/bootstrap-multiselect.js', [yii\web\JqueryAsset::className()]); ?>

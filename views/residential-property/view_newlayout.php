@@ -55,7 +55,7 @@ $host = "103.208.73.2";
                     'data' => new JsExpression('function(params) { return {q:params.term}; }')
                 ],
                 ],
-                'options' => ['multiple' => true, 'placeholder' => 'Add more locations ...']
+                'options' => ['multiple' => true, 'placeholder' => 'Add more locations ...',"required"=>"required"]
             ]);
           ?>
           <input type="hidden" name="property_city_id" id="property_city_id" value="<?=$model->city_id?>">
@@ -97,7 +97,7 @@ $host = "103.208.73.2";
             <div class="carousel-inner" role="listbox">
             <div class='item active'>
                 <?php if($model->property_profile_photo != "" && $model->property_profile_photo != null) {?>
-          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
         <?php } else {?>
         <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
         <?php }?>
@@ -110,7 +110,7 @@ $host = "103.208.73.2";
         {
           foreach ($images as $image) {
             echo "<div class='item'>";
-            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
             echo "</div>";
           }
         }?>
@@ -189,10 +189,10 @@ $host = "103.208.73.2";
                                             <span>Rent</span>
                                             <h1>| <i class="fa fa-inr" aria-hidden="true"></i> <?= number_format($model->expected_rent_comp)?> | </h1>
                                         </li>
-                                        <li>
+                                        <!--<li>
                                             <span>Deposit</span>
                                             <h1><i class="fa fa-inr" aria-hidden="true"></i> <?= number_format($model->deposit_comp)?> </h1>
-                                        </li>
+                                        </li>-->
                                         <?php }?>
 
                                         <?php if($model->available_for == "Sale") { ?>
@@ -204,12 +204,17 @@ $host = "103.208.73.2";
                                     </ul>
                                 </div>
                                 <div class="row detail_body_detail">
+									<?php $overview = strip_tags($model->spl_attraction);
+									if($overview!=""){
+									?>
+									
                                     <h1>Overview</h1>
-                                    <p><?=htmlspecialchars($model->spl_attraction, ENT_QUOTES)?> 
-                                    <?php if(strlen($model->spl_attraction)>100){?>
+                                    <p><?= substr($overview,0,220)."..."?> 
+                                    <?php if(strlen($overview)>220){?>
                                     <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#more_popup">Read More</a>
                                     <?php }?>
-                                    </p>
+									</p>
+									<?php }?>
                                     <span><img src="images/recomended.png" class="img-responsive" style="float:left;" alt="">30 People recommended this property</span>
                                 </div>
                                 <button class="contact_owner2">Contact Owner</button>
@@ -222,9 +227,28 @@ $host = "103.208.73.2";
                     <div class="row detail_features">
                         <h1>Features</h1>
                         <ul>
-                            <li><img src="images/family.png" class="img-responsive" alt="">Family/ Bachelors</li>
-                            <li><img src="images/furniture.png" class="img-responsive" alt="">Un-furnished</li>
-                            <li style="margin-left:31px;">Possession within 30 days</li>
+                            <li><img src="images/family.png" class="img-responsive" alt=""><?php
+								if($model->available_for == "Rent")
+								{
+                                        if($model->preferred_tenants == "f")
+                                          echo "Family";
+                                        else if($model->preferred_tenants == "b")
+                                          echo "Bachelors";
+                                        else
+                                          echo ucfirst($model->preferred_tenants);
+								}
+								else{
+									echo "Any";
+								}
+                                        ?></li>							
+                            
+							<?php if(strtolower($model->furnished) == "sf"): ?>
+								<li><img src="images/furnished.png" class="img-responsive" alt="">Semi-Furnished</li>
+								<?php elseif(strtolower($model->furnished)=="ff"): ?>
+								<li><img src="images/furnished.png" class="img-responsive" alt="">Fully Furnished</li>
+								<?php else: ?>
+								<li><img src="images/furnished.png" class="img-responsive" alt="">Non Furnished</li>
+								<?php endif;?>
                         </ul>
                     </div>
                     <hr class="detail_hr_line">
@@ -233,116 +257,179 @@ $host = "103.208.73.2";
                         <ul>
                         <?php 
                         $amenitiesname=[];
+						$amenitiesnametemp=[];
                         if($model->amenityies) {
+							$flag = true;
                             foreach($model->amenityies as $amenities) {
-                            $amenitiesname[] = $amenities->amenityName->name;
+								//echo $amenities->amenityName->name."<br>";
+                            $amenitiesname[] = strtolower(trim($amenities->amenityName->name));
                             }
-                            }?>
-                            <?php if(in_array("power backup", $amenitiesname)){?>
-                            <li>
-                            <img src="images/detail_power_backup.png" class="img-responsive" alt="">Power backup</li>
-                            <?php } else { ?>
-                            <li class="deactive">
-                            <img src="images/detail_power_backup.png" class="img-responsive" alt="">Power backup</li>
-                            <?php }?>
-                            <?php if(in_array("gym", $amenitiesname)){?>
+							$amenitiesnametemp = $amenitiesname;
+                            ?>
+                            <?php if(in_array("power  backup", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('power  backup', $amenitiesname);
+								unset($amenitiesnametemp[$key]);
+								?>
+                            <li><img src="images/detail_power_backup.png" class="img-responsive" alt=""/>Power backup</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="images/detail_power_backup.png" class="img-responsive" alt="">Power backup</li>-->
+                            <?php //}?>
+							
+                            <?php if(in_array("gym", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('gym', $amenitiesname);
+								unset($amenitiesnametemp[$key]);
+								?>
                             <li><img src="images/gym.png" class="img-responsive" alt="">Gym</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_gym.png" class="img-responsive" alt="">Gym</li>
-                            <?php }?>
-                            <?php if(in_array("Swimming Pool", $amenitiesname)){?>
-                            <li><img src="images/detail_swimming_pool.png" class="img-responsive" alt="">Swimming pool</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_swimming_pool.png" class="img-responsive" alt="">Swimming pool</li>
-                            <?php }?>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="images/detail_gym.png" class="img-responsive" alt="">Gym</li>-->
+                            <?php //}?>
+							
+							
+                            <?php if(in_array("swimming pool", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('swimming pool', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_swimming_pool.png" class="img-responsive" alt=""/>Swimming pool</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_swimming_pool.png" class="img-responsive" alt="">Swimming pool</li>-->
+                            <?php //}?>
 
                             
-                            <?php if(in_array("Club House", $amenitiesname)){?>
-                            <li><img src="images/detail_club_house.png" class="img-responsive" alt="">Club House</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_club_house.png" class="img-responsive" alt="">Club House</li>
-                            <?php }?>
+                            <?php if(in_array("club house", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('club house', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_club_house.png" class="img-responsive" alt=""/>Club House</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_club_house.png" class="img-responsive" alt="">Club House</li>-->
+                            <?php //}?>
 
 
-                            <?php if(in_array("Door Camera", $amenitiesname)){?>
-                            <li><img src="images/detail_door_cam.png" class="img-responsive" alt="">Door Camera</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_door_cam.png" class="img-responsive" alt="">Door Camera</li>
-                            <?php }?>
+                            <?php if(in_array("door camera", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('door camera', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_door_cam.png" class="img-responsive" alt=""/>Door Camera</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_door_cam.png" class="img-responsive" alt="">Door Camera</li>-->
+                            <?php //}?>
 
 
                             <!-- <li><img src="images/detail_club_house.png" class="img-responsive" alt="">Club House</li>
                             <li class="deactive"><img src="images/detail_door_cam.png" class="img-responsive" alt="">Door Camera</li> -->
 
-                            <?php if(in_array("Car Parking", $amenitiesname)){?>
-                            <li><img src="images/detail_car_parking.png" class="img-responsive" alt="">Car Parking</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_car_parking.png" class="img-responsive" alt="">Car Parking</li>
-                            <?php }?>
+                            <?php if(in_array("car parking", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('car parking', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_car_parking.png" class="img-responsive" alt=""/>Car Parking</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_car_parking.png" class="img-responsive" alt="">Car Parking</li>-->
+                            <?php //}?>
 
-                            <?php if(in_array("Security", $amenitiesname)){?>
-                            <li><img src="images/detail_security.png" class="img-responsive" alt="">Security</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_security.png" class="img-responsive" alt="">Security</li>
-                            <?php }?>
+                            <?php if(in_array("security", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('security', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_security.png" class="img-responsive" alt=""/>Security</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_security.png" class="img-responsive" alt="">Security</li>-->
+                            <?php //}?>
 
 
                             <!-- <li><img src="images/detail_car_parking.png" class="img-responsive" alt="">Car Parking</li>
                             <li><img src="images/detail_security.png" class="img-responsive" alt="">Security</li> -->
 
-                            <?php if(in_array("Garden", $amenitiesname)){?>
-                            <li><img src="images/detail_garden.png" class="img-responsive" alt="">Garden</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_garden.png" class="img-responsive" alt="">Garden</li>
-                            <?php }?>
+                            <?php if(in_array("garden", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('garden', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_garden.png" class="img-responsive" alt=""/>Garden</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_garden.png" class="img-responsive" alt="">Garden</li>-->
+                            <?php //}?>
 
-                            <?php if(in_array("Elevator", $amenitiesname)){?>
-                            <li><img src="images/detail_elevetor.png" class="img-responsive" alt="">Elevator</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_elevetor.png" class="img-responsive" alt="">Elevator</li>
-                            <?php }?>
+                            <?php if(in_array("elevator", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('elevator', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_elevetor.png" class="img-responsive" alt=""/>Elevator</li>
+                            <?php }// else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_elevetor.png" class="img-responsive" alt="">Elevator</li>-->
+                            <?php //}?>
 
                             <!-- <li><img src="images/detail_garden.png" class="img-responsive" alt="">Garden</li>
                             <li><img src="images/detail_elevetor.png" class="img-responsive" alt="">Elevator</li> -->
 
-                            <?php if(in_array("Water Supply", $amenitiesname)){?>
-                            <li><img src="images/detail_water_supply.png" class="img-responsive" alt="">Water Supply</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_water_supply.png" class="img-responsive" alt="">Water Supply</li>
-                            <?php }?>
+                            <?php if(in_array("water supply", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('water supply', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_water_supply.png" class="img-responsive" alt=""/>Water Supply</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_water_supply.png" class="img-responsive" alt="">Water Supply</li>-->
+                            <?php //}?>
 
-                            <?php if(in_array("Jogging track", $amenitiesname)){?>
-                            <li><img src="images/detail_jogging_park.png" class="img-responsive" alt="">Jogging track</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_jogging_park.png" class="img-responsive" alt="">Jogging track</li>
-                            <?php }?>
+                            <?php if(in_array("jogging track", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('jogging track', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_jogging_park.png" class="img-responsive" alt=""/>Jogging track</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_jogging_park.png" class="img-responsive" alt="">Jogging track</li>-->
+                            <?php //}?>
 
-                            <?php if(in_array("Intercom", $amenitiesname)){?>
-                            <li><img src="images/detail_intercom.png" class="img-responsive" alt="">Intercom</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_intercom.png" class="img-responsive" alt="">Intercom</li>
-                            <?php }?>
+                            <?php if(in_array("intercom", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('intercom', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_intercom.png" class="img-responsive" alt=""/>Intercom</li>
+                            <?php } //else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_intercom.png" class="img-responsive" alt="">Intercom</li>-->
+                            <?php //}?>
 
-                            <?php if(in_array("Wifi", $amenitiesname)){?>
-                            <li><img src="images/detail_wifi.png" class="img-responsive" alt="">Wifi</li>
-                            <?php } else { ?>
-                            <li class="deactive"><img src="images/detail_wifi.png" class="img-responsive" alt="">Wifi</li>
-                            <?php }?>
+                            <?php if(in_array("wifi", $amenitiesname)){
+								$flag = false;
+								$key = array_search ('wifi', $amenitiesname);
+								unset($amenitiesnametemp[$key]);?>
+                            <li><img src="images/detail_wifi.png" class="img-responsive" alt=""/>Wifi</li>
+                            <?php } 
+							
+							if($flag)
+								echo "<li> NA</li>";
+							// else { ?>
+                            <!--<li class="deactive"><img src="_images/detail_wifi.png" class="img-responsive" alt="">Wifi</li>-->
+                            <?php //}?>
 
                             <!-- <li><img src="images/detail_water_supply.png" class="img-responsive" alt="">Water Supply</li>
                             <li class="deactive"><img src="images/detail_jogging_park.png" class="img-responsive" alt="">Jogging track</li>
                             <li><img src="images/detail_intercom.png" class="img-responsive" alt="">Intercom</li>
                             <li class="deactive"><img src="images/detail_wifi.png" class="img-responsive" alt="">Wifi</li> -->
+						<?php } else {
+							echo "<li> NA</li>";
+						}?>
                         </ul>
                     </div>
                     <div class="row detail_regular_aminities">
                         <h1>Other Amenities</h1>
                         <ul>
-                        <?php if($model->amenityies) {
+                        <!--<?php if($model->amenityies) {
                             foreach($model->amenityies as $amenities) {?>
-                            <li><?=$amenities->amenityName->name?></li>
+                            <li><?= ucwords($amenities->amenityName->name)?></li>
                             <?php }
-                            }?>
+                            }?>-->
+							
+							<?php if($amenitiesnametemp) {
+                            foreach($amenitiesnametemp as $amenities) {?>
+                            <li><?= ucwords($amenities)?></li>
+                            <?php }
+                            }
+							else {
+								echo "<li>NA</li>";
+							}?>
+							
                             <!-- <li>Swimming Pool</li>
                             <li>Air Conditioned</li>
                             <li>Rain Water Harvesting</li>
@@ -362,7 +449,7 @@ $host = "103.208.73.2";
                     <hr class="detail_hr_line2">
                     <div class="row detail_neighbourhood">
                         <h1>Location Map</h1>
-                        <div id="map" style="width: 100%; height: 250px" >Your map</div>
+                        <div id="map" style="width: 100%; height: 250px" >NA</div>
                         <!-- <img src="images/map.jpg" class="img-responsive" alt=""> -->
                     </div>
                 </div>
@@ -460,7 +547,7 @@ function initMap() {
         <h4 class="modal-title" id="myModalLabel">Overview</h4>
       </div>
       <div class="modal-body">
-        <?=htmlspecialchars($model->spl_attraction, ENT_QUOTES)?>
+        <?= $overview?>
       </div>
           </div>
   </div>

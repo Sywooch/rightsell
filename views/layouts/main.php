@@ -129,6 +129,17 @@ AppAsset::register($this);
 <!-- <script src="js/bootstrap.js"></script>
 <script src="js/responsiveTabs.js"></script> -->
 <script type="text/javascript">
+    $(window).load(function(){
+      $('.flexslider').flexslider({
+        animation: "slide",
+        controlNav: "thumbnails",
+        start: function(slider){
+          $('body').removeClass('loading');
+        }
+      });
+    });
+  
+
         $(function () {
             $('#bhk').multiselect({
                 includeSelectAllOption: true,
@@ -280,6 +291,7 @@ $(function() {
 	  $(document).ready(function(){
 	  	$('.example1, .example2').rollbar({zIndex:1}); 
 	  	//$('body').rollbar({zIndex:1});
+      
 	  });
 	</script>
 

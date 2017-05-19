@@ -153,12 +153,18 @@ $locationdata = Location::find()
                         [
                         'item' => function($index, $label, $name, $checked, $value) {
                            
-                           
-                            $return = '<input id="available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
                             if($checked)
+                            {
+
+                              $return = '<input id="available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3" checked="checked">';
                               $return .= '<a href="#"><label for="available_for_'.$label.'" class="radio_text_active available_forradio_resi">';
+                            }
                               else
-                            $return .= '<a href="#"><label for="available_for_'.$label.'" class="radio_text available_forradio_resi">';
+                              {
+                                $return = '<input id="available_for_'.$label.'" type="radio" name="' . $name . '" value="' . $value . '" tabindex="3">';
+
+                              $return .= '<a href="#"><label for="available_for_'.$label.'" class="radio_text available_forradio_resi">';
+                              }
                             $return .= ucwords($label);
                             $return .= '</label></a>';
 							if($label != "Flatmate")
@@ -274,9 +280,25 @@ $locationdata = Location::find()
 
 <li class="demo_home">
 <table class="dd_table">
-<tr><td><img src="images/select_budget.png" class="img-responsive" alt="">
+<tr id="raterow" style="display: none"><td><img src="images/select_budget.png" class="img-responsive" alt="">
 </td><td>
-<?= $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi",'id'=>""])->label(false);?></td></tr>
+<?php // $form->field($model, 'min_rate_price')->dropdownList(["10"=>"10 lacs - 20 lacs","20"=>"20 lacs - 30 lacs","30"=>"30 lacs - 40 lacs"],['prompt'=>"Select Budget",'class'=>"dd wrapper-dropdown-3 dd_resi",'id'=>""])->label(false);?>
+  
+  <?php echo \yii\helpers\Html::activeDropDownList($model,'min_rate_price',["500000"=>"5 Lac", "1000000"=>"10 Lac","2000000"=>"20 Lac","3000000"=>"30 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","6000000"=>"60 Lac","7000000"=>"70 Lac","8000000"=>"80 Lac","9000000"=>"90 Lac","10000000"=>"1 Cr","12000000"=>"1.2 Cr","14000000"=>"1.4 Cr","16000000"=>"1.6 Cr","18000000"=>"1.8 Cr","20000000"=>"2 Cr","23000000"=>"2.3 Cr","26000000"=>"2.6 Cr","30000000"=>"3 Cr","35000000"=>"3.5 Cr","40000000"=>"4 Cr","45000000"=>"4.5 Cr","50000000"=>"5 Cr","100000000"=>"10 Cr","200000000"=>"20 Cr"],['prompt'=>'Min']);?>
+
+  <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rate_price',["1000000"=>"10 Lac","2000000"=>"20 Lac","3000000"=>"30 Lac","4000000"=>"40 Lac","5000000"=>"50 Lac","6000000"=>"60 Lac","7000000"=>"70 Lac","8000000"=>"80 Lac","9000000"=>"90 Lac","10000000"=>"1 Cr","12000000"=>"1.2 Cr","14000000"=>"1.4 Cr","16000000"=>"1.6 Cr","18000000"=>"1.8 Cr","20000000"=>"2 Cr","23000000"=>"2.3 Cr","26000000"=>"2.6 Cr","30000000"=>"3 Cr","35000000"=>"3.5 Cr","40000000"=>"4 Cr","45000000"=>"4.5 Cr","50000000"=>"5 Cr","100000000"=>"10 Cr","200000000"=>"20 Cr"],['prompt'=>'Max']);?>
+</td></tr>
+
+<tr id="rentrow" style="display: block">
+<td><img src="images/select_budget.png" class="img-responsive" alt="">
+</td>
+<td>
+  <?php echo \yii\helpers\Html::activeDropDownList($model,'min_rent_price',["5000"=>"5 k", "10000"=>"10 k", "15000"=>"15 k","20000"=>"20k","25000"=>"25 k", "30000"=>"30 k", "35000"=>"35 k","40000"=>"40 k","50000"=>"50 k","60000"=>"60 k","70000"=>"70 k","85000"=>"85 k","90000"=>"90 k","100000"=>"1 Lac"],['prompt'=>'Min']);?>
+
+  <?php echo \yii\helpers\Html::activeDropDownList($model,'max_rent_price',["5000"=>"5 k", "10000"=>"10 k", "15000"=>"15 k","20000"=>"20k","25000"=>"25 k", "30000"=>"30 k", "35000"=>"35 k","40000"=>"40 k","50000"=>"50 k","60000"=>"60 k","70000"=>"70 k","85000"=>"85 k","90000"=>"90 k","100000"=>"1 Lac"],['prompt'=>'Max']);?>
+
+</td>
+</tr>
 </table>
           <!-- homeresmin_rate_pricefilter <div class="dropdown">
           <div id="" class="dd4 wrapper-dropdown-3 dd_resi4" tabindex="1">
@@ -676,7 +698,7 @@ $locationdata = Location::find()
                                   <div class="carousel-inner" role="listbox">
                                   <div class='item active'>
                                     <?php if($resprop->property_profile_photo != "" || $resprop->property_profile_photo != null) {?>
-          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $resprop->id.'_profiles_'.$resprop->property_profile_photo?>" alt="">
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/residentialProperty/profiles/<?= $resprop->id.'_profiles_'.$resprop->property_profile_photo?>" alt="">
         <?php } else {?>
         <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
         <?php }?>
@@ -689,7 +711,7 @@ $locationdata = Location::find()
         {
           foreach ($images as $image) {
             echo "<div class='item'>";
-            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/residentialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
             echo "</div>";
           }
         }?>
@@ -848,7 +870,7 @@ $locationdata = Location::find()
                               ?>
                               <div class="item active">
                               <?php if($resprop->property_profile_photo != "" || $resprop->property_profile_photo != null) {?>
-          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $resprop->id.'_profiles_'.$resprop->property_profile_photo?>" alt="">
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/residentialProperty/profiles/<?= $resprop->id.'_profiles_'.$resprop->property_profile_photo?>" alt="">
         <?php } else {?>
         <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
         <?php }?>
@@ -861,7 +883,7 @@ $locationdata = Location::find()
         {
           foreach ($images as $image) {
             echo "<div class='item'>";
-            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/residentialProperty/galleryimages/".$resprop->id."_galleryimages_".$image."' alt=''/>";
             echo "</div>";
           }
         }?>
@@ -883,6 +905,19 @@ $locationdata = Location::find()
                                   <div class="col-xs-6">
                                     <p><img src="images/family.png" alt="">
                                       <?= $resprop->preferred_tenants?>
+									  <?php
+										if($resprop->available_for == "Rent")
+										{
+											if($resprop->preferred_tenants == "f")
+											  echo	 "Family";
+											else if($resprop->preferred_tenants == "b")
+											  echo "Bachelors";
+											else
+											  echo ucfirst($resprop->preferred_tenants);
+										}
+										else{
+											echo "NA";
+										}?>
                                     </p>
                                   </div>
                                   <div class="col-xs-6">
@@ -1010,7 +1045,7 @@ $locationdata = Location::find()
                               ?>
                               <div class="item active">
                                 <?php if($model->photo != "" || $model->photo != null) {?>
-          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/commercialProperty/profiles/<?= $model->id.'_profiles_'.$model->photo?>" alt="">
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/commercialProperty/<?= $model->id."_".$model->photo?>" alt="">
         <?php } else {?>
         <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
         <?php }?>
@@ -1023,7 +1058,7 @@ $locationdata = Location::find()
         {
           foreach ($images as $image) {
             echo "<div class='item'>";
-            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/commercialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
             echo "</div>";
           }
         }?>
@@ -1177,7 +1212,7 @@ $locationdata = Location::find()
                               ?>
                               <div class="item active">
                                 <?php if($model->property_profile_photo != "" || $model->property_profile_photo != null) {?>
-          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
         <?php } else {?>
         <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
         <?php }?>
@@ -1190,7 +1225,7 @@ $locationdata = Location::find()
         {
           foreach ($images as $image) {
             echo "<div class='item'>";
-            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
             echo "</div>";
           }
         }?>

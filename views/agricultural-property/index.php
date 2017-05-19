@@ -89,10 +89,16 @@ $host = "localhost";
 <h1>Other</h1>
 <table>
 <tr>
-<td>Sq. ft. </td>
+<td><select id="filterAgriProp_builtupunit" name="builtup_unit__">
+    <option value="">Select Unit</option>
+    <option>Sq.ft</option>
+    <option>Acre</option>
+    <option>Hector</option>
+</select></td>
 <td><input id="filterAgriProp_minsqfeet_" name="filterAgriProp_minsqfeet_" type="text"></td>
 <td>to</td>
 <td><input id="filterAgriProp_maxsqfeet_" name="filterAgriProp_maxsqfeet_" type="text"></td>
+
 </tr>
 </table>
 <hr>

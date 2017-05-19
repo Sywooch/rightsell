@@ -36,8 +36,8 @@ $host = "103.208.73.2";
       <form action="<?=Url::to(['agricultural-property/index'])?>" method="post">
       <div class="col-sm-2 demo2">
       <select name="available_for">
-                <option value="Sale">Buy</option>
-                <option>Rent</option>
+            <option value="Sale">Buy</option>
+            <option>Rent</option>
         </select></div>
         <div class="col-sm-7">
           <!-- <input type="text" name="locationnames" class="form-control" id="filterResProp_locationname" placeholder="Add more Locations.."> -->
@@ -53,7 +53,7 @@ $host = "103.208.73.2";
                     'data' => new JsExpression('function(params) { return {q:params.term}; }')
                 ],
                 ],
-                'options' => ['multiple' => true, 'placeholder' => 'Add more locations ...']
+                'options' => ['multiple' => true, 'placeholder' => 'Add more locations ...', "required"=>"required"]
             ]);
           ?>
           <input type="hidden" name="property_city_id" id="property_city_id" value="<?=$model->city_id?>">
@@ -102,14 +102,14 @@ $host = "103.208.73.2";
                 {
                     foreach ($images as $image) {
                         echo "<div class='item'>";
-                        echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+                        echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
                         echo "</div>";
                     }
                 }*/
                 ?>
                 <div class='item active'>
                 <?php if($model->property_profile_photo != "" && $model->property_profile_photo != null) {?>
-          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+          <img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/agriculturalProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
         <?php } else {?>
         <img class="d-block img-fluid img-responsive" src="images/pro_img.jpg"" alt="">
         <?php }?>
@@ -122,7 +122,7 @@ $host = "103.208.73.2";
         {
           foreach ($images as $image) {
             echo "<div class='item'>";
-            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+            echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/agriculturalProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
             echo "</div>";
           }
         }?>
@@ -186,7 +186,7 @@ $host = "103.208.73.2";
                 ?>
 
                                     <span>Posted - <?=$diff->format('%a days');?> old</span>
-                                    <h1><?=$model->property_type." in ".$model->locations->location?></h1>
+                                    <h1><?=$model->property_type." in<br/>".$model->locations->location?></h1>
                                     <p></p>
                                 </div>
                                 <div class="row detail_body_price">
@@ -200,10 +200,10 @@ $host = "103.208.73.2";
                                             <span>Rent</span>
                                             <h1>| <i class="fa fa-inr" aria-hidden="true"></i><?= number_format($model->expected_rent_comp)?> |</h1>
                                         </li>
-                                        <li>
+                                        <!--<li>
                                             <span>Deposit</span>
                                             <h1><i class="fa fa-inr" aria-hidden="true"></i><?= number_format($model->deposit_comp)?></h1>
-                                        </li>
+                                        </li>-->
                                         <?php }?>
 
                                         <?php if($model->available_for == "Sale") { ?>
@@ -215,12 +215,15 @@ $host = "103.208.73.2";
                                     </ul>
                                 </div>
                                 <div class="row detail_body_detail">
+									<?php $overview = strip_tags($model->description);
+									if($overview!=""){?>
                                     <h1>Overview</h1>
-                                    <p><?=$model->description?>
-                                    <?php if(strlen($model->description)>100){?>
+                                    <p><?= substr($overview,0,136)."..."?> 
+                                    <?php if(strlen($overview)>136){?>
                                     <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#more_popup">Read More</a>
                                     <?php }?>
                                     </p>
+                                    <?php }?>
                                     <span><img src="images/recomended.png" class="img-responsive" style="float:left;" alt="">30 People recommended this property</span>
                                 </div>
                                 <button class="contact_owner2">Contact Owner</button>
@@ -233,8 +236,8 @@ $host = "103.208.73.2";
                     <div class="row detail_features">
                         <h1>Features</h1>
                         <ul>
-                            <li><strong>Ideal For :</strong> <?=$model->ideal_for?> </li>
-                            <li><strong>Connectivity : </strong><?=$model->connectivity?> </li>
+                            <li><strong>Ideal For :</strong> <?=$model->ideal_for?$model->ideal_for:"NA"?> </li>
+                            <li><strong>Connectivity : </strong><?=$model->connectivity?$model->connectivity:"NA"?> </li>
                         </ul>
                     </div>
                     <hr class="detail_hr_line">
@@ -245,7 +248,9 @@ $host = "103.208.73.2";
                             foreach($model->amenityies as $amenities) {?>
                             <li><?=$amenities->amenityName?$amenities->amenityName->name:""?></li>
                             <?php }
-                            }?>
+                            } else {
+								echo "<li>NA</li>";
+							}?>
                             <!-- <li><img src="images/fensing.png" class="img-responsive" alt="">Fencing</li>
                             <li><img src="images/detail_power_backup.png" style="padding-top:2px;" class="img-responsive" alt="">Electricity supply</li>
                             <li><img src="images/detail_water_supply.png" class="img-responsive" alt="">Water Supply</li>
@@ -257,14 +262,14 @@ $host = "103.208.73.2";
                     <br>
 
                         <ul>
-                            <li><strong>Electricity Supply :</strong> <?=$model->electric_supply?> </li>
-                            <li><strong>Water Supply : </strong><?=$model->water_supply?></li>
+                            <li><strong>Electricity Supply :</strong> <?= ($model->electric_supply == "Yes")?(($model->description_ES)?$model->description_ES:"NA"): "No"?> </li><br/><br/>
+                            <li><strong>Water Supply : </strong><?= ($model->water_supply == "Yes")? (($model->description_WS)?$model->description_WS:"NA"): "No"?></li>
                         </ul>
                     </div>
                     <hr class="detail_hr_line2">
                     <div class="row detail_neighbourhood">
                         <h1>Neighbourhood</h1>
-                        <div id="map" style="width: 100%; height: 250px" >Your map</div>
+                        <div id="map" style="width: 100%; height: 250px" >NA</div>
                     </div>
                 </div>
             </div>
@@ -281,7 +286,7 @@ $host = "103.208.73.2";
         <h4 class="modal-title" id="myModalLabel">Overview</h4>
       </div>
       <div class="modal-body">
-        <?=htmlspecialchars($model->description,ENT_QUOTES)?>
+        <?= $overview?>
       </div>
           </div>
   </div>

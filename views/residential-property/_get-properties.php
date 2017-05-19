@@ -154,7 +154,7 @@ foreach ($dataProvider->getModels() as $model):?>
 																	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 																		<div class="carousel-inner" role="listbox">
 																			<div class="item active">
-																				<img class="d-block img-fluid img-responsive" src="http://<?=$host?>/RealEstateCrm/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
+																				<img class="d-block img-fluid img-responsive" src="http://<?=$host?>/rightsell/backend/files/residentialProperty/profiles/<?= $model->id.'_profiles_'.$model->property_profile_photo?>" alt="">
 																			</div>
 																			<?php 
 																			//http://localhost/RealEstateCrm/files/residentialProperty/
@@ -163,7 +163,7 @@ foreach ($dataProvider->getModels() as $model):?>
 																			{
 																				foreach ($images as $image) {
 																					echo "<div class='item'>";
-																					echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/RealEstateCrm/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
+																					echo "<img class='d-block img-fluid img-responsive' src='http://".$host."/rightsell/backend/files/residentialProperty/galleryimages/".$model->id."_galleryimages_".$image."' alt=''/>";
 																					echo "</div>";
 																				}
 																			}
